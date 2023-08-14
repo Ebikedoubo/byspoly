@@ -2,7 +2,7 @@ version: 2.1
 
 
 jobs:
-  deploy-student-stagging:
+  deploy-react:
     
     docker:
         - image: circleci/node:16
