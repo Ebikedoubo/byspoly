@@ -122,7 +122,7 @@ jobs:
       - run:
           name: find and replace in document
           command: |
-            sed -i -e 's:/public/index.php:/index.php:g' backend/laravel/public/index.php && sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' backend/laravel/public/index.php && sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=byspolye_api:g' backend/laravel/.env.example && sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=byspolye_api:g' backend/laravel/.env.example  && sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' backend/laravel/public/index.php && sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD="Ubuxa##99Ubuxa##99":g' backend/laravel/.env.example 
+            sed -i -e 's:/public/index.php:/index.php:g' backend/laravel/public/index.php && sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' backend/laravel/public/index.php && sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=skillz_byspolye:g' backend/laravel/.env.example && sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=skillz_tibilon:g' backend/laravel/.env.example  && sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' backend/laravel/public/index.php && sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD="Ubuxa##99":g' backend/laravel/.env.example 
 
       - run:
           name: rename .env.example file to .env 
