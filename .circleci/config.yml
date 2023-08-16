@@ -10,7 +10,7 @@ jobs:
     steps:
       - add_ssh_keys:
          fingerprints: 
-          - "94:f3:79:6d:db:f2:27:8e:98:e2:7f:30:bb:da:5c:03"
+          - "ca:1a:82:30:b6:07:92:c2:9e:25:cf:ac:0c:28:f9:dd"
       - checkout
       # install dependencies
       - setup_remote_docker:
@@ -57,7 +57,7 @@ jobs:
     steps:
       - add_ssh_keys:
          fingerprints: 
-          - "94:f3:79:6d:db:f2:27:8e:98:e2:7f:30:bb:da:5c:03"
+          - "ca:1a:82:30:b6:07:92:c2:9e:25:cf:ac:0c:28:f9:dd"
       - checkout
       # install dependencies
       - setup_remote_docker:
@@ -103,7 +103,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints: 
-          - "94:f3:79:6d:db:f2:27:8e:98:e2:7f:30:bb:da:5c:03"
+          - "ca:1a:82:30:b6:07:92:c2:9e:25:cf:ac:0c:28:f9:dd"
       - checkout
       # install dependencies
       - setup_remote_docker:
