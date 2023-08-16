@@ -43,7 +43,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'  --delete   frontend_student/build/ frontend_student/.htaccess skillz@185.160.67.60:byspolye/stydent
+            rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'  --delete   frontend_student/build/ frontend_student/.htaccess skillz@185.160.67.60:byspolye/student
       # - run:
       #     name: ssh and run migration on live server  
       #     command: |
