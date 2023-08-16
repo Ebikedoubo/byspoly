@@ -43,7 +43,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'  --delete   frontend_student/build/ frontend_student/.htaccess byspolye@67.220.187.210:public_html/student
+            rsync -va -e 'ssh -p 21 -o StrictHostKeyChecking=no'  --delete   frontend_student/build/ frontend_student/.htaccess byspolye@67.220.187.210:public_html/student
       # - run:
       #     name: ssh and run migration on live server  
       #     command: |
@@ -90,7 +90,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'  --delete   frontend_admin/build/ frontend_admin/.htaccess byspolye@67.220.187.210:public_html/admin
+            rsync -va -e 'ssh -p 21 -o StrictHostKeyChecking=no'  --delete   frontend_admin/build/ frontend_admin/.htaccess byspolye@67.220.187.210:public_html/admin
       # - run:
       #     name: ssh and run migration on live server  
       #     command: |
@@ -132,7 +132,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            cd backend/laravel && rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json public/ byspolye@67.220.187.210:public_html/api
+            cd backend/laravel && rsync --delete -va -e 'ssh -p 21 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json public/ byspolye@67.220.187.210:public_html/api
             
 workflows:
   version: 2
