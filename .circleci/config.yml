@@ -30,7 +30,7 @@ jobs:
 
       - run:
           name: Update known hosts
-          command: ssh-keyscan -H 67.220.187.210 >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+          command: ssh-keyscan -H 185.160.67.60 >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - run:
           name: rename .env.example file to .env 
           command: |
@@ -43,7 +43,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            rsync -va -e 'ssh -p 21 -o StrictHostKeyChecking=no'  --delete   frontend_student/build/ frontend_student/.htaccess byspolye@67.220.187.210:public_html/student
+            rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'  --delete   frontend_student/build/ frontend_student/.htaccess skillz@185.160.67.60:byspolye/stydent
       # - run:
       #     name: ssh and run migration on live server  
       #     command: |
@@ -77,7 +77,7 @@ jobs:
 
       - run:
           name: Update known hosts
-          command: ssh-keyscan -H 67.220.187.210 >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+          command: ssh-keyscan -H 185.160.67.60 >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - run:
           name: rename .env.example file to .env 
           command: |
@@ -90,7 +90,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            rsync -va -e 'ssh -p 21 -o StrictHostKeyChecking=no'  --delete   frontend_admin/build/ frontend_admin/.htaccess byspolye@67.220.187.210:public_html/admin
+            rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'  --delete   frontend_admin/build/ frontend_admin/.htaccess skillz@185.160.67.60:byspolye/admin
       # - run:
       #     name: ssh and run migration on live server  
       #     command: |
@@ -132,7 +132,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            cd backend/laravel && rsync --delete -va -e 'ssh -p 21 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json public/ byspolye@67.220.187.210:public_html/api
+            cd backend/laravel && rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json public/ skillz@185.160.67.60:byspolye/api
             
 workflows:
   version: 2
