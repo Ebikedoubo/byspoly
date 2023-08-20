@@ -11,22 +11,34 @@ import {
 } from "@mui/material";
 import TextInput from "./TextInput";
 
-const steps = ["Personal Details", "Educational Detail", "Uploads"];
+const steps = ["Personal Details", "Educational Detail", "Faculty"];
 
 
 const StudentEnrollment = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [name, setName] = React.useState("");
+  const [firstname, setFirstname] = React.useState("");
+  const [middlename, setMiddlename] = React.useState("");
+  const [lastname, setLastname] = React.useState("");
+  const [maidenname, setMaidenname] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [gender, setGender] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [phone, setPhone] = React.useState("");
+  const [dateofbirth, setDateofbirth] = React.useState("");
+  const [birthcertificate, setBirthcertificate] = React.useState("");
+  const [nationality, setNationality] = React.useState("");
+  const [startYear, setStartYear] = React.useState("");
+  const [endYear, setEndYear] = React.useState("");
+  const [primarySchool, setPrimarySchool] = React.useState("");
+  const [schoolname, setSchoolname] = React.useState("");
   const [status, setStatus] = React.useState("success");
   const [state, setState] = React.useState("");
   const [message, setMessage] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [localGovt, setLocalGovt] = React.useState("");
   const [error, setError] = React.useState({
-        name: false,
+        firstname: false,
+        middlename: false,
+        lastname: false,
         email: false,
         address: false,
         phone_number: false,
@@ -45,23 +57,71 @@ const StudentEnrollment = () => {
 
   const handleOnChange = (e, inputeName) => {
     switch (inputeName) {
-        case "name":
+        case "firstname":
             // code to be executed when the expression matches value1
-            setName(e.target.value)
+            setFirstname(e.target.value)
             break;
-        case "email":
+            case "middlename":
+            // code to be executed when the expression matches value1
+            setMiddlename(e.target.value)
+            break;
+            case "lastname":
+            // code to be executed when the expression matches value1
+            setLastname(e.target.value)
+            break;
+            case "maidenname":
+            // code to be executed when the expression matches value1
+            setMaidenname(e.target.value)
+            break;
+            case "dateofbirth":
+            // code to be executed when the expression matches value3
+            setDateofbirth(e.target.value)
+            break;
+            case "birthcertificate":
+            // code to be executed when the expression matches value3
+            setBirthcertificate(e.target.value)
+            break;
+            case "nationality":
+            // code to be executed when the expression matches value3
+            setNationality(e.target.value)
+            break;
+            case "email":
             // code to be executed when the expression matches value2
             setEmail(e.target.value)
             break;
-        case "phone":
+            case "phone":
             // code to be executed when the expression matches value3
             setPhone(e.target.value)
             break;
-        case "address":
+            case "address":
             // code to be executed when the expression matches value3
             setAddress(e.target.value)
             break;
-        default:
+            case "state":
+            // code to be executed when the expression matches value3
+            setState(e.target.value)
+            break;
+            case "localGovt":
+                // code to be executed when the expression matches value3
+            setLocalGovt(e.target.value)
+            break;
+            case "primarySchool":
+                    // code to be executed when the expression matches value3
+            setPrimarySchool(e.target.value)
+            break;
+            case "startYear":
+                // code to be executed when the expression matches value3
+            setStartYear(e.target.value)
+            break;
+            case "endYear":
+                // code to be executed when the expression matches value3
+            setEndYear(e.target.value)
+            break;
+            case "schoolname":
+                        // code to be executed when the expression matches value3
+            setSchoolname(e.target.value)
+            break;
+            default:
             // code to be executed when the expression does not match any of the cases
             setGender(e.target.value)
     }
@@ -70,9 +130,21 @@ const options = [
     { label: "Male", value: "Male" },
     { label: "Female", value: "Female" },
 ];
+const option = [
+    { label: "Lagos", value: 2 },
+    { label: "FCT-Abuja", value: 5 },
+    { label: "Nassarawa", value: 3 },
+    { label: "Kogi", value: 4 },
+  ];
+  const option2 = [
+    { label: "ikeja", value: 2 },
+    { label: "Gwagwalada", value: 5 },
+    { label: "Lafia", value: 3 },
+    { label: "Lokoja", value: 4 },
+  ];
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8 }}>
+    <Container maxWidth="lg" sx={{ mt: 2 }}>
       <Stepper activeStep={activeStep}>
         {steps.map((label) => (
           <Step key={label}>
@@ -80,45 +152,63 @@ const options = [
           </Step>
         ))}
       </Stepper>
-      <Grid container direction="column" alignItems="center" spacing={2}>
+      <Grid container direction="row" alignItems="center" spacing={2}>
         <Grid item xs={12}>
           {activeStep === 0 && (
             <>
               <Typography variant="h6">Personal Details</Typography>
               <div className="">
 
-<div className="">
+<div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Applicant Bio</span>
 
-    <div className="">
+    <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
         <TextInput
             className="h-[70px] mt-6"
             required
-            id="name"
-            label="Name"
-            error={error["name"]}
-            value={name}
+            id="firstname"
+            label="First Name"
+            error={error["firstname"]}
+            value={firstname}
             onChange={(e) => {
-                handleOnChange(e, "name")
+                handleOnChange(e, "firstname")
             }}
         />
-    </div>
-    <div className="">
         <TextInput
             className="h-[70px] mt-6"
             required
-            id="email"
-            error={error["email"]}
-            value={email}
-            label="email"
+            id="middlename"
+            label="Middle Name"
+            error={error["middlename"]}
+            value={middlename}
             onChange={(e) => {
-                handleOnChange(e, "email")
+                handleOnChange(e, "middlename")
+            }}
+        />
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="lastname"
+            label="Last Name"
+            error={error["lastname"]}
+            value={lastname}
+            onChange={(e) => {
+                handleOnChange(e, "lastname")
             }}
         />
     </div>
-</div>
-<div className="grid grid-cols-1 gap-4  mb-6">
-
-    <div className="ml-2">
+    <div className="grid grid-cols-2 gap-8  mb-6 mt-4 ml-2">
+        <TextInput
+            className=""
+            required
+            id="maidenname"
+            label="Mother's Maiden Name"
+            error={error["maidenname"]}
+            value={maidenname}
+            onChange={(e) => {
+                handleOnChange(e, "maidenname")
+            }}
+        />
         <TextInput
             required
             type="select"
@@ -134,14 +224,51 @@ const options = [
             }
             options={options}
         />
-
     </div>
-
-</div>
-<div className="grid grid-cols-2 gap-4  mb-6">
-
-    <div className="">
+    <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
         <TextInput
+            className=""
+            type="date"
+            required
+            id="dateofbirth"
+            label="Date of Birth"
+            error={error["dateofbirth"]}
+            value={dateofbirth}
+            onChange={(e) => {
+                handleOnChange(e, "dateofbirth")
+            }}
+        />
+         <TextInput
+            type="file"
+            required
+            id="birthcertificate"
+            label="Upload Birth Certificate"
+            error={error["birthcertificate"]}
+            value={birthcertificate}
+            onChange={(e) => {
+                handleOnChange(e, "birthcertificate")
+            }}
+        />
+    </div>
+    {/* <div className="">
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="email"
+            error={error["email"]}
+            value={email}
+            label="email"
+            onChange={(e) => {
+                handleOnChange(e, "email")
+            }}
+        />
+    </div> */}
+</div>
+<div className="w-full px-4 py-2 mt-12 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+<span style={{position:"relative", left:"-452px", bottom:"23px"}}>Contact Address</span>
+
+    <div className="grid grid-cols-2 gap-4  mb-4 mt-4 ml-2">
+    <TextInput
             className="h-[70px] mt-6"
             required
             id="phonenumber"
@@ -152,13 +279,40 @@ const options = [
                 handleOnChange(e, "phone")
             }}
         />
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="email"
+            label="email"
+            error={error["email"]}
+            value={email}
+            onChange={(e) => {
+                handleOnChange(e, "email")
+            }}
+        />
     </div>
-    <div className="">
+    <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+    <TextInput
+            required
+            type="select"
+            id="outlined-required"
+            label="Nationality"
+            value= {nationality.length < 1 ?"select state":nationality}
+            onChange={
+                (e) => {
+
+                    handleOnChange(e, "nationality")
+                }
+            }
+            isSelect={true}
+            options={option}
+          />
+
         <TextInput
             className="h-[70px] mt-6"
             required
             id="address"
-            label="address"
+            label="Residence"
             value={address}
             error={error["address"]}
             onChange={(e) => {
@@ -166,37 +320,273 @@ const options = [
             }}
         />
     </div>
-</div>
+    <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+    <TextInput
+            required
+            type="select"
+            id="outlined-required"
+            label="Select State"
+            value= {state.length < 1 ?"select state":state}
+            onChange={
+                (e) => {
 
+                    handleOnChange(e, "state")
+                }
+            }
+            isSelect={true}
+            options={option}
+          />
+
+<TextInput
+            required
+            type="select"
+            id="outlined-required"
+            label="Select Local Government"
+            value= {localGovt.length < 1 ?"select localgovt":LocalGovt}
+            onChange={
+                (e) => {
+
+                    handleOnChange(e, "localgovt")
+                }
+            }
+            isSelect={true}
+            options={option2}
+          />
+    </div>
+</div>
 </div>
             </>
           )}
           {activeStep === 1 && (
             <>
               <Typography variant="h6">Educational Details</Typography>
-              <TextField
-                label="Email"
-                name="email"
-                onChange={handleOnChange}
-                fullWidth
-                margin="normal"
-              />
+              <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Secondary School</span>
+    <div className="grid grid-cols-2 gap-8  mb-6 mt-4 ml-2">
+        <TextInput
+            className=""
+            required
+            id="schoolname"
+            label="School Name"
+            error={error["schoolname"]}
+            value={schoolname}
+            onChange={(e) => {
+                handleOnChange(e, "schoolname")
+            }}
+        />
+        <TextInput
+            className=""
+            type="date"
+            required
+            id="endYear"
+            label="Year"
+            error={error["endYear"]}
+            value={endYear}
+            onChange={(e) => {
+                handleOnChange(e, "endYear")
+            }}
+        />
+    </div>
+    <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="examname"
+            label="Exam Name"
+            error={error["examname"]}
+            // value={firstname}
+            onChange={(e) => {
+                handleOnChange(e, "examname")
+            }}
+        />
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="examnumber"
+            label="Exam Number"
+            error={error["examnumber"]}
+            // value={middlename}
+            onChange={(e) => {
+                handleOnChange(e, "examnumber")
+            }}
+        />
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            type="file"
+            id="examresult"
+            label="Result"
+            error={error["examresult"]}
+            // value={lastname}
+            onChange={(e) => {
+                handleOnChange(e, "examresult")
+            }}
+        />
+    </div>
+    <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2">
+    <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Jamb Result</span>
+    <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="jambnumber"
+            label="Jamb Number"
+            error={error["jambnumber"]}
+            // value={firstname}
+            onChange={(e) => {
+                handleOnChange(e, "jambnumber")
+            }}
+        />
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="jambscore"
+            label="Jamb Score"
+            error={error["jambscore"]}
+            // value={middlename}
+            onChange={(e) => {
+                handleOnChange(e, "jambscore")
+            }}
+        />
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            type="file"
+            id="jambresult"
+            label="Result"
+            error={error["jambresult"]}
+            // value={lastname}
+            onChange={(e) => {
+                handleOnChange(e, "jambresult")
+            }}
+        />
+    </div>
+    </div>
+    <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-2">
+    <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Other Exam Certificate</span>
+    <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="otherexamname"
+            label="Exam Name"
+            error={error["otherexamname"]}
+            // value={firstname}
+            onChange={(e) => {
+                handleOnChange(e, "otherexamname")
+            }}
+        />
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            type="file"
+            id="document"
+            label="Document"
+            error={error["document"]}
+            // value={lastname}
+            onChange={(e) => {
+                handleOnChange(e, "document")
+            }}
+        />
+           <TextInput
+            className="h-[70px] mt-6"
+            required
+            type="date"
+            id="endYear"
+            label="Date"
+            error={error["endYear"]}
+            // value={middlename}
+            onChange={(e) => {
+                handleOnChange(e, "endYear")
+            }}
+        />
+    </div>
+    </div>
+</div>
             </>
           )}
           {activeStep === 2 && (
             <>
-              <Typography variant="h6">Uploads</Typography>
-              <TextField
-                label="Phone"
-                name="phone"
-                onChange={handleOnChange}
-                fullWidth
-                margin="normal"
-              />
+              <Typography variant="h6">Faculties/Departments</Typography>
+              <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Select Course to Study</span>
+    <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <span style={{position:"relative", left:"-452px", bottom:"23px"}}>First Choice</span>
+              <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+    <TextInput
+            required
+            type="select"
+            id="outlined-required"
+            label="Faculty"
+            value= {state.length < 1 ?"select state":state}
+            onChange={
+                (e) => {
+
+                    handleOnChange(e, "faculty")
+                }
+            }
+            isSelect={true}
+            options={option}
+          />
+
+<TextInput
+            required
+            type="select"
+            id="outlined-required"
+            label="Department"
+            value= {localGovt.length < 1 ?"select localgovt":LocalGovt}
+            onChange={
+                (e) => {
+
+                    handleOnChange(e, "department")
+                }
+            }
+            isSelect={true}
+            options={option2}
+          />
+          </div>
+    </div>
+    <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6">
+    <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Second Choice</span>
+              <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+    <TextInput
+            required
+            type="select"
+            id="outlined-required"
+            label="Faculty"
+            value= {state.length < 1 ?"select state":state}
+            onChange={
+                (e) => {
+
+                    handleOnChange(e, "faculty")
+                }
+            }
+            isSelect={true}
+            options={option}
+          />
+
+<TextInput
+            required
+            type="select"
+            id="outlined-required"
+            label="Department"
+            value= {localGovt.length < 1 ?"select localgovt":LocalGovt}
+            onChange={
+                (e) => {
+
+                    handleOnChange(e, "department")
+                }
+            }
+            isSelect={true}
+            options={option2}
+          />
+          </div>
+    </div>
+    </div>
             </>
           )}
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={0}>
         {activeStep > 0 && (
             <Button
               variant="contained"
