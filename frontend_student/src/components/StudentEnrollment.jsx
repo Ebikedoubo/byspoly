@@ -16,6 +16,7 @@ const steps = ["Personal Details", "Educational Detail", "Faculty"];
 
 const StudentEnrollment = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const [addForm, setAddForm] = useState(false)
   const [firstname, setFirstname] = React.useState("");
   const [middlename, setMiddlename] = React.useState("");
   const [lastname, setLastname] = React.useState("");
@@ -54,6 +55,12 @@ const StudentEnrollment = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+  const handleAddForm = () =>{
+    setAddForm(true)
+  }
+  const handleRemoveForm = () =>{
+    setAddForm(false)
+  }
 
   const handleOnChange = (e, inputeName) => {
     switch (inputeName) {
@@ -501,6 +508,63 @@ const option = [
             }}
         />
     </div>
+    <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddForm}
+              sx={{ marginLeft: 8 }}
+            >
+              Add other Certificate
+            </Button>
+    {addForm && (
+        <>
+    <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
+            <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="otherexamname"
+            label="Exam Name"
+            error={error["otherexamname"]}
+            // value={firstname}
+            onChange={(e) => {
+                handleOnChange(e, "otherexamname")
+            }}
+        />
+        <TextInput
+            className="h-[70px] mt-6"
+            required
+            type="file"
+            id="document"
+            label="Document"
+            error={error["document"]}
+            // value={lastname}
+            onChange={(e) => {
+                handleOnChange(e, "document")
+            }}
+        />
+           <TextInput
+            className="h-[70px] mt-6"
+            required
+            type="date"
+            id="endYear"
+            label="Date"
+            error={error["endYear"]}
+            // value={middlename}
+            onChange={(e) => {
+                handleOnChange(e, "endYear")
+            }}
+        />
+        </div>
+        <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleRemoveForm}
+              sx={{ marginLeft: 8 }}
+            >
+              Cance
+            </Button>
+        </>
+    )}
     </div>
 </div>
             </>
