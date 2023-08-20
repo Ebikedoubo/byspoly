@@ -1,30 +1,36 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Logo from "../../assests/company_logo.svg";
+import Logo from "../../assests/byspoly-logo-new.png";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 
 export default function Login() {
     const [name, setName] = useState();
+    const [token, setToken] = useState(null);
     const [password, setPassword] = useState();
-    const [nameerror, setNameerror] = useState(true);
-    const [passworderror, setPassworderror] = useState(true);
+    const [nameerror, setNameerror] = useState(false);
+    const [passworderror, setPassworderror] = useState(false);
     const [loader, setLoader] = useState(false);
     const [wrongdetails, setWrongdetails] = useState(false);
     const navigate = useNavigate();
 
 
-    // make use of useeffect hook here to check if there is a value in local storage 
-    //for toke what ever you named it, and if there is redirect a user to the dashboard. 
+    // make use of useeffect hook here to check if there is a value in local storage
+    //for toke what ever you named it, and if there is redirect a user to the dashboard.
     useEffect(() => {
-        const token = localStorage.getItem("token")
+        function getToken() {
+            const isToken = localStorage.getItem("token")
+            setToken(isToken)
+        }
 
-        if (token !== null) {
+        getToken()
+
+        if (token === null) {
             navigate('/dashboard');
         }
 
-    }, [])
+    }, [token, navigate, setToken])
 
     const navigateToForgetPassword = () => {
 
@@ -34,11 +40,11 @@ export default function Login() {
     const handleInput = (value, type) => {
         if (type === "email") {
             setName(value.target.value)
-            setNameerror(true)
+
         }
         if (type === "password") {
             setPassword(value.target.value)
-            setPassworderror(true)
+
         }
     }
 
@@ -54,25 +60,27 @@ export default function Login() {
     }
 
     const login = async () => {
-        // this function use await/async cause we want the code to block until we have gotten a feedback from the server 
+        // this function use await/async cause we want the code to block until we have gotten a feedback from the server
 
         setWrongdetails(false)
         if (name.length < 1) {
-            setNameerror(false)
+            setNameerror(true)
         }
 
         if (password.length < 1) {
-            setPassworderror(false)
+            setPassworderror(true)
         }
-
+        console.log(name.length, password.length)
+        navigate('/dashboard');
         // write your axios to sent to the server and get server feedback
         // note save feedback token in a local storage
 
-        // creat an object to hold the login data
+        // create an object to hold the login data
         setLoader(true)
         postToServer().then((response) => {
             let data = response.data;
-            if (data.status == "success") {
+            console.log(data)
+            if (data.status === "success") {
                 localStorage.setItem('token', data.token)
                 setLoader(false)
                 navigate('/dashboard');
@@ -83,15 +91,17 @@ export default function Login() {
             setLoader(false)
         })
 
+
+
     }
 
     return (
 
-        <div className="flex bg-[green] w-screen w-[100%] ">
-            <div className="flex w-[50%] bg-[white] items-center justify-center">
+        <div className="flex bg-[green] w-[100%] ">
+            <div className="hidden lg:flex w-[50%] bg-[white] items-center justify-center">
                 <div className=" ">
                     <div className="flex justify-center h-[120px]"><img src={Logo} alt="logo" /></div>
-                    <div className="flex justify-center text-[15px] font-medium mt-[15px]">CONSTRUCTION | REAL ESTATE | FACILITY MANAGEMENT</div>
+                    <div className="flex justify-center text-[15px] font-medium mt-[15px]">ADMIN MANAGEMENT PORTAL</div>
                     <div className="w-[410px] flex justify-center text-[10px] mt-[17px] text-slate-400">
                         Lorem Ipsum is simply dummy text of the printing
                         and typesetting industry. Lorem Ipsum has been the
@@ -100,14 +110,14 @@ export default function Login() {
                     </div>
                 </div>
             </div>
-            <div className="flex items-center justify-center w-[50%] bg-no-repeat bg-cover  bg-center h-screen bg-[url(https://tibilonconstruction.com.ng/wp-content/uploads/2022/03/IMG-20211103-WA00002.jpg)]">
+            <div className="flex items-center justify-center w-full lg:w-[50%] bg-no-repeat bg-cover  bg-center h-screen bg-login-bg">
                 <div >
 
                     {wrongdetails ?
                         <h3 className="text-red-600"> Wrong username or password</h3>
                         : null}
                     <div>
-                        {!nameerror ?
+                        {nameerror ?
                             <h3 className="text-red-600"> u need an email</h3>
                             : null}
                         <input className="flex items-center pl-[10px] w-[300px] h-[40px] rounded-md text-[14px] font-normal text-gray-950"
@@ -118,7 +128,7 @@ export default function Login() {
                         />
                     </div>
                     <div className="mt-[50px]">
-                        {!passworderror ?
+                        {passworderror ?
                             <h3 className="text-red-600"> u need an password</h3>
                             : null}
                         <input className="flex  items-center pl-[10px] w-[300px] h-[40px] rounded-md text-[14px] font-normal text-gray-950"

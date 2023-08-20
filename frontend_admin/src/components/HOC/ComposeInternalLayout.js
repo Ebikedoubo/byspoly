@@ -1,5 +1,6 @@
 import React from 'react';
-import InternalLayout from '../../layout/InternalLayout';
+import AdminInternalLayout from '../../layout/AdminInternalLayout';
+
 
 /**
  * This is an HOC that renders the Internal Layout components of the application
@@ -11,7 +12,7 @@ import InternalLayout from '../../layout/InternalLayout';
 
 const ComposeInternalLayouts = (Component) => (passThroughProps) => (
   <>
-    <InternalLayout {...passThroughProps} Component={Component} />
+    <AdminInternalLayout {...passThroughProps} Component={Component} />
   </>
 );
 

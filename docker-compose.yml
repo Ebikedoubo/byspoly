@@ -2,46 +2,18 @@ version: '3.2'
 
 services:
 
-  laravel:
+  byspolyservice:
     build:
       context: ./backend/laravel
       dockerfile: Dockerfile
     ports:
-      - 8050:8000
+      - 3030:8000
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./backend/laravel:/app
     networks:
-      - tibilon
-
-  react:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - 4000:4000
-    volumes:
-      # Re-use local composer cache via host-volume
-      - "./frontend:/usr/src/app"
-      - "/usr/src/app/node_modules"
-    networks:
-      - tibilon
-
-  nest:
-    build:
-      context: ./backend/nestjs
-      dockerfile: Dockerfile
-
-    ports:
-      - 3000:3000
-    command: npm run start
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ./backend/nestjs:/usr/src/app
-      - /usr/src/app/node_modules
-    networks:
-      - tibilon
+      - byspolynetwork
 
   mysql:
     image: mariadb:10.5.8
@@ -51,12 +23,12 @@ services:
       - MYSQL_USER=forge
       - MYSQL_PASSWORD=Ubuxa##99
     networks:
-      - tibilon
+      - byspolynetwork
 
   phpmyadmin:
     image: phpmyadmin:latest
     ports:
-      - 5050:80
+      - 3031:80
     environment:
       - PMA_HOST=mysql
       - PMA_PASSWORD=Ubuxa##99
@@ -67,8 +39,8 @@ services:
     # Mount source-code for development
     - ./:/app
     networks:
-      - tibilon
+      - byspolynetwork
   
 networks:
-  tibilon:
+  byspolynetwork:
     driver: bridge
