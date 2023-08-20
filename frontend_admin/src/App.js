@@ -1,14 +1,12 @@
-import React, { useEffect } from "react";
-import "./App.css";
+
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { routes, PrivateAdminRoute } from "./routes";
-import Sidebar from "./components/SideBar/SideBar";
-import { useNavigate } from 'react-router-dom';
-import { SideBarLinks } from "./sideBarLinks";
+
 
 
 function App() {
-  
+
   const privateRoutes = routes.privateRoutes.map(
     ({ path, title, component: Component, exact }) => (
       <Route
@@ -18,7 +16,7 @@ function App() {
         element={
           <PrivateAdminRoute path={path} key={path} exact={exact} title={title}>
             <Component title={title} />
-            <Sidebar SideBarLinks={SideBarLinks} />
+
           </PrivateAdminRoute>
         }
       />
