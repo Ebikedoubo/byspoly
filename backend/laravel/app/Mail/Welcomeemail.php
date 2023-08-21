@@ -29,6 +29,6 @@ class Welcomeemail extends Mailable
      public function build()
      {
         
-         return $this->from('tibilon@gmail.com',  'Tibilon')->subject("Welcome to Tibilon")->view('emails.welcome')->with('user', $this->user);
+         return $this->from('admin@.byspoly.edu.ng',  'BYSPOLY')->subject("Welcome to BSYPOLY")->view('emails.welcome')->with('user', $this->user);
      }
 }

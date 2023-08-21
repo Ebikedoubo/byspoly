@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->string('password');
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('designation', ['academic', 'non-academic'])->default('academic');
         });
     }
 
@@ -21,8 +21,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn("password");
+        Schema::table('users', function (Blueprint $table) {
+            Schema::table('your_table_name', function (Blueprint $table) {
+                $table->dropColumn('designation');
+            });
         });
     }
 };

@@ -24,14 +24,14 @@
 
   You've asked to reset your  password. Click the button below to reset your password:<br><br>
 
-
-                                      <a href="{{{$data['link']}}}">  <button style="height: 70px;width: 300px;border-radius: 6px;"> Reset Password</button> </a>
+  
+                                      <a href="http://byspolye.admin.skillzserver.com/changepassword?token={{$data['link'] }}">  <button style="height: 70px;width: 300px;border-radius: 6px;"> Reset Password</button> </a>
                                         <br><br>
 
 
               You can also copy and paste this link into your browser:<br><br>
 
-  {{{$data['link']}}}
+              http://byspolye.admin.skillzserver.com/changepassword?token={{$data['link'] }}
 
   <br><br>
   Note: You can only use this e-mail to reset your password within 24 hours.<br><br>

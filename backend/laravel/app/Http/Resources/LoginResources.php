@@ -22,6 +22,7 @@ class LoginResources extends JsonResource
             "token" => $this->token,
             "email" => $this->email,
             "status" => "success",
+            "designation" => $this->designation,
             "message" => "user logged in",
         ];
     }
