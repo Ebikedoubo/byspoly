@@ -18,8 +18,8 @@
          <h1> Welcome to <span style="color: #6610f2;">Tibilon</span></h1><br>
 
          Please Click on link to change password <br><br>
-
-        <a href="http://tibilon.com/changepassword?token={{$user['passwordresetcode'] }}">
+         http://byspolye.admin.skillzserver.com/
+        <a href="http://byspolye.admin.skillzserver.com/changepassword?token={{$user['passwordresetcode'] }}">
         <button>Change password</button>
         </a>
 
