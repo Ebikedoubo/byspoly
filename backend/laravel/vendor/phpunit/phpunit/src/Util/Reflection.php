@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util;
 
+use function array_keys;
+use function array_merge;
+use function array_reverse;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -24,7 +27,7 @@ final class Reflection
      * @psalm-param class-string $className
      * @psalm-param non-empty-string $methodName
      *
-     * @psalm-return array{file: string, line: int}
+     * @psalm-return array{file: non-empty-string, line: non-negative-int}
      */
     public static function sourceLocationFor(string $className, string $methodName): array
     {
@@ -47,36 +50,48 @@ final class Reflection
     /**
      * @psalm-return list<ReflectionMethod>
      */
-    public function publicMethodsInTestClass(ReflectionClass $class): array
+    public static function publicMethodsInTestClass(ReflectionClass $class): array
     {
-        return $this->filterMethods($class, ReflectionMethod::IS_PUBLIC);
+        return self::filterMethods($class, ReflectionMethod::IS_PUBLIC);
     }
 
     /**
      * @psalm-return list<ReflectionMethod>
      */
-    public function methodsInTestClass(ReflectionClass $class): array
+    public static function methodsInTestClass(ReflectionClass $class): array
     {
-        return $this->filterMethods($class, null);
+        return self::filterMethods($class, null);
     }
 
     /**
      * @psalm-return list<ReflectionMethod>
      */
-    private function filterMethods(ReflectionClass $class, ?int $filter): array
+    private static function filterMethods(ReflectionClass $class, ?int $filter): array
     {
-        $methods = [];
+        $methodsByClass = [];
 
         foreach ($class->getMethods($filter) as $method) {
-            if ($method->getDeclaringClass()->getName() === TestCase::class) {
+            $declaringClassName = $method->getDeclaringClass()->getName();
+
+            if ($declaringClassName === TestCase::class) {
                 continue;
             }
 
-            if ($method->getDeclaringClass()->getName() === Assert::class) {
+            if ($declaringClassName === Assert::class) {
                 continue;
             }
 
-            $methods[] = $method;
+            if (!isset($methodsByClass[$declaringClassName])) {
+                $methodsByClass[$declaringClassName] = [];
+            }
+
+            $methodsByClass[$declaringClassName][] = $method;
+        }
+
+        $methods = [];
+
+        foreach (array_reverse(array_keys($methodsByClass)) as $className) {
+            $methods = array_merge($methods, $methodsByClass[$className]);
         }
 
         return $methods;
