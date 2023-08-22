@@ -17,25 +17,51 @@ const steps = ["Personal Details", "Educational Detail", "Faculty"];
 const StudentEnrollment = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [addForm, setAddForm] = useState(false)
-  const [firstname, setFirstname] = React.useState("");
-  const [middlename, setMiddlename] = React.useState("");
-  const [lastname, setLastname] = React.useState("");
-  const [maidenname, setMaidenname] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [gender, setGender] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [dateofbirth, setDateofbirth] = React.useState("");
-  const [birthcertificate, setBirthcertificate] = React.useState("");
-  const [nationality, setNationality] = React.useState("");
-  const [startYear, setStartYear] = React.useState("");
-  const [endYear, setEndYear] = React.useState("");
-  const [primarySchool, setPrimarySchool] = React.useState("");
-  const [schoolname, setSchoolname] = React.useState("");
+//   const [firstname, setFirstname] = React.useState("");
+//   const [middlename, setMiddlename] = React.useState("");
+//   const [lastname, setLastname] = React.useState("");
+//   const [maidenname, setMaidenname] = React.useState("");
+//   const [email, setEmail] = React.useState("");
+//   const [gender, setGender] = React.useState("");
+//   const [address, setAddress] = React.useState("");
+//   const [phone, setPhone] = React.useState("");
+//   const [dateofbirth, setDateofbirth] = React.useState("");
+//   const [birthcertificate, setBirthcertificate] = React.useState("");
+//   const [nationality, setNationality] = React.useState("");
+//   const [startYear, setStartYear] = React.useState("");
+//   const [endYear, setEndYear] = React.useState("");
+//   const [primarySchool, setPrimarySchool] = React.useState("");
+//   const [schoolname, setSchoolname] = React.useState("");
   const [status, setStatus] = React.useState("success");
-  const [state, setState] = React.useState("");
+//   const [state, setState] = React.useState("");
   const [message, setMessage] = React.useState("");
-  const [localGovt, setLocalGovt] = React.useState("");
+//   const [localGovt, setLocalGovt] = React.useState("");
+const [formData, setFormData] = useState({
+    firstname: "",
+    middlename: "",
+    lastname: "",
+    maidenname: "",
+    gender: "",
+    dateofbirth: "",
+    birthcertificate: null,
+    phone: "",
+    email: "",
+    nationality: "",
+    address: "",
+    state: "",
+    localGovt: "",
+    schoolname: "",
+    endYear: "",
+    examname: "",
+    examnumber: "",
+    examresult: null,
+    jambname: "",
+    jambnumber: "",
+    jambscore: "",
+    jambresult: null,
+    faculty: "",
+    department: ""
+})
   const [error, setError] = React.useState({
         firstname: false,
         middlename: false,
@@ -46,6 +72,21 @@ const StudentEnrollment = () => {
         gender: false
     });
 
+    const handleOnChange = (event) => {
+        const { id, value, type, files } = event.target;
+    
+        if (type === 'file') {
+          setFormData((prevData) => ({
+            ...prevData,
+            [id]: files[0],
+          }));
+        } else {
+          setFormData((prevData) => ({
+            ...prevData,
+            [id]: value,
+          }));
+        }
+      };
 
 
   const handleNext = () => {
@@ -62,77 +103,77 @@ const StudentEnrollment = () => {
     setAddForm(false)
   }
 
-  const handleOnChange = (e, inputeName) => {
-    switch (inputeName) {
-        case "firstname":
-            // code to be executed when the expression matches value1
-            setFirstname(e.target.value)
-            break;
-            case "middlename":
-            // code to be executed when the expression matches value1
-            setMiddlename(e.target.value)
-            break;
-            case "lastname":
-            // code to be executed when the expression matches value1
-            setLastname(e.target.value)
-            break;
-            case "maidenname":
-            // code to be executed when the expression matches value1
-            setMaidenname(e.target.value)
-            break;
-            case "dateofbirth":
-            // code to be executed when the expression matches value3
-            setDateofbirth(e.target.value)
-            break;
-            case "birthcertificate":
-            // code to be executed when the expression matches value3
-            setBirthcertificate(e.target.value)
-            break;
-            case "nationality":
-            // code to be executed when the expression matches value3
-            setNationality(e.target.value)
-            break;
-            case "email":
-            // code to be executed when the expression matches value2
-            setEmail(e.target.value)
-            break;
-            case "phone":
-            // code to be executed when the expression matches value3
-            setPhone(e.target.value)
-            break;
-            case "address":
-            // code to be executed when the expression matches value3
-            setAddress(e.target.value)
-            break;
-            case "state":
-            // code to be executed when the expression matches value3
-            setState(e.target.value)
-            break;
-            case "localGovt":
-                // code to be executed when the expression matches value3
-            setLocalGovt(e.target.value)
-            break;
-            case "primarySchool":
-                    // code to be executed when the expression matches value3
-            setPrimarySchool(e.target.value)
-            break;
-            case "startYear":
-                // code to be executed when the expression matches value3
-            setStartYear(e.target.value)
-            break;
-            case "endYear":
-                // code to be executed when the expression matches value3
-            setEndYear(e.target.value)
-            break;
-            case "schoolname":
-                        // code to be executed when the expression matches value3
-            setSchoolname(e.target.value)
-            break;
-            default:
-            // code to be executed when the expression does not match any of the cases
-            setGender(e.target.value)
-    }
-};
+//   const handleOnChange = (e, inputeName) => {
+//     switch (inputeName) {
+//         case "firstname":
+//             // code to be executed when the expression matches value1
+//             setFirstname(e.target.value)
+//             break;
+//             case "middlename":
+//             // code to be executed when the expression matches value1
+//             setMiddlename(e.target.value)
+//             break;
+//             case "lastname":
+//             // code to be executed when the expression matches value1
+//             setLastname(e.target.value)
+//             break;
+//             case "maidenname":
+//             // code to be executed when the expression matches value1
+//             setMaidenname(e.target.value)
+//             break;
+//             case "dateofbirth":
+//             // code to be executed when the expression matches value3
+//             setDateofbirth(e.target.value)
+//             break;
+//             case "birthcertificate":
+//             // code to be executed when the expression matches value3
+//             setBirthcertificate(e.target.value)
+//             break;
+//             case "nationality":
+//             // code to be executed when the expression matches value3
+//             setNationality(e.target.value)
+//             break;
+//             case "email":
+//             // code to be executed when the expression matches value2
+//             setEmail(e.target.value)
+//             break;
+//             case "phone":
+//             // code to be executed when the expression matches value3
+//             setPhone(e.target.value)
+//             break;
+//             case "address":
+//             // code to be executed when the expression matches value3
+//             setAddress(e.target.value)
+//             break;
+//             case "state":
+//             // code to be executed when the expression matches value3
+//             setState(e.target.value)
+//             break;
+//             case "localGovt":
+//                 // code to be executed when the expression matches value3
+//             setLocalGovt(e.target.value)
+//             break;
+//             case "primarySchool":
+//                     // code to be executed when the expression matches value3
+//             setPrimarySchool(e.target.value)
+//             break;
+//             case "startYear":
+//                 // code to be executed when the expression matches value3
+//             setStartYear(e.target.value)
+//             break;
+//             case "endYear":
+//                 // code to be executed when the expression matches value3
+//             setEndYear(e.target.value)
+//             break;
+//             case "schoolname":
+//                         // code to be executed when the expression matches value3
+//             setSchoolname(e.target.value)
+//             break;
+//             default:
+//             // code to be executed when the expression does not match any of the cases
+//             setGender(e.target.value)
+//     }
+// };
 const options = [
     { label: "Male", value: "Male" },
     { label: "Female", value: "Female" },
@@ -176,7 +217,7 @@ const option = [
             id="firstname"
             label="First Name"
             error={error["firstname"]}
-            value={firstname}
+            value={formData.firstname}
             onChange={(e) => {
                 handleOnChange(e, "firstname")
             }}
@@ -187,7 +228,7 @@ const option = [
             id="middlename"
             label="Middle Name"
             error={error["middlename"]}
-            value={middlename}
+            value={formData.middlename}
             onChange={(e) => {
                 handleOnChange(e, "middlename")
             }}
@@ -198,7 +239,7 @@ const option = [
             id="lastname"
             label="Last Name"
             error={error["lastname"]}
-            value={lastname}
+            value={formData.lastname}
             onChange={(e) => {
                 handleOnChange(e, "lastname")
             }}
@@ -211,7 +252,7 @@ const option = [
             id="maidenname"
             label="Mother's Maiden Name"
             error={error["maidenname"]}
-            value={maidenname}
+            value={formData.maidenname}
             onChange={(e) => {
                 handleOnChange(e, "maidenname")
             }}
@@ -220,7 +261,7 @@ const option = [
             required
             type="select"
             isSelect={true}
-            value={gender.length < 1 ?"Male":gender }
+            value={formData.gender.length < 1 ?"Male":formData.gender }
             label={"Gender"}
             error={error["gender"]}
             onChange={
@@ -240,7 +281,7 @@ const option = [
             id="dateofbirth"
             label="Date of Birth"
             error={error["dateofbirth"]}
-            value={dateofbirth}
+            value={formData.dateofbirth}
             onChange={(e) => {
                 handleOnChange(e, "dateofbirth")
             }}
@@ -251,25 +292,12 @@ const option = [
             id="birthcertificate"
             label="Upload Birth Certificate"
             error={error["birthcertificate"]}
-            value={birthcertificate}
+            // value={birthcertificate}
             onChange={(e) => {
                 handleOnChange(e, "birthcertificate")
             }}
         />
     </div>
-    {/* <div className="">
-        <TextInput
-            className="h-[70px] mt-6"
-            required
-            id="email"
-            error={error["email"]}
-            value={email}
-            label="email"
-            onChange={(e) => {
-                handleOnChange(e, "email")
-            }}
-        />
-    </div> */}
 </div>
 <div className="w-full px-4 py-2 mt-12 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
 <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Contact Address</span>
@@ -278,10 +306,10 @@ const option = [
     <TextInput
             className="h-[70px] mt-6"
             required
-            id="phonenumber"
+            id="phone"
             label="Phone Number"
-            value={phone}
-            error={error["phone_number"]}
+            value={formData.phone}
+            error={error["phone"]}
             onChange={(e) => {
                 handleOnChange(e, "phone")
             }}
@@ -292,7 +320,7 @@ const option = [
             id="email"
             label="email"
             error={error["email"]}
-            value={email}
+            value={formData.email}
             onChange={(e) => {
                 handleOnChange(e, "email")
             }}
@@ -302,9 +330,9 @@ const option = [
     <TextInput
             required
             type="select"
-            id="outlined-required"
+            id="nationality"
             label="Nationality"
-            value= {nationality.length < 1 ?"select state":nationality}
+            value= {formData.nationality.length < 1 ?"select state":formData.nationality}
             onChange={
                 (e) => {
 
@@ -320,7 +348,7 @@ const option = [
             required
             id="address"
             label="Residence"
-            value={address}
+            value={formData.address}
             error={error["address"]}
             onChange={(e) => {
                 handleOnChange(e, "address")
@@ -331,9 +359,9 @@ const option = [
     <TextInput
             required
             type="select"
-            id="outlined-required"
+            id="state"
             label="Select State"
-            value= {state.length < 1 ?"select state":state}
+            value= {formData.state.length < 1 ?"select state":formData.state}
             onChange={
                 (e) => {
 
@@ -347,9 +375,9 @@ const option = [
 <TextInput
             required
             type="select"
-            id="outlined-required"
+            id="localGovt"
             label="Select Local Government"
-            value= {localGovt.length < 1 ?"select localgovt":LocalGovt}
+            value= {formData.localGovt.length < 1 ?"select localgovt":formData.LocalGovt}
             onChange={
                 (e) => {
 
@@ -376,7 +404,7 @@ const option = [
             id="schoolname"
             label="School Name"
             error={error["schoolname"]}
-            value={schoolname}
+            value={formData.schoolname}
             onChange={(e) => {
                 handleOnChange(e, "schoolname")
             }}
@@ -388,7 +416,7 @@ const option = [
             id="endYear"
             label="Year"
             error={error["endYear"]}
-            value={endYear}
+            value={formData.endYear}
             onChange={(e) => {
                 handleOnChange(e, "endYear")
             }}
@@ -401,7 +429,7 @@ const option = [
             id="examname"
             label="Exam Name"
             error={error["examname"]}
-            // value={firstname}
+            value={formData.examname}
             onChange={(e) => {
                 handleOnChange(e, "examname")
             }}
@@ -412,7 +440,7 @@ const option = [
             id="examnumber"
             label="Exam Number"
             error={error["examnumber"]}
-            // value={middlename}
+            value={formData.examnumber}
             onChange={(e) => {
                 handleOnChange(e, "examnumber")
             }}
@@ -439,7 +467,7 @@ const option = [
             id="jambnumber"
             label="Jamb Number"
             error={error["jambnumber"]}
-            // value={firstname}
+            value={formData.jambnumber}
             onChange={(e) => {
                 handleOnChange(e, "jambnumber")
             }}
@@ -450,7 +478,7 @@ const option = [
             id="jambscore"
             label="Jamb Score"
             error={error["jambscore"]}
-            // value={middlename}
+            value={formData.jambscore}
             onChange={(e) => {
                 handleOnChange(e, "jambscore")
             }}
@@ -502,7 +530,7 @@ const option = [
             id="endYear"
             label="Date"
             error={error["endYear"]}
-            // value={middlename}
+            value={formData.date}
             onChange={(e) => {
                 handleOnChange(e, "endYear")
             }}
