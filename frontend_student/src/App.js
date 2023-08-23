@@ -41,7 +41,7 @@ function App() {
           {privateRoutes}
         </Routes>
       </BrowserRouter>
-      <StudentEnrollment />
+      {/* <StudentEnrollment /> */}
     </div>
   );
 }
