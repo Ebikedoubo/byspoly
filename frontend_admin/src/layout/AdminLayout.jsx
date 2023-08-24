@@ -69,7 +69,7 @@ export default function AdminLayout(props) {
                     <div className="h-full">
                         <Navbar
                             onOpenSidenav={() => setOpen(true)}
-                            logoText={"Horizon UI Tailwind React"}
+                            logoText={"Admin Dashboard"}
                             brandText={currentRoute}
                             secondary={getActiveNavbar(routes)}
                             {...props}

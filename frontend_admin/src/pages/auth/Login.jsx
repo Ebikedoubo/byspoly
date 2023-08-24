@@ -7,7 +7,6 @@ import axios from "axios";
 
 export default function Login() {
     const [name, setName] = useState();
-    const [token, setToken] = useState(null);
     const [password, setPassword] = useState();
     const [nameerror, setNameerror] = useState(false);
     const [passworderror, setPassworderror] = useState(false);
@@ -19,18 +18,13 @@ export default function Login() {
     // make use of useeffect hook here to check if there is a value in local storage
     //for toke what ever you named it, and if there is redirect a user to the dashboard.
     useEffect(() => {
-        function getToken() {
-            const isToken = localStorage.getItem("token")
-            setToken(isToken)
-        }
+        const token = localStorage.getItem("token")
 
-        getToken()
-
-        if (token === null) {
+        if (token !== null) {
             navigate('/dashboard');
         }
 
-    }, [token, navigate, setToken])
+    }, [])
 
     const navigateToForgetPassword = () => {
 
@@ -139,11 +133,11 @@ export default function Login() {
                         />
                     </div>
 
-                    <button onClick={() => login()} className="flex mt-[50px] justify-center items-center bg-yellow-600 w-[300px] h-[40px] rounded-md text-[14px] font-semibold text-[white]">
+                    <button onClick={() => login()} className="flex mt-[50px] justify-center items-center bg-yellow-600 hover:bg-yellow-500 w-[300px] h-[40px] rounded-md text-[14px] font-semibold text-[white]">
                         {loader ? "Loading ........" : "Login"}
                     </button>
-                    <div className="flex justify-between text-[white]">
-                        <p className="text-[12px]">Sign Up</p>
+                    <div className="flex justify-between text-[white] mt-2">
+                        <p className="text-[12px] cursor-pointer">Sign Up</p>
                         <p onClick={navigateToForgetPassword} className="text-[12px] cursor-pointer">Forgot Password</p>
                     </div>
 
