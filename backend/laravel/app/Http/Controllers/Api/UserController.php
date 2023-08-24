@@ -462,7 +462,7 @@ class UserController extends Controller
     }
 
     public function logout()
-    {
+    { 
         $auth = Auth::user();
         if ($auth->tokens()->delete()) {
             return response()->json(["status" => "success"], 200);
