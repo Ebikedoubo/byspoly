@@ -13,7 +13,7 @@ import CardWidget from "../card/CardWidget";
 export default function Dashboard() {
 
   return (
-    <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-6">
+    <div className="mt-12 grid grid-cols-1 gap-4 2xl-max:gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6">
       <CardWidget
         icon={<MdPeople className="h-6 w-6" />}
         title={"Total Staffs"}
