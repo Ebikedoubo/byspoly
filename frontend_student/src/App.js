@@ -5,6 +5,8 @@ import { routes, PrivateAdminRoute } from "./routes";
 import Sidebar from "./components/SideBar/SideBar";
 import { useNavigate } from 'react-router-dom';
 import { SideBarLinks } from "./sideBarLinks";
+import StudentEnrollment from "./components/StudentEnrollment";
+// import Login from "./pages/auth/Login";
 
 
 function App() {
@@ -39,6 +41,7 @@ function App() {
           {privateRoutes}
         </Routes>
       </BrowserRouter>
+      {/* <StudentEnrollment /> */}
     </div>
   );
 }
