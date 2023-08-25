@@ -69,7 +69,24 @@ const StudentEnrollment = () => {
           email: false,
           address: false,
           phone_number: false,
-          gender: false
+          gender: false,
+          dateofbirth: "",
+          birthcertificate: null,
+          nationality: "",
+          address: "",
+          state: "",
+          localGovt: "",
+          schoolname: "",
+          endYear: "",
+          examname: "",
+          examnumber: "",
+          examresult: null,
+          jambname: "",
+          jambnumber: "",
+          jambscore: "",
+          jambresult: null,
+          faculty: "",
+          department: ""
       });
   
       const handleOnChange = (event) => {
@@ -605,73 +622,55 @@ const StudentEnrollment = () => {
       <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <span style={{position:"relative", left:"-452px", bottom:"23px"}}>First Choice</span>
                 <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-      <TextInput
+                <TextInput
+              className=""
               required
-              type="select"
-              id="outlined-required"
+              id="faculty"
               label="Faculty"
-              value= {state.length < 1 ?"select state":state}
-              onChange={
-                  (e) => {
-  
-                      handleOnChange(e, "faculty")
-                  }
-              }
-              isSelect={true}
-              options={option}
-            />
-  
-  <TextInput
+              error={error["faculty"]}
+              value={formData.faculty}
+              onChange={(e) => {
+                  handleOnChange(e, "faculty")
+              }}
+          />
+           <TextInput
+              className=""
               required
-              type="select"
-              id="outlined-required"
+              id="deparment"
               label="Department"
-              value= {localGovt.length < 1 ?"select localgovt":LocalGovt}
-              onChange={
-                  (e) => {
-  
-                      handleOnChange(e, "department")
-                  }
-              }
-              isSelect={true}
-              options={option2}
-            />
+              error={error["department"]}
+              value={formData.department}
+              onChange={(e) => {
+                  handleOnChange(e, "department")
+              }}
+          />
             </div>
       </div>
       <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6">
       <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Second Choice</span>
                 <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-      <TextInput
+                <TextInput
+              className=""
               required
-              type="select"
-              id="outlined-required"
+              id="faculty"
               label="Faculty"
-              value= {state.length < 1 ?"select state":state}
-              onChange={
-                  (e) => {
-  
-                      handleOnChange(e, "faculty")
-                  }
-              }
-              isSelect={true}
-              options={option}
-            />
-  
-  <TextInput
+              error={error["faculty"]}
+              value={formData.faculty}
+              onChange={(e) => {
+                  handleOnChange(e, "faculty")
+              }}
+          />
+           <TextInput
+              className=""
               required
-              type="select"
-              id="outlined-required"
+              id="deparment"
               label="Department"
-              value= {localGovt.length < 1 ?"select localgovt":LocalGovt}
-              onChange={
-                  (e) => {
-  
-                      handleOnChange(e, "department")
-                  }
-              }
-              isSelect={true}
-              options={option2}
-            />
+              error={error["department"]}
+              value={formData.department}
+              onChange={(e) => {
+                  handleOnChange(e, "department")
+              }}
+          />
             </div>
       </div>
       </div>
