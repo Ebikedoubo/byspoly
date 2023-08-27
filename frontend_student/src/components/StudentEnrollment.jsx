@@ -1,4 +1,6 @@
 import React,{ useState } from "react";
+import moment from "moment";
+import Moment from 'react-moment';
 import {
   Container,
   Grid,
@@ -17,26 +19,14 @@ const steps = ["Personal Details", "Educational Detail", "Faculty"];
 const StudentEnrollment = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [addForm, setAddForm] = useState(false)
-  //   const [firstname, setFirstname] = React.useState("");
-  //   const [middlename, setMiddlename] = React.useState("");
-  //   const [lastname, setLastname] = React.useState("");
-  //   const [maidenname, setMaidenname] = React.useState("");
-  //   const [email, setEmail] = React.useState("");
-  //   const [gender, setGender] = React.useState("");
-  //   const [address, setAddress] = React.useState("");
-  //   const [phone, setPhone] = React.useState("");
-  //   const [dateofbirth, setDateofbirth] = React.useState("");
-  //   const [birthcertificate, setBirthcertificate] = React.useState("");
-  //   const [nationality, setNationality] = React.useState("");
-  //   const [startYear, setStartYear] = React.useState("");
-  //   const [endYear, setEndYear] = React.useState("");
-  //   const [primarySchool, setPrimarySchool] = React.useState("");
-  //   const [schoolname, setSchoolname] = React.useState("");
     const [status, setStatus] = React.useState("success");
-  //   const [state, setState] = React.useState("");
     const [message, setMessage] = React.useState("");
-  //   const [localGovt, setLocalGovt] = React.useState("");
-  const [formData, setFormData] = useState({
+    const [nationality, setNationality] = React.useState("");
+    const [stateArea, setStateArea] = React.useState("");
+    const [localGovt, setLocalGovt] = React.useState("");
+    const [gender, setGender] = React.useState("");
+    const [dateValue, setDateValue] = useState(new Date());
+    const [formData, setFormData] = useState({
       firstname: "",
       middlename: "",
       lastname: "",
@@ -70,7 +60,6 @@ const StudentEnrollment = () => {
           address: false,
           phone_number: false,
           gender: false,
-          dateofbirth: "",
           birthcertificate: null,
           nationality: "",
           address: "",
@@ -89,8 +78,12 @@ const StudentEnrollment = () => {
           department: ""
       });
   
-      const handleOnChange = (event) => {
-          const { id, value, type, files } = event.target;
+
+      const handleOnChange = (e) => {
+        console.log(e)
+        // moment(e).format("YYYY-MM-DD")
+          return
+        const { id, value, type, files } = e.target;
       
           if (type === 'file') {
             setFormData((prevData) => ({
@@ -104,7 +97,11 @@ const StudentEnrollment = () => {
             }));
           }
         };
-  
+        const handleOnChangeDate = e => {
+          const newDate =  moment(e).format('DD-MM-YYYY');
+          setDateValue(newDate);
+          console.log(newDate); //value picked from date picker
+        };
   
     const handleNext = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -120,77 +117,25 @@ const StudentEnrollment = () => {
       setAddForm(false)
     }
   
-  //   const handleOnChange = (e, inputeName) => {
-  //     switch (inputeName) {
-  //         case "firstname":
-  //             // code to be executed when the expression matches value1
-  //             setFirstname(e.target.value)
-  //             break;
-  //             case "middlename":
-  //             // code to be executed when the expression matches value1
-  //             setMiddlename(e.target.value)
-  //             break;
-  //             case "lastname":
-  //             // code to be executed when the expression matches value1
-  //             setLastname(e.target.value)
-  //             break;
-  //             case "maidenname":
-  //             // code to be executed when the expression matches value1
-  //             setMaidenname(e.target.value)
-  //             break;
-  //             case "dateofbirth":
-  //             // code to be executed when the expression matches value3
-  //             setDateofbirth(e.target.value)
-  //             break;
-  //             case "birthcertificate":
-  //             // code to be executed when the expression matches value3
-  //             setBirthcertificate(e.target.value)
-  //             break;
-  //             case "nationality":
-  //             // code to be executed when the expression matches value3
-  //             setNationality(e.target.value)
-  //             break;
-  //             case "email":
-  //             // code to be executed when the expression matches value2
-  //             setEmail(e.target.value)
-  //             break;
-  //             case "phone":
-  //             // code to be executed when the expression matches value3
-  //             setPhone(e.target.value)
-  //             break;
-  //             case "address":
-  //             // code to be executed when the expression matches value3
-  //             setAddress(e.target.value)
-  //             break;
-  //             case "state":
-  //             // code to be executed when the expression matches value3
-  //             setState(e.target.value)
-  //             break;
-  //             case "localGovt":
-  //                 // code to be executed when the expression matches value3
-  //             setLocalGovt(e.target.value)
-  //             break;
-  //             case "primarySchool":
-  //                     // code to be executed when the expression matches value3
-  //             setPrimarySchool(e.target.value)
-  //             break;
-  //             case "startYear":
-  //                 // code to be executed when the expression matches value3
-  //             setStartYear(e.target.value)
-  //             break;
-  //             case "endYear":
-  //                 // code to be executed when the expression matches value3
-  //             setEndYear(e.target.value)
-  //             break;
-  //             case "schoolname":
-  //                         // code to be executed when the expression matches value3
-  //             setSchoolname(e.target.value)
-  //             break;
-  //             default:
-  //             // code to be executed when the expression does not match any of the cases
-  //             setGender(e.target.value)
-  //     }
-  // };
+    const handleSelectOnChange = (e, inputeName) => {
+      switch (inputeName) {
+              case "localGovt":
+              // code to be executed when the expression matches value3
+              setLocalGovt(e.target.value)
+              break;
+              case "stateArea":
+              // code to be executed when the expression matches value3
+              setStateArea(e.target.value)
+              break;
+              case "nationality":
+              // code to be executed when the expression matches value3
+              setNationality(e.target.value)
+              break;
+              default:
+              // code to be executed when the expression does not match any of the cases
+              setGender(e.target.value)
+      }
+  };
   const options = [
       { label: "Male", value: "Male" },
       { label: "Female", value: "Female" },
@@ -278,13 +223,13 @@ const StudentEnrollment = () => {
               required
               type="select"
               isSelect={true}
-              value={formData.gender.length < 1 ?"Male":formData.gender }
+              value={gender.length < 1 ?"Male":gender }
               label={"Gender"}
               error={error["gender"]}
               onChange={
                   (e) => {
   
-                      handleOnChange(e, "gender")
+                    handleSelectOnChange(e, "gender")
                   }
               }
               options={options}
@@ -295,12 +240,12 @@ const StudentEnrollment = () => {
               className=""
               type="date"
               required
-              id="dateofbirth"
+              id="dateValue"
               label="Date of Birth"
               error={error["dateofbirth"]}
-              value={formData.dateofbirth}
+              value={dateValue}
               onChange={(e) => {
-                  handleOnChange(e, "dateofbirth")
+                handleOnChangeDate(e, "dateofbirth")
               }}
           />
            <TextInput
@@ -349,11 +294,11 @@ const StudentEnrollment = () => {
               type="select"
               id="nationality"
               label="Nationality"
-              value= {formData.nationality.length < 1 ?"select state":formData.nationality}
+              value= {nationality.length < 1 ? "" : nationality}
               onChange={
                   (e) => {
   
-                      handleOnChange(e, "nationality")
+                    handleSelectOnChange(e, "nationality")
                   }
               }
               isSelect={true}
@@ -376,13 +321,13 @@ const StudentEnrollment = () => {
       <TextInput
               required
               type="select"
-              id="state"
+              id="stateArea"
               label="Select State"
-              value= {formData.state.length < 1 ?"select state":formData.state}
+              value= {stateArea.length < 1 ? "" : stateArea}
               onChange={
                   (e) => {
   
-                      handleOnChange(e, "state")
+                    handleSelectOnChange(e, "stateArea")
                   }
               }
               isSelect={true}
@@ -394,11 +339,11 @@ const StudentEnrollment = () => {
               type="select"
               id="localGovt"
               label="Select Local Government"
-              value= {formData.localGovt.length < 1 ?"select localgovt":formData.LocalGovt}
+              value= {localGovt.length < 1 ?"": localGovt}
               onChange={
                   (e) => {
   
-                      handleOnChange(e, "localgovt")
+                      handleSelectOnChange(e, "localgovt")
                   }
               }
               isSelect={true}
@@ -426,16 +371,16 @@ const StudentEnrollment = () => {
                   handleOnChange(e, "schoolname")
               }}
           />
-          <TextInput
+        <TextInput
               className=""
               type="date"
               required
-              id="endYear"
-              label="Year"
+              id="enYear"
+              label="End Year"
               error={error["endYear"]}
-              value={formData.endYear}
+              value={dateValue}
               onChange={(e) => {
-                  handleOnChange(e, "endYear")
+                handleOnChangeDate(e, "endYear")
               }}
           />
       </div>
@@ -541,15 +486,15 @@ const StudentEnrollment = () => {
               }}
           />
              <TextInput
-              className="h-[70px] mt-6"
-              required
+              className=""
               type="date"
-              id="endYear"
-              label="Date"
+              required
+              id="enYear"
+              label="End Year"
               error={error["endYear"]}
-              value={formData.date}
+              value={dateValue}
               onChange={(e) => {
-                  handleOnChange(e, "endYear")
+                handleOnChangeDate(e, "endYear")
               }}
           />
       </div>
@@ -588,15 +533,15 @@ const StudentEnrollment = () => {
               }}
           />
              <TextInput
-              className="h-[70px] mt-6"
-              required
+              className=""
               type="date"
-              id="endYear"
-              label="Date"
+              required
+              id="enYear"
+              label="End Year"
               error={error["endYear"]}
-              // value={middlename}
+              value={dateValue}
               onChange={(e) => {
-                  handleOnChange(e, "endYear")
+                handleOnChangeDate(e, "endYear")
               }}
           />
           </div>
