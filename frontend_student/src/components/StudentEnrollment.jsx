@@ -15,7 +15,6 @@ import TextInput from "./TextInput";
 
 const steps = ["Personal Details", "Educational Detail", "Faculty"];
 
-
 const StudentEnrollment = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [addForm, setAddForm] = useState(false)
@@ -25,7 +24,7 @@ const StudentEnrollment = () => {
     const [stateArea, setStateArea] = React.useState("");
     const [localGovt, setLocalGovt] = React.useState("");
     const [gender, setGender] = React.useState("");
-    const [dateValue, setDateValue] = useState(new Date());
+    const [dateValue, setDateValue] = useState("");
     const [formData, setFormData] = useState({
       firstname: "",
       middlename: "",
@@ -36,10 +35,7 @@ const StudentEnrollment = () => {
       birthcertificate: null,
       phone: "",
       email: "",
-      nationality: "",
       address: "",
-      state: "",
-      localGovt: "",
       schoolname: "",
       endYear: "",
       examname: "",
@@ -75,14 +71,13 @@ const StudentEnrollment = () => {
           jambscore: "",
           jambresult: null,
           faculty: "",
-          department: ""
+          department: "",
+          morefaculty: "",
+          moredepartment: ""
       });
   
 
       const handleOnChange = (e) => {
-        console.log(e)
-        // moment(e).format("YYYY-MM-DD")
-          return
         const { id, value, type, files } = e.target;
       
           if (type === 'file') {
@@ -98,7 +93,7 @@ const StudentEnrollment = () => {
           }
         };
         const handleOnChangeDate = e => {
-          const newDate =  moment(e).format('DD-MM-YYYY');
+          const newDate =  moment(new Date().getDate(), "MM-DD-YYYY").format("MM-DD-YYYY");
           setDateValue(newDate);
           console.log(newDate); //value picked from date picker
         };
@@ -119,14 +114,15 @@ const StudentEnrollment = () => {
   
     const handleSelectOnChange = (e, inputeName) => {
       switch (inputeName) {
-              case "localGovt":
-              // code to be executed when the expression matches value3
-              setLocalGovt(e.target.value)
-              break;
+            
               case "stateArea":
               // code to be executed when the expression matches value3
               setStateArea(e.target.value)
               break;
+              case "localGovt":
+                // code to be executed when the expression matches value3
+                setLocalGovt(e.target.value)
+                break;
               case "nationality":
               // code to be executed when the expression matches value3
               setNationality(e.target.value)
@@ -339,11 +335,11 @@ const StudentEnrollment = () => {
               type="select"
               id="localGovt"
               label="Select Local Government"
-              value= {localGovt.length < 1 ?"": localGovt}
+              value= {localGovt.length < 1 ? "": localGovt}
               onChange={
                   (e) => {
   
-                      handleSelectOnChange(e, "localgovt")
+                      handleSelectOnChange(e, "localGovt")
                   }
               }
               isSelect={true}
@@ -468,7 +464,7 @@ const StudentEnrollment = () => {
               id="otherexamname"
               label="Exam Name"
               error={error["otherexamname"]}
-              // value={firstname}
+              value={formData.otherexamname}
               onChange={(e) => {
                   handleOnChange(e, "otherexamname")
               }}
@@ -551,7 +547,7 @@ const StudentEnrollment = () => {
                 onClick={handleRemoveForm}
                 sx={{ marginLeft: 8 }}
               >
-                Cance
+                Cancel
               </Button>
           </>
       )}
@@ -581,7 +577,7 @@ const StudentEnrollment = () => {
            <TextInput
               className=""
               required
-              id="deparment"
+              id="department"
               label="Department"
               error={error["department"]}
               value={formData.department}
@@ -597,23 +593,23 @@ const StudentEnrollment = () => {
                 <TextInput
               className=""
               required
-              id="faculty"
+              id="morefaculty"
               label="Faculty"
-              error={error["faculty"]}
-              value={formData.faculty}
+              error={error["morefaculty"]}
+              value={formData.morefaculty}
               onChange={(e) => {
-                  handleOnChange(e, "faculty")
+                  handleOnChange(e, "morefaculty")
               }}
           />
            <TextInput
               className=""
               required
-              id="deparment"
+              id="moredeparment"
               label="Department"
-              error={error["department"]}
-              value={formData.department}
+              error={error["moredepartment"]}
+              value={formData.moredepartment}
               onChange={(e) => {
-                  handleOnChange(e, "department")
+                  handleOnChange(e, "moredepartment")
               }}
           />
             </div>
