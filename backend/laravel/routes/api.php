@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Api\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
@@ -32,6 +34,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::post("create", [UserController::class, 'register']);
     Route::post("/search",[UserController::class,"search"]);
     Route::get("/logout",[UserController::class,"logout"])->name("logout");
+});
+
+Route::group(['prefix' => 'student', 'middleware' => ['auth:student']], function(){ 
+    Route::get('/', [StudentController::class, 'index'])->name('student-index');
+    
+});
+
+Route::group(['prefix' => 'student'], function(){ 
+    Route::post('/login', [StudentController::class, 'login'])->name('student-login');
+    
 });
 
 

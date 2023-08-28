@@ -45,9 +45,9 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
-        'client' => [
+        'student' => [
             'driver' => 'sanctum',
-            'provider' => 'client',
+            'provider' => 'student',
         ],
         // 'client' => [
         //     'driver' => 'sanctum',
@@ -77,9 +77,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'client' => [
+        'studen' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Client::class,
+            'model' => App\Models\Student::class,
         ],
 
         // 'users' => [
@@ -115,8 +115,8 @@ return [
             'throttle' => 60,
         ],
 
-        'client' => [
-            'provider' => 'client',
+        'student' => [
+            'provider' => 'student',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
