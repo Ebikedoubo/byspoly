@@ -5,7 +5,7 @@ import Modal from "react-modal";
 /**
  * Represents the Default Modal Component
  * @function
- * @param {object} children - react props to render wrapped children component 
+ * @param {object} children - react props to render wrapped children component
  * @param {Function} setIsOpen - updates/sets the modal state
  * @param {boolean} modalIsOpen - holds the state of the modal
  * @param {string} title - stores the title of the modal
@@ -38,7 +38,7 @@ export default function AppModal({ children, setIsOpen, modalIsOpen, title }) {
   function closeModal() {
     setIsOpen(false);
   }
- 
+
   return (
     <div>
       <Modal
@@ -49,8 +49,8 @@ export default function AppModal({ children, setIsOpen, modalIsOpen, title }) {
         contentLabel="App Modal"
         ariaHideApp={false}
       >
-        <div 
-        className=" max-h-[700px] "
+        <div
+        className=" max-h-[700px] z-50"
         >
           <div className="flex justify-between mb-10">
             <h2 className="cursor-pointer" ref={(_subtitle) => (subtitle = _subtitle)}>
@@ -59,7 +59,7 @@ export default function AppModal({ children, setIsOpen, modalIsOpen, title }) {
             <button onClick={closeModal}><b>Close</b></button>
           </div>
           <div className="h-[100%]">{children}</div>
-          
+
         </div>
       </Modal>
     </div>
