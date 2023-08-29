@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Logo from "../../assests/company_logo.svg";
+import Logo from "../../assests/bayelsalogo.jpeg";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
@@ -12,7 +12,7 @@ export default function Login() {
     const [passworderror, setPassworderror] = useState(true);
     const [loader, setLoader] = useState(false);
     const [wrongdetails, setWrongdetails] = useState(false);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
 
     // make use of useeffect hook here to check if there is a value in local storage 
@@ -21,14 +21,14 @@ export default function Login() {
         const token = localStorage.getItem("token")
 
         if (token !== null) {
-            navigate('/dashboard');
+            // navigate('/dashboard');
         }
 
     }, [])
 
     const navigateToForgetPassword = () => {
 
-        navigate('/properties');
+        // navigate('/properties');
     };
 
     const handleInput = (value, type) => {
@@ -75,7 +75,7 @@ export default function Login() {
             if (data.status == "success") {
                 localStorage.setItem('token', data.token)
                 setLoader(false)
-                navigate('/dashboard');
+                // navigate('/dashboard');
             }
         }).catch((error) => {
             console.error(error.response)
@@ -91,16 +91,13 @@ export default function Login() {
             <div className="flex w-[50%] bg-[white] items-center justify-center">
                 <div className=" ">
                     <div className="flex justify-center h-[120px]"><img src={Logo} alt="logo" /></div>
-                    <div className="flex justify-center text-[15px] font-medium mt-[15px]">CONSTRUCTION | REAL ESTATE | FACILITY MANAGEMENT</div>
+                    <div className="flex justify-center text-[15px] font-medium mt-[15px]">BAYELSA STATE UNIVERSITY ALEIBIRI </div>
                     <div className="w-[410px] flex justify-center text-[10px] mt-[17px] text-slate-400">
-                        Lorem Ipsum is simply dummy text of the printing
-                        and typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took
+                       Light, Skill and Self-Reliance
                     </div>
                 </div>
             </div>
-            <div className="flex items-center justify-center w-[50%] bg-no-repeat bg-cover  bg-center h-screen bg-[url(https://tibilonconstruction.com.ng/wp-content/uploads/2022/03/IMG-20211103-WA00002.jpg)]">
+            <div className="flex items-center justify-center w-[50%] bg-no-repeat bg-cover  bg-center h-screen bg-[url(assests/bayelsa.jpg)]">
                 <div >
 
                     {wrongdetails ?
@@ -129,7 +126,7 @@ export default function Login() {
                         />
                     </div>
 
-                    <button onClick={() => login()} className="flex mt-[50px] justify-center items-center bg-yellow-600 w-[300px] h-[40px] rounded-md text-[14px] font-semibold text-[white]">
+                    <button onClick={() => login()} className="flex mt-[50px] justify-center items-center bg-blue-600 w-[300px] h-[40px] rounded-md text-[14px] font-semibold text-[white]">
                         {loader ? "Loading ........" : "Login"}
                     </button>
                     <div className="flex justify-between text-[white]">
