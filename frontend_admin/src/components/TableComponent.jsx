@@ -66,6 +66,8 @@ export default function TableComponent({
   data,
   actionText,
   action,
+  viewAction,
+  editAction,
   searchFunction,
   paginationChange,
   dataKeyAccessors,
