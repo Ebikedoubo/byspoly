@@ -18,13 +18,13 @@ import { ReactComponent as logisticsIconActive } from "./assests/logistics-activ
 import { ReactComponent as procurementIconActive } from "./assests/procurement-active.svg";
 
 export const SideBarLinks = [
-  { id: 1, name: "Overview", to: "/dashboard", icon: dashBoardIcon, activeIcon: dashBoardIconActive },
-  { id: 4, name: "Projects", to: "/projects", icon: projectIcon, activeIcon: projectIconActive },
-  { id: 9, name: "Clients", to: "/clients", icon: clientsIcon, activeIcon: clientsIconActive },
-  { id: 3, name: "Payments", to: "/payments", icon: paymentsIcon, activeIcon: paymentsIconActive },
-  { id: 6, name: "Procurements", to: "/procurements", icon: procurementIcon, activeIcon: procurementIconActive },
-  { id: 7, name: "Logistics", to: "/logistics", icon: logisticsIcon, activeIcon: logisticsIconActive },
-  { id: 8, name: "Storage", to: "/storage", icon: storageIcon, activeIcon: storageIconActive },
-  { id: 5, name: "Contactors", to: "/contractors", icon: contractorsIcon, activeIcon: contractorsIconActive },
-  { id: 10, name: "Settings", to: "/settings", icon: logisticsIcon, activeIcon: logisticsIconActive },
+  { id: 1, name: "Student Enrollment", to: "/Student", icon: dashBoardIcon, activeIcon: dashBoardIconActive },
+  // { id: 4, name: "Projects", to: "/projects", icon: projectIcon, activeIcon: projectIconActive },
+  // { id: 9, name: "Clients", to: "/clients", icon: clientsIcon, activeIcon: clientsIconActive },
+  // { id: 3, name: "Payments", to: "/payments", icon: paymentsIcon, activeIcon: paymentsIconActive },
+  // { id: 6, name: "Procurements", to: "/procurements", icon: procurementIcon, activeIcon: procurementIconActive },
+  // { id: 7, name: "Logistics", to: "/logistics", icon: logisticsIcon, activeIcon: logisticsIconActive },
+  // { id: 8, name: "Storage", to: "/storage", icon: storageIcon, activeIcon: storageIconActive },
+  // { id: 5, name: "Contactors", to: "/contractors", icon: contractorsIcon, activeIcon: contractorsIconActive },
+  // { id: 10, name: "Settings", to: "/settings", icon: logisticsIcon, activeIcon: logisticsIconActive },
 ];
