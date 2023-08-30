@@ -6,6 +6,7 @@ use App\Models\ApplicationDocument;
 use App\Models\ApplicationSchoolHistory;
 use App\Models\Choice;
 use App\Models\Document;
+use App\Models\ExamsResult;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -39,15 +40,6 @@ class StudentController extends Controller
 
     public function studentApplicationRegistraton(Request $request): JsonResponse
     {
-        $files = $request->schools_attended;
-        $ext = [];
-        foreach ($files as $fileData) {
-            
-            $imageFile = $fileData->file('image');
-            array_push($ext,$imageFile->getClientOriginalExtension());
-        }
-        
-        return response()->json(["data" => $ext],200);
         $studentModel = new Student();
         //$studentModel = new ApplicationSchoolHistory();
         // validate request entry 
@@ -73,8 +65,8 @@ class StudentController extends Controller
             $student = $studentModel->create($request->all());
             if ($student) {
                 // insert application school history
-                //return response()->json(['data' => $request->schools_attended], 200);
-                $schoolsAttended = $request->schools_attended;//json_decode($request->schools_attended);
+                
+                $schoolsAttended = json_decode($request->schools_attended);
                 foreach ($schoolsAttended as $schoolAttended) {
                     $applicationSchools = new ApplicationSchoolHistory();
                     $applicationDocument = new ApplicationDocument();
@@ -83,7 +75,7 @@ class StudentController extends Controller
                     $applicationSchools->school_name = $schoolAttended["school_name"];
                     $applicationSchools->graduation_year = $schoolAttended["graduation_year"];
                     // make document upload here 
-                    $image = $schoolAttended->file('image');
+                    $image = $schoolAttended['image'];
                     $imageName = time() . '.' . $image->getClientOriginalExtension();
                     $image->move(public_path('images/application'), $imageName);
                     $document->file_path = '/images/project/' . $imageName;
@@ -99,7 +91,7 @@ class StudentController extends Controller
                 }
 
                 //manage student choice 
-                $choices = $request->choice;//json_decode($request->choice);
+                $choices = json_decode($request->choice);
                 $rank = 1;
                 foreach($choices as $choice){
                     $choiceModel = new Choice();
@@ -112,29 +104,30 @@ class StudentController extends Controller
                     $choiceModel->save();
                 }
                 // save exam records with exam documents in document table 
-                $results = $request->student_results;//json_decode($request->student_results);
+                $results = json_decode($request->student_results);
                 foreach($results as $result){
                     $resultDocument = new Document();
                     $resultApplicationDocument = new ApplicationDocument();
-                    $resultFile = $result->file('image');
+                    $resultFile = $result['image'];
                     $resultImageName = time() . '.' . $resultFile->getClientOriginalExtension();
                     $resultFile->move(public_path('images/application'), $resultImageName);
                     $resultDocument->file_path = '/images/project/' . $resultImageName;
                     $resultDocument->status = 1;
                     if($resultDocument->save()){
-                        $results->student_id = $student->id;
-                        $results->exam_type_id = $result["exam_type_id"];
-                        $results->exam_number = $result["exam_number"];
-                        $results->exam_date = $result["exam_date"];
-                        $results->document_upload_id = $resultDocument->id;
+                        $examResult = new ExamsResult();
+                        $examResult->student_id = $student->id;
+                        $examResult->exam_type_id = $result["exam_type_id"];
+                        $examResult->exam_number = $result["exam_number"];
+                        $examResult->exam_date = $result["exam_date"];
+                        $examResult->document_upload_id = $resultDocument->id;
                         if(!empty($result["exam_score"])){
-                            $results->exam_score = $result["exam_score"];
+                            $examResult->exam_score = $result["exam_score"];
                         }
                         // add result application document relationship 
                         $resultApplicationDocument->student_id = $student->id;
                         $resultApplicationDocument->document_id = $resultDocument->id;
                         $resultApplicationDocument->status = 1;
-                        $results->save();
+                        $examResult->save();
                         $resultApplicationDocument->save();
                     }
                    

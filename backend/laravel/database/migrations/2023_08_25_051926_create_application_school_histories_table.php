@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("student_id");
             $table->string("school_name");
-            $table->date("graduation_year");
+            $table->string("graduation_year");
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer("student_id");
             $table->integer("exam_type_id");
             $table->string("exam_number");
-            $table->date("exam_date");
+            $table->string("exam_date");
             $table->integer("document_upload_id");
             $table->string("exam_score")->nullable()->comment("this is for jamb that provide a cummulative score");
             $table->timestamps();
