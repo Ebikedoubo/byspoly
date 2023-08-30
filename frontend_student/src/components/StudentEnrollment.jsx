@@ -112,9 +112,9 @@ const StudentEnrollment = () => {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
     const handleRemoveForm = (index) =>{
-      // const updatedFields = [...addInputFields];
-      // updatedFields.splice(index, 1);
-      // setAddInputFields(updatedFields);
+      const updatedFields = [...addInputFields];
+      updatedFields.splice(index, 1);
+      setAddInputFields(updatedFields);
     }
   
     const handleAddForm = () =>{
@@ -506,7 +506,7 @@ const StudentEnrollment = () => {
      <Button
                 variant="contained"
                 color="secondary"
-                onClick={handleRemoveForm(index)}
+                onClick={() => handleRemoveForm(index)}
                 sx={{ marginLeft: 8 }}
               >
                 Cancel
