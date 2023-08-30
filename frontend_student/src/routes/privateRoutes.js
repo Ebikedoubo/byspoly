@@ -3,7 +3,7 @@ import Dashboard from "../components/Dashboard/Dashboard";
 
 export const privateRoutes = [
   {
-    title: "Dashboard",
+    title: "ENTER YOUR APPLICATION INFORMATION",
     path: "/dashboard",
     component: ComposeInternalLayouts(Dashboard),
     exact: true,

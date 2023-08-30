@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import Logo from "../../assests/company_logo.svg";
+import Logo from "../../assests/bayelsalogo.jpeg";
 import { FiLogOut } from 'react-icons/fi';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
@@ -54,7 +54,7 @@ const Sidebar = ({ SideBarLinks }) => {
       <div data-testid="sidebarlinks">
         <div className="pb-[50px] overflow-auto flex flex-col h-screen fixed top-0 left-0 w-[273px] gap-y-[10px]">
           <div className="flex items-center justify-center bg-white h-[145px]">
-            <img src={Logo} alt="logo" />
+            <img src={Logo} alt="logo" width="100px" />
           </div>
           <div
             style={{
