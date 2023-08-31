@@ -52,8 +52,8 @@ class StudentController extends Controller
             'country_id' => 'required',
             'state_id' => 'required',
             'lga_id' => 'required',
-            //'schools_attended' => 'required',
-            //'student_results' => 'required',
+            'schools_attended' => 'required',
+            'student_results' => 'required',
             'choice' => 'required',
         ]);
         if ($validator->fails()) {
@@ -149,4 +149,6 @@ class StudentController extends Controller
 
         return response()->json();
     }
+
+
 }
