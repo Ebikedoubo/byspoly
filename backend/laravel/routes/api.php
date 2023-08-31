@@ -43,6 +43,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth:student']], function
 
 Route::group(['prefix' => 'student'], function(){ 
     Route::post('/login', [StudentController::class, 'login'])->name('student-login');
+    Route::post('/application', [StudentController::class, 'studentApplicationRegistraton'])->name('student-application');
     
 });
 
