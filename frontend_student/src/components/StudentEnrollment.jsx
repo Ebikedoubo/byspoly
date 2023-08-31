@@ -25,6 +25,11 @@ const StudentEnrollment = () => {
     const [localGovt, setLocalGovt] = React.useState("");
     const [gender, setGender] = React.useState("");
     const [dateValue, setDateValue] = useState("");
+       const [addInputFields, setAddInputFields] = useState([{
+        otherexamname:"",
+        document: "",
+        dateValue: ""
+    }]);
     const [formData, setFormData] = useState({
       firstname: "",
       middlename: "",
@@ -97,6 +102,7 @@ const StudentEnrollment = () => {
           setDateValue(newDate);
           console.log(newDate); //value picked from date picker
         };
+        
   
     const handleNext = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -105,13 +111,16 @@ const StudentEnrollment = () => {
     const handleBack = () => {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-    const handleAddForm = () =>{
-      setAddForm(true)
-    }
-    const handleRemoveForm = () =>{
-      setAddForm(false)
+    const handleRemoveForm = (index) =>{
+      const updatedFields = [...addInputFields];
+      updatedFields.splice(index, 1);
+      setAddInputFields(updatedFields);
     }
   
+    const handleAddForm = () =>{
+      setAddInputFields([...addInputFields, { otherexamname: "", document: "", dateValue: "" }]);
+    }
+
     const handleSelectOnChange = (e, inputeName) => {
       switch (inputeName) {
             
@@ -457,43 +466,71 @@ const StudentEnrollment = () => {
       </div>
       <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-2">
       <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Other Exam Certificate</span>
-      <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              id="otherexamname"
-              label="Exam Name"
-              error={error["otherexamname"]}
-              value={formData.otherexamname}
-              onChange={(e) => {
-                  handleOnChange(e, "otherexamname")
-              }}
-          />
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              type="file"
-              id="document"
-              label="Document"
-              error={error["document"]}
-              // value={lastname}
-              onChange={(e) => {
-                  handleOnChange(e, "document")
-              }}
-          />
-             <TextInput
-              className=""
-              type="date"
-              required
-              id="enYear"
-              label="End Year"
-              error={error["endYear"]}
-              value={dateValue}
-              onChange={(e) => {
-                handleOnChangeDate(e, "endYear")
-              }}
-          />
-      </div>
+      {addInputFields.map((field, index) => (
+        <div key={index} className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
+        <TextInput
+        className="h-[70px] mt-6"
+        required
+        id="otherexamname"
+        label="Exam Name"
+        error={error["otherexamname"]}
+        value={field.otherexamname}
+        onChange={(e) => {
+            handleOnChange(e, "otherexamname", index)
+        }}
+    />
+    <TextInput
+        className="h-[70px] mt-6"
+        required
+        type="file"
+        id="document"
+        label="Document"
+        error={error["document"]}
+        // value={lastname}
+        onChange={(e) => {
+            handleOnChange(e, "document", index)
+        }}
+    />
+       <TextInput
+        className=""
+        type="date"
+        required
+        id="enYear"
+        label="End Year"
+        error={error["endYear"]}
+        value={field.dateValue}
+        onChange={(e) => {
+          handleOnChangeDate(e, "endYear", index)
+        }}
+    />
+     <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => handleRemoveForm(index)}
+                sx={{ marginLeft: 8 }}
+              >
+                Cancel
+              </Button>
+    </div>
+                        // <div  className="field-wrapper">
+                        //     <input
+                        //         type="text"
+                        //         placeholder="Name"
+                        //         value={field.name}
+                        //         onChange={(e) => handleChange(index, 'name', e.target.value)}
+                        //     />
+                        //     <input
+                        //         type="email"
+                        //         placeholder="Email"
+                        //         value={field.email}
+                        //         onChange={(e) => handleChange(index, 'email', e.target.value)}
+                        //     />
+                        //     <button onClick={() => removeField(index)}>Remove</button>
+                        // </div>
+                    ))}
+                    {/* <button onClick={addField} className="add-button">
+                        Add Field
+                    </button> */}
       <Button
                 variant="contained"
                 color="primary"
@@ -502,55 +539,6 @@ const StudentEnrollment = () => {
               >
                 Add other Certificate
               </Button>
-      {addForm && (
-          <>
-      <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
-              <TextInput
-              className="h-[70px] mt-6"
-              required
-              id="otherexamname"
-              label="Exam Name"
-              error={error["otherexamname"]}
-              // value={firstname}
-              onChange={(e) => {
-                  handleOnChange(e, "otherexamname")
-              }}
-          />
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              type="file"
-              id="document"
-              label="Document"
-              error={error["document"]}
-              // value={lastname}
-              onChange={(e) => {
-                  handleOnChange(e, "document")
-              }}
-          />
-             <TextInput
-              className=""
-              type="date"
-              required
-              id="enYear"
-              label="End Year"
-              error={error["endYear"]}
-              value={dateValue}
-              onChange={(e) => {
-                handleOnChangeDate(e, "endYear")
-              }}
-          />
-          </div>
-          <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleRemoveForm}
-                sx={{ marginLeft: 8 }}
-              >
-                Cancel
-              </Button>
-          </>
-      )}
       </div>
   </div>
               </>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ReactComponent as Bell } from "../assests/ringing 2.svg";
 import { ReactComponent as Avatar } from "../assests/avatar.svg";
+import Logo from "../assests/bayelsalogo.jpeg";
 import { ReactComponent as ArrowBottom } from "../assests/arrow_bottom.svg";
 import { Link } from "react-router-dom";
 
@@ -13,10 +14,10 @@ import { Link } from "react-router-dom";
  *
  */
 
-const dropDownTitles = [
-  { id: 1, name: "Employee", link: "/employee" },
-  { id: 2, name: "Affiliates", link: "/affiliates" },
-];
+// const dropDownTitles = [
+//   { id: 1, name: "Employee", link: "/employee" },
+//   { id: 2, name: "Affiliates", link: "/affiliates" },
+// ];
 export default function DashBoardHeader({ title }) {
   const [showDropDown, setshowDropDown] = useState(false);
   const [selectedDropdown, setselectedDropdown] = useState(1);
@@ -38,7 +39,7 @@ export default function DashBoardHeader({ title }) {
     <div
       className="h-[96px] bg-white ml-[300px] mb-[25px] flex justify-between items-center pl-11 pr-9"
     >
-      <div className="font-medium text-xl">{title}</div>
+      <div className="font-medium text-xl ml-[450px] text-blue-600">{title}</div>
       <div className="flex gap-x-12 items-center">
         <div>
           <Bell className="cursor-pointer" data-testid="bell" />
@@ -46,12 +47,12 @@ export default function DashBoardHeader({ title }) {
         <div className="flex gap-x-2 relative">
           <div>Welcome {name}</div>
           <div>
-            <button
+            {/* <button
               role="menu"
               onClick={() => setshowDropDown((prevState) => !prevState)}
             >
               <ArrowBottom className="cursor-pointer" />
-            </button>
+            </button> */}
           </div>
 
           {showDropDown && (
@@ -59,7 +60,7 @@ export default function DashBoardHeader({ title }) {
               className={`flex flex-col bg-white absolute top-[30px] right-[0px] border-2 border-[#B1B2B2]
               `}
             >
-              {dropDownTitles.map((dropdowntitle) => (
+              {/* {dropDownTitles.map((dropdowntitle) => (
                 <Link
                   to={dropdowntitle.link}
                   className={`px-6 py-2 cursor-pointer ${
@@ -70,7 +71,7 @@ export default function DashBoardHeader({ title }) {
                 >
                   {dropdowntitle.name}
                 </Link>
-              ))}
+              ))} */}
             </div>
           )}
         </div>
