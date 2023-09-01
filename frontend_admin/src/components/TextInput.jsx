@@ -31,7 +31,7 @@ import { styled } from '@mui/system';
 
 
 const DatePickers = styled(DatePicker)(({ theme, error }) => ({
-  
+
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
       borderColor: error ? 'red' :'gray',
@@ -43,11 +43,11 @@ const DatePickers = styled(DatePicker)(({ theme, error }) => ({
       borderColor: error ? 'red' :  'gray',
     },
   },
-  
+
 }));
 
 const Selects = styled(Select)(({ theme, error }) => ({
-  
+
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
       borderColor: error ? 'red' :'gray',
@@ -59,7 +59,7 @@ const Selects = styled(Select)(({ theme, error }) => ({
       borderColor: error ? 'red' :  'gray',
     },
   },
-  
+
 }));
 
 export default function TextInput(props) {
@@ -102,7 +102,7 @@ export default function TextInput(props) {
 
       case "date":
         return (<LocalizationProvider dateAdapter={AdapterDateFns}>
-          
+
             <DatePickers
               error={error}
               label={label}
@@ -110,10 +110,10 @@ export default function TextInput(props) {
               onChange={onChange}
               className={`h-[70px] w-[100%]  ${error ? errorClasses : ''}`}
               renderInput={(params) => <TextField className={`  ${error ? errorClasses : ''}`}   {...params}
-              
+
               />}
             />
-          
+
         </LocalizationProvider>)
 
       default:

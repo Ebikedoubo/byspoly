@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import TableComponent from "../TableComponent";
 import AppModal from "../AppModal";
+import TextInput from "../TextInput";
+import { RiAddLine } from "react-icons/ri";
+import { AiOutlineMinus } from "react-icons/ai";
 
 function FacultyDepartment() {
   const rowsPerPage = 10;
@@ -15,6 +18,54 @@ function FacultyDepartment() {
     facultyName: `Faculty ${index + 1}`,
     description: `Description for Faculty ${index + 1}`,
   }));
+
+  const [inputFields, setInputFields] = useState([
+    {
+      facultyName: "",
+      facultyCode: "",
+      departments: [{ departmentName: "", departmentCode: "" }],
+    },
+  ]);
+
+  const handleChangeFacultyInput = (index, field, event) => {
+    const updatedFields = [...inputFields];
+    updatedFields[index][field] = event.target.value;
+    setInputFields(updatedFields);
+  };
+
+  const handleChangeInput = (index, field, event) => {
+    const updatedFields = [...inputFields];
+    updatedFields[index][field] = event.target.value;
+    setInputFields(updatedFields);
+  };
+
+  const handleChangeDepartmentInput = (facultyIndex, deptIndex, field, event) => {
+    const updatedFields = [...inputFields];
+    updatedFields[facultyIndex].departments[deptIndex][field] = event.target.value;
+    setInputFields(updatedFields);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(inputFields);
+  };
+
+  const handleAddFields = () => {
+  const updatedFields = [...inputFields];
+  updatedFields[0].departments.push({
+    facultyCode: "",
+    departmentName: "",
+    departmentCode: "",
+  });
+  setInputFields(updatedFields);
+};
+
+
+  const handleRemoveDepartment = (facultyIndex, deptIndex) => {
+    const updatedFields = [...inputFields];
+    updatedFields[facultyIndex].departments.splice(deptIndex, 1);
+    setInputFields(updatedFields);
+  };
 
   useEffect(() => {
     const startIndex = currentPage * rowsPerPage;
@@ -42,9 +93,7 @@ function FacultyDepartment() {
     setModalIsOpen(true);
   };
 
-  const editAction = (facultyId) => {
-    
-  }
+  const editAction = (facultyId) => { };
 
   const deleteFaculty = (facultyId) => {
     console.log(`Delete Faculty with ID: ${facultyId}`);
@@ -62,23 +111,109 @@ function FacultyDepartment() {
         deleteAction={deleteFaculty}
         loading={loading}
         viewAction={viewAction}
-      editAction={editAction}
+        editAction={editAction}
         paginationChange={paginationChange}
-        fetchMoreDataProps={fetchMoreDataProps} // Pass the fetchMoreDataProps function
-        // hasMore={sampleFaculties.length > (currentPage + 1) * rowsPerPage}
-        // hasCustom={true}
-        // hasCustomIcon={<button>View</button>}
-        // hasCustomAction={viewFaculty}
+        fetchMoreDataProps={fetchMoreDataProps}
       />
 
-      {/* Use AppModal for creating faculty */}
       <AppModal
         setIsOpen={setModalIsOpen}
         modalIsOpen={modalIsOpen}
         title="Create Faculty"
       >
-        {/* Content of the AppModal */}
-        {/* You can add your form or other content here */}
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col">
+            {inputFields.map((field, facultyIndex) => (
+              <div key={facultyIndex}>
+              <div className="flex justify-between">
+
+              <TextInput
+                label="Faculty Name"
+                value={field.facultyName}
+                onChange={(e) =>
+                  handleChangeFacultyInput(facultyIndex, "facultyName", e)
+                }
+              />
+              <TextInput
+                label="Faculty Code"
+                value={field.facultyCode}
+                onChange={(e) =>
+                  handleChangeFacultyInput(facultyIndex, "facultyCode", e)
+                }
+              />
+              </div>
+
+                <h2 className="font-semibold text-center mt-2">
+                  Add a Department
+                </h2>
+                <div>
+                  {field.departments.map((dept, deptIndex) => (
+                    <div className="flex gap-4 items-center" key={deptIndex}>
+                      <TextInput
+                      name="facultyCode"
+                        label="Faculty Code"
+                        value={dept.facultyCode}
+                        onChange={(e) =>
+                          handleChangeDepartmentInput(
+                            facultyIndex,
+                            deptIndex,
+                            "facultyCode",
+                            e
+                          )
+                        }
+                      />
+                      <TextInput
+                      name="departmentName"
+                        label="Department"
+                        value={dept.departmentName}
+                        onChange={(e) =>
+                          handleChangeDepartmentInput(
+                            facultyIndex,
+                            deptIndex,
+                            "departmentName",
+                            e
+                          )
+                        }
+                      />
+                      <TextInput
+                      name="departmentCode"
+                        label="Department Code"
+                        value={dept.departmentCode}
+                        onChange={(e) =>
+                          handleChangeDepartmentInput(
+                            facultyIndex,
+                            deptIndex,
+                            "departmentCode",
+                            e
+                          )
+                        }
+                      />
+                      <AiOutlineMinus
+                        className="hover:bg-brand-700 hover:text-white rounded-full w-8 h-8"
+                        size={24}
+                        onClick={() =>
+                          handleRemoveDepartment(
+                            facultyIndex,
+                            deptIndex
+                          )
+                        }
+                      />
+                      <RiAddLine
+                        onClick={handleAddFields}
+                        className="hover:bg-brand-700 hover:text-white rounded-full w-8 h-8"
+                        size={24}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center w-full justify-center">
+
+          <button className="mt-4 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500" type="submit">Submit</button>
+          </div>
+        </form>
       </AppModal>
 
       {selectedFaculty && (
@@ -87,10 +222,8 @@ function FacultyDepartment() {
           modalIsOpen={modalIsOpen}
           title={`View Faculty: ${selectedFaculty.facultyName}`}
         >
-          {/* Content to display faculty details */}
           <h3>{selectedFaculty.facultyName}</h3>
           <p>{selectedFaculty.description}</p>
-          {/* Add more details if needed */}
         </AppModal>
       )}
     </div>
