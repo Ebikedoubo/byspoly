@@ -270,6 +270,24 @@
                 ],
                 "summary": "User Login",
                 "operationId": "280d3f5340f789a7e96f9194414e9873",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "description": "User login data",
                     "required": true,
