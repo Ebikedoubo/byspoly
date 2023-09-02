@@ -83,12 +83,12 @@ export default function TextInput(props) {
         ></textarea>)
 
       case "select":
-        return (<FormControl fullWidth className="h-[90px] flex justify-center">
-          <InputLabel id="demo-simple-select-label" className="mt-[15px]"> {label}</InputLabel>
-          <Selects
+        return (<FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label" className="w-full"> {label}</InputLabel>
+          <Select
             error={error}
             labelId="demo-simple-select-label"
-            // id="demo-simple-select"
+             id="demo-simple-select"
             label={label}
             value={value}
             className={`${error ? errorClasses : ''}`}
@@ -97,7 +97,7 @@ export default function TextInput(props) {
             {options?.map((option) => (
               <MenuItem value={option.value}>{option.label}</MenuItem>
             ))}
-          </Selects>
+          </Select>
         </FormControl>)
 
       case "date":

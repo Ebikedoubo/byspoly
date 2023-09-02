@@ -10,8 +10,10 @@ function FacultyDepartment() {
   const [currentPage, setCurrentPage] = useState(0);
   const [paginatedFaculties, setPaginatedFaculties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
+  const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
   const [selectedFaculty, setSelectedFaculty] = useState(null);
+
 
   const sampleFaculties = Array.from({ length: 100 }, (_, index) => ({
     id: index + 1,
@@ -33,12 +35,6 @@ function FacultyDepartment() {
     setInputFields(updatedFields);
   };
 
-  const handleChangeInput = (index, field, event) => {
-    const updatedFields = [...inputFields];
-    updatedFields[index][field] = event.target.value;
-    setInputFields(updatedFields);
-  };
-
   const handleChangeDepartmentInput = (facultyIndex, deptIndex, field, event) => {
     const updatedFields = [...inputFields];
     updatedFields[facultyIndex].departments[deptIndex][field] = event.target.value;
@@ -48,6 +44,7 @@ function FacultyDepartment() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputFields);
+    setCreateModalIsOpen(false);
   };
 
   const handleAddFields = () => {
@@ -84,13 +81,24 @@ function FacultyDepartment() {
     // Update the paginated data state accordingly
   };
 
-  const columns = ["ID", "Faculty Name", "Description", "Actions"];
+  const columns = ["ID", "Faculty Name", "Faculty Code", "Actions"];
   const dataKeyAccessors = ["id", "facultyName", "facultyCode", "CTA"];
 
   const viewAction = (facultyId) => {
     const faculty = sampleFaculties.find((f) => f.id === facultyId);
     setSelectedFaculty(faculty);
-    setModalIsOpen(true);
+    setViewModalIsOpen(true); // Open the view modal
+  };
+
+  const createFaculty = () => {
+    setInputFields([
+      {
+        facultyName: "",
+        facultyCode: "",
+        departments: [{ departmentName: "", departmentCode: "" }],
+      },
+    ]);
+    setCreateModalIsOpen(true); // Open the create modal
   };
 
   const editAction = (facultyId) => { };
@@ -106,7 +114,7 @@ function FacultyDepartment() {
         columns={columns}
         data={paginatedFaculties}
         actionText="Create Faculty"
-        action={() => setModalIsOpen(true)}
+        action={createFaculty}
         dataKeyAccessors={dataKeyAccessors}
         deleteAction={deleteFaculty}
         loading={loading}
@@ -117,15 +125,15 @@ function FacultyDepartment() {
       />
 
       <AppModal
-        setIsOpen={setModalIsOpen}
-        modalIsOpen={modalIsOpen}
+        setIsOpen={setCreateModalIsOpen}
+        modalIsOpen={createModalIsOpen}
         title="Create Faculty"
       >
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col">
+          <div className="flex flex-col items-center">
             {inputFields.map((field, facultyIndex) => (
               <div key={facultyIndex}>
-              <div className="flex justify-between">
+              <div className="flex-col gap-8 flex md:flex-row">
 
               <TextInput
                 label="Faculty Name"
@@ -143,51 +151,42 @@ function FacultyDepartment() {
               />
               </div>
 
-                <h2 className="font-semibold text-center mt-2">
+                <h2 className="font-semibold text-center mt-8 mb-4">
                   Add a Department
                 </h2>
                 <div>
                   {field.departments.map((dept, deptIndex) => (
-                    <div className="flex gap-4 items-center" key={deptIndex}>
-                      <TextInput
-                      name="facultyCode"
-                        label="Faculty Code"
-                        value={dept.facultyCode}
-                        onChange={(e) =>
-                          handleChangeDepartmentInput(
-                            facultyIndex,
-                            deptIndex,
-                            "facultyCode",
-                            e
-                          )
-                        }
-                      />
-                      <TextInput
-                      name="departmentName"
-                        label="Department"
-                        value={dept.departmentName}
-                        onChange={(e) =>
-                          handleChangeDepartmentInput(
-                            facultyIndex,
-                            deptIndex,
-                            "departmentName",
-                            e
-                          )
-                        }
-                      />
-                      <TextInput
-                      name="departmentCode"
-                        label="Department Code"
-                        value={dept.departmentCode}
-                        onChange={(e) =>
-                          handleChangeDepartmentInput(
-                            facultyIndex,
-                            deptIndex,
-                            "departmentCode",
-                            e
-                          )
-                        }
-                      />
+                    <div className="flex gap-12 items-center mb-8" key={deptIndex}>
+<div className="flex flex-col md:flex-row gap-4 md:gap-8">
+
+
+<TextInput
+name="departmentName"
+  label="Department"
+  value={dept.departmentName}
+  onChange={(e) =>
+    handleChangeDepartmentInput(
+      facultyIndex,
+      deptIndex,
+      "departmentName",
+      e
+    )
+  }
+/>
+<TextInput
+name="departmentCode"
+  label="Department Code"
+  value={dept.departmentCode}
+  onChange={(e) =>
+    handleChangeDepartmentInput(
+      facultyIndex,
+      deptIndex,
+      "departmentCode",
+      e
+    )
+  }
+/>
+</div>
                       <AiOutlineMinus
                         className="hover:bg-brand-700 hover:text-white rounded-full w-8 h-8"
                         size={24}
@@ -216,16 +215,16 @@ function FacultyDepartment() {
         </form>
       </AppModal>
 
-      {selectedFaculty && (
+{ selectedFaculty && (
         <AppModal
-          setIsOpen={setModalIsOpen}
-          modalIsOpen={modalIsOpen}
-          title={`View Faculty: ${selectedFaculty.facultyName}`}
+          setIsOpen={setViewModalIsOpen}
+          modalIsOpen={viewModalIsOpen}
+          title={`View Faculty: ${selectedFaculty?.facultyName}`}
         >
-          <h3>{selectedFaculty.facultyName}</h3>
-          <p>{selectedFaculty.description}</p>
+          <h3>{selectedFaculty?.facultyName}</h3>
+          <p>{selectedFaculty?.description}</p>
         </AppModal>
-      )}
+)}
     </div>
   );
 }
