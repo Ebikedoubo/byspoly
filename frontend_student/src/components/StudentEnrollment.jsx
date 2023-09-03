@@ -939,8 +939,8 @@ const StudentEnrollment = () => {
             {/* {data.map((datas, index)=>(
               <div key={index}>
               <h2>{datas.firstname}</h2>
-              </div> */}
-            ))}
+              </div>
+            ))} */}
               </>
             )}
           </Grid>
