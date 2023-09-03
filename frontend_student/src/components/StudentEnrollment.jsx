@@ -13,95 +13,443 @@ import {
 } from "@mui/material";
 import TextInput from "./TextInput";
 
-const steps = ["Personal Details", "Educational Detail", "Faculty"];
+const steps = ["Personal Details", "Educational Detail", "Faculty", "Summary"];
 
 const StudentEnrollment = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [addForm, setAddForm] = useState(false)
     const [status, setStatus] = React.useState("success");
-    const [message, setMessage] = React.useState("");
-    const [nationality, setNationality] = React.useState("");
+    const [message, setMessage] = React.useState("")
+    // BIO
+    const [firstname, setFirstname] = React.useState("");
+    const [middlename, setMiddlename] = React.useState("")
+    const [lastname, setLastname] = React.useState("")
+    const [maidenname, setMaidenname] = React.useState("")
+    const [gender, setGender] = React.useState("");
+    const [dateofbirth, setDateofbirth] = React.useState("")
+    const [birthcertificate, setBirthcertificate] = React.useState("")
+    // contact address
+    const [phone, setPhone] = React.useState("")
+    const [email, setEmail] = React.useState("")
+    const [nationality, setNationality] = React.useState("")
+    const [address, setAddress] = React.useState("");
     const [stateArea, setStateArea] = React.useState("");
     const [localGovt, setLocalGovt] = React.useState("");
-    const [gender, setGender] = React.useState("");
-    const [dateValue, setDateValue] = useState("");
-       const [addInputFields, setAddInputFields] = useState([{
-        otherexamname:"",
-        document: "",
-        dateValue: ""
-    }]);
-    const [formData, setFormData] = useState({
-      firstname: "",
-      middlename: "",
-      lastname: "",
-      maidenname: "",
-      gender: "",
-      dateofbirth: "",
-      birthcertificate: null,
-      phone: "",
-      email: "",
-      address: "",
-      schoolname: "",
-      endYear: "",
-      examname: "",
-      examnumber: "",
-      examresult: null,
-      jambname: "",
-      jambnumber: "",
-      jambscore: "",
-      jambresult: null,
-      faculty: "",
-      department: ""
-  })
-    const [error, setError] = React.useState({
-          firstname: false,
-          middlename: false,
-          lastname: false,
-          email: false,
-          address: false,
-          phone_number: false,
-          gender: false,
-          birthcertificate: null,
-          nationality: "",
-          address: "",
-          state: "",
-          localGovt: "",
-          schoolname: "",
-          endYear: "",
-          examname: "",
-          examnumber: "",
-          examresult: null,
-          jambname: "",
-          jambnumber: "",
-          jambscore: "",
-          jambresult: null,
-          faculty: "",
-          department: "",
-          morefaculty: "",
-          moredepartment: ""
-      });
+    // step 2/secondary school
+    const [schoolname, setSchoolname] = React.useState("")
+    const [schooldate, setSchooldate] = React.useState("")
+    const [examname, setExamname] = React.useState("")
+    const [examnumber, setExamnumber] = React.useState("")
+    const [examresult, setExamresult] = React.useState("")
+    // jamb result
+    const [jambnumber, setJambnumber] = React.useState("")
+    const [jambscore, setJambscore] = React.useState("")
+    const [jambresult, setJambresult] = React.useState("")
+    // other exams
+    // const [otherexamname, setOtherexamname] = React.useState("")
+    // const [otherexamnumber, setOtherexamnumber] = React.useState("")
+    // const [otherexamcertificate, setOtherexamcertificate] = React.useState("")
+    const [otherexamdate, setOtherexamdate] = React.useState("")
+    // faculty and department
+    const [faculty, setFaculty] = React.useState("")
+    const [department, setDepartment] = React.useState("")
+    const [morefaculty, setMorefaculty] = React.useState("")
+    const [moredepartment, setMoredepartment] = React.useState("")
+
+    const [addInputFields, setAddInputFields] = useState([{
+      otherexamname:"",
+      otherexamcertificate: "",
+      otherexamdate: ""
+  }]);
+ 
+  const [error, setError] = React.useState({
+        firstname: false,
+        middlename: false,
+        lastname: false,
+        maidenname: false,
+        email: false,
+        address: false,
+        phone: false,
+        gender: false,
+        dateofbirth: false,
+        birthcertificate: false,
+        nationality: false,
+        address: false,
+        stateArea: false,
+        localGovt: false,
+        schoolname: false,
+        schooldate: false,
+        examname: false,
+        examnumber: false,
+        examresult: false,
+        jambname: false,
+        jambnumber: false,
+        jambscore: false,
+        jambresult: false,
+        faculty: false,
+        department: false,
+        morefaculty: false,
+        moredepartment: false
+    });
+
+    const handleOnChange = (e, inputeName) => {
+      console.log(e)
+      switch (inputeName) {
+          case "firstname":
+              // code to be executed when the expression matches value1
+              setFirstname(e.target.value)
+              break;
+          case "middlename":
+                // code to be executed when the expression matches value1
+                setMiddlename(e.target.value)
+                break;
+          case "lastname":
+                  // code to be executed when the expression matches value1
+                setLastname(e.target.value)
+                break;
+          case "maidenname":
+                    // code to be executed when the expression matches value1
+                setMaidenname(e.target.value)
+                break;
+          case "gender":
+                  // code to be executed when the expression matches value1
+                setGender(e.target.value)
+                break;
+          case "dateofbirth":
+                  // code to be executed when the expression matches value1
+                setDateofbirth(moment(dateofbirth).format("MM/DD/YYYY"))
+                break;
+          case "birthcertificate":
+                  // code to be executed when the expression matches value1
+                setBirthcertificate(e.target.value)
+                break;
+          case "email":
+              // code to be executed when the expression matches value2
+              setEmail(e.target.value)
+              break;
+          case "phone":
+              // code to be executed when the expression matches value3
+              setPhone(e.target.value)
+              break;
+          case "address":
+              // code to be executed when the expression matches value3
+              setAddress(e.target.value)
+              break;
+          case "nationality":
+                // code to be executed when the expression matches value1
+              setNationality(e.target.value)
+              break;
+          case "stateArea":
+                // code to be executed when the expression matches value1
+              setStateArea(e.target.value)
+              break;
+          case "localGovt":
+                // code to be executed when the expression matches value1
+              setLocalGovt(e.target.value)
+              break;
+          case "schoolname":
+                // code to be executed when the expression matches value1
+              setSchoolname(e.target.value)
+              break;
+          case "schooldate":
+                // code to be executed when the expression matches value1
+              setSchooldate(moment(schooldate).format("MM/DD/YYYY"))
+              break;
+          case "examname":
+                // code to be executed when the expression matches value1
+              setExamname(e.target.value)
+              break;
+          case "examnumber":
+                // code to be executed when the expression matches value1
+              setExamnumber(e.target.value)
+              break;
+          case "examresult":
+                // code to be executed when the expression matches value1
+              setExamresult(e.target.value)
+              break;
+          case "jambnumber":
+                // code to be executed when the expression matches value1
+              setJambnumber(e.target.value)
+              break;
+          case "jambscore":
+                // code to be executed when the expression matches value1
+              setJambscore(e.target.value)
+              break;
+          case "jambresult":
+                // code to be executed when the expression matches value1
+              setJambresult(e.target.value)
+              break;
+          case "otherexamname":
+                // code to be executed when the expression matches value1
+                setAddInputFields(e.target.value)
+              break;
+          case "otherexamcertificate":
+                // code to be executed when the expression matches value1
+                setAddInputFields(e.target.value)
+              break;
+          case "otherexamnumber":
+                // code to be executed when the expression matches value1
+                setAddInputFields(e.target.value)
+              break;
+          case "otherexamdate":
+                // code to be executed when the expression matches value1
+                setAddInputFields(moment(otherexamdate).format("MM/DD/YYYY"))
+              break;
+          case "faculty":
+                // code to be executed when the expression matches value1
+              setFaculty(e.target.value)
+              break;
+          case "department":
+                // code to be executed when the expression matches value1
+              setDepartment(e.target.value)
+              break;
+          case "morefaculty":
+                // code to be executed when the expression matches value1
+              setMorefaculty(e.target.value)
+              break;
+          case "moredepartment":
+                // code to be executed when the expression matches value1
+              setMoredepartment(e.target.value)
+              break;
+          // more cases...
+          default:
+              // code to be executed when the expression does not match any of the cases
+              setGender(e.target.value)
+      }
+  };
+
+  const submit = () => {
+    // validate input 
+    setLoading(true)
+    let status = false
+    setError({
+      firstname: false,
+      middlename: false,
+      lastname: false,
+      maidenname: false,
+      email: false,
+      address: false,
+      phone: false,
+      gender: false,
+      dateofbirth: false,
+      birthcertificate: false,
+      nationality: false,
+      address: false,
+      stateArea: false,
+      localGovt: false,
+      schoolname: false,
+      schooldate: false,
+      examname: false,
+      examnumber: false,
+      examresult: false,
+      jambname: false,
+      jambnumber: false,
+      jambscore: false,
+      jambresult: false,
+      faculty: false,
+      department: false,
+      morefaculty: false,
+      moredepartment: false
+    })
+    if (firstname.trim() === "") {
+        setError((prevError) => ({ ...prevError, firstname: true }));
+        status = true;
+    }
+
+    if (middlename.trim() === "") {
+      setError((prevError) => ({ ...prevError, middlename: true }));
+      status = true;
+    }
+
+  if (lastname.trim() === "") {
+    setError((prevError) => ({ ...prevError, lastname: true }));
+    status = true;
+    }
+
+    if (maidenname.trim() === "") {
+      setError((prevError) => ({ ...prevError, maidenname: true }));
+      status = true;
+    }
+
+    if (email.trim() === "") {
+        setError((prevError) => ({ ...prevError, email: true }));
+        status = true;
+    }
+
+    if (gender.trim() === "") {
+        setError((prevError) => ({ ...prevError, gender: true }));
+        status = true;
+    }
+
+    if (address.trim() === "") {
+        setError((prevError) => ({ ...prevError, address: true }));
+        status = true;
+    }
+
+    if (phone.trim() === "") {
+        setError((prevError) => ({ ...prevError, phone_number: true }));
+        status = true;
+    }
+    if (dateofbirth.trim() === "") {
+      setError((prevError) => ({ ...prevError, dateofbirth: true }));
+      status = true;
+    }
+
+    if (birthcertificate.trim() === "") {
+      setError((prevError) => ({ ...prevError, birthcertificate: true }));
+      status = true;
+    }
+
+    if (nationality.trim() === "") {
+      setError((prevError) => ({ ...prevError, nationality: true }));
+      status = true;
+    }
+
+    if (stateArea.trim() === "") {
+      setError((prevError) => ({ ...prevError, stateArea: true }));
+      status = true;
+    }
+
+    if (localGovt.trim() === "") {
+      setError((prevError) => ({ ...prevError, localGovt: true }));
+      status = true;
+    }
+
+    if (schoolname.trim() === "") {
+      setError((prevError) => ({ ...prevError, schoolname: true }));
+      status = true;
+    }
+
+    if (schooldate.trim() === "") {
+      setError((prevError) => ({ ...prevError, schooldate: true }));
+      status = true;
+    }
+
+    if (examname.trim() === "") {
+      setError((prevError) => ({ ...prevError, examname: true }));
+      status = true;
+    }
+
+    if (examnumber.trim() === "") {
+      setError((prevError) => ({ ...prevError, examnumber: true }));
+      status = true;
+    }
+
+    if (examresult.trim() === "") {
+      setError((prevError) => ({ ...prevError, examresult: true }));
+      status = true;
+    }
+
+    if (jambname.trim() === "") {
+      setError((prevError) => ({ ...prevError, jambname: true }));
+      status = true;
+    }
+
+    if (jambnumber.trim() === "") {
+      setError((prevError) => ({ ...prevError, jambnumber: true }));
+      status = true;
+    }
+
+    if (jambscore.trim() === "") {
+      setError((prevError) => ({ ...prevError, jambscore: true }));
+      status = true;
+    }
+
+    if (jambresult.trim() === "") {
+      setError((prevError) => ({ ...prevError, jambresult: true }));
+      status = true;
+    }
+
+    if (faculty.trim() === "") {
+      setError((prevError) => ({ ...prevError, faculty: true }));
+      status = true;
+    }
+
+    if (department.trim() === "") {
+      setError((prevError) => ({ ...prevError, department: true }));
+      status = true;
+    }
+
+    if (otherexamname.trim() === "") {
+      setError((prevError) => ({ ...prevError, otherexamname: true }));
+      status = true;
+    }
+
+    if (otherexamcertificate.trim() === "") {
+      setError((prevError) => ({ ...prevError, otherexamcertificate: true }));
+      status = true;
+    }
+
+    if (otherexamdate.trim() === "") {
+      setError((prevError) => ({ ...prevError, otherexamdate: true }));
+      status = true;
+    }
+
+    if (morefaculty.trim() === "") {
+      setError((prevError) => ({ ...prevError, morefaculty: true }));
+      status = true;
+    }
+
+    if (moredepartment.trim() === "") {
+      setError((prevError) => ({ ...prevError, moredepartment: true }));
+      status = true;
+    }
+    let data = {
+      firstname: firstname,
+      middlename: middlename,
+      lastname: lastname,
+      maidenname: maidenname,
+      email: email,
+      address: address,
+      phone: phone,
+      gender: gender,
+      dateofbirth: dateofbirth,
+      birthcertificate: birthcertificate,
+      nationality: nationality,
+      address: address,
+      stateArea: stateArea,
+      localGovt: localGovt,
+      schoolname: schoolname,
+      schooldate: schooldate,
+      examname: examname,
+      examnumber: examnumber,
+      examresult: examresult,
+      jambname: jambname,
+      jambnumber: jambnumber,
+      jambscore: jambscore,
+      jambresult: jambresult,
+      faculty: faculty,
+      department: department,
+      morefaculty: morefaculty,
+      moredepartment: moredepartment
+
+    }
+
+    if (status) {
+        setLoading(false)
+        setStatus("error")
+        setMessage("all fields are required")
+        setShow(true)
+        setTimeout(()=>{
+            setShow(false)
+        },6000)
+        return;
+    }
+        create(data)
+    
+    
+    // send to save and use feedback to show toast message.
+};
+       
   
 
-      const handleOnChange = (e) => {
-        const { id, value, type, files } = e.target;
-      
-          if (type === 'file') {
-            setFormData((prevData) => ({
-              ...prevData,
-              [id]: files[0],
-            }));
-          } else {
-            setFormData((prevData) => ({
-              ...prevData,
-              [id]: value,
-            }));
-          }
-        };
-        const handleOnChangeDate = e => {
-          const newDate =  moment(new Date().getDate(), "MM-DD-YYYY").format("MM-DD-YYYY");
-          setDateValue(newDate);
-          console.log(newDate); //value picked from date picker
-        };
+        // const handleOnChangeDate = e => {
+        //   const formattedDate = moment(e).format('MM/DD/YYYY');
+          
+        //   // const newDate =  moment(new Date().getDate(), "MM-DD-YYYY").format("MM-DD-YYYY");
+        //   setDateValue('09/08/2023')
+        //   console.log(formattedDate); //value picked from date picker
+        // };
         
   
     const handleNext = () => {
@@ -118,29 +466,9 @@ const StudentEnrollment = () => {
     }
   
     const handleAddForm = () =>{
-      setAddInputFields([...addInputFields, { otherexamname: "", document: "", dateValue: "" }]);
+      setAddInputFields([...addInputFields, { otherexamname: "", otherexamcertificate: "", otherexamdate: "" }]);
     }
 
-    const handleSelectOnChange = (e, inputeName) => {
-      switch (inputeName) {
-            
-              case "stateArea":
-              // code to be executed when the expression matches value3
-              setStateArea(e.target.value)
-              break;
-              case "localGovt":
-                // code to be executed when the expression matches value3
-                setLocalGovt(e.target.value)
-                break;
-              case "nationality":
-              // code to be executed when the expression matches value3
-              setNationality(e.target.value)
-              break;
-              default:
-              // code to be executed when the expression does not match any of the cases
-              setGender(e.target.value)
-      }
-  };
   const options = [
       { label: "Male", value: "Male" },
       { label: "Female", value: "Female" },
@@ -184,7 +512,7 @@ const StudentEnrollment = () => {
               id="firstname"
               label="First Name"
               error={error["firstname"]}
-              value={formData.firstname}
+              value={firstname}
               onChange={(e) => {
                   handleOnChange(e, "firstname")
               }}
@@ -195,7 +523,7 @@ const StudentEnrollment = () => {
               id="middlename"
               label="Middle Name"
               error={error["middlename"]}
-              value={formData.middlename}
+              value={middlename}
               onChange={(e) => {
                   handleOnChange(e, "middlename")
               }}
@@ -206,7 +534,7 @@ const StudentEnrollment = () => {
               id="lastname"
               label="Last Name"
               error={error["lastname"]}
-              value={formData.lastname}
+              value={lastname}
               onChange={(e) => {
                   handleOnChange(e, "lastname")
               }}
@@ -219,7 +547,7 @@ const StudentEnrollment = () => {
               id="maidenname"
               label="Mother's Maiden Name"
               error={error["maidenname"]}
-              value={formData.maidenname}
+              value={maidenname}
               onChange={(e) => {
                   handleOnChange(e, "maidenname")
               }}
@@ -234,7 +562,7 @@ const StudentEnrollment = () => {
               onChange={
                   (e) => {
   
-                    handleSelectOnChange(e, "gender")
+                    handleOnChange(e, "gender")
                   }
               }
               options={options}
@@ -245,12 +573,12 @@ const StudentEnrollment = () => {
               className=""
               type="date"
               required
-              id="dateValue"
+              id="dateofbirth"
               label="Date of Birth"
               error={error["dateofbirth"]}
-              value={dateValue}
+              value={dateofbirth}
               onChange={(e) => {
-                handleOnChangeDate(e, "dateofbirth")
+                handleOnChange(e, "dateofbirth")
               }}
           />
            <TextInput
@@ -259,7 +587,7 @@ const StudentEnrollment = () => {
               id="birthcertificate"
               label="Upload Birth Certificate"
               error={error["birthcertificate"]}
-              // value={birthcertificate}
+              value={birthcertificate}
               onChange={(e) => {
                   handleOnChange(e, "birthcertificate")
               }}
@@ -275,7 +603,7 @@ const StudentEnrollment = () => {
               required
               id="phone"
               label="Phone Number"
-              value={formData.phone}
+              value={phone}
               error={error["phone"]}
               onChange={(e) => {
                   handleOnChange(e, "phone")
@@ -287,7 +615,7 @@ const StudentEnrollment = () => {
               id="email"
               label="email"
               error={error["email"]}
-              value={formData.email}
+              value={email}
               onChange={(e) => {
                   handleOnChange(e, "email")
               }}
@@ -303,7 +631,7 @@ const StudentEnrollment = () => {
               onChange={
                   (e) => {
   
-                    handleSelectOnChange(e, "nationality")
+                    handleOnChange(e, "nationality")
                   }
               }
               isSelect={true}
@@ -315,7 +643,7 @@ const StudentEnrollment = () => {
               required
               id="address"
               label="Residence"
-              value={formData.address}
+              value={address}
               error={error["address"]}
               onChange={(e) => {
                   handleOnChange(e, "address")
@@ -332,7 +660,7 @@ const StudentEnrollment = () => {
               onChange={
                   (e) => {
   
-                    handleSelectOnChange(e, "stateArea")
+                    handleOnChange(e, "stateArea")
                   }
               }
               isSelect={true}
@@ -348,7 +676,7 @@ const StudentEnrollment = () => {
               onChange={
                   (e) => {
   
-                      handleSelectOnChange(e, "localGovt")
+                      handleOnChange(e, "localGovt")
                   }
               }
               isSelect={true}
@@ -371,7 +699,7 @@ const StudentEnrollment = () => {
               id="schoolname"
               label="School Name"
               error={error["schoolname"]}
-              value={formData.schoolname}
+              value={schoolname}
               onChange={(e) => {
                   handleOnChange(e, "schoolname")
               }}
@@ -380,12 +708,12 @@ const StudentEnrollment = () => {
               className=""
               type="date"
               required
-              id="enYear"
+              id="schooldate"
               label="End Year"
-              error={error["endYear"]}
-              value={dateValue}
+              error={error["schooldate"]}
+              value={schooldate}
               onChange={(e) => {
-                handleOnChangeDate(e, "endYear")
+                handleOnChange(e, "schooldate")
               }}
           />
       </div>
@@ -396,7 +724,7 @@ const StudentEnrollment = () => {
               id="examname"
               label="Exam Name"
               error={error["examname"]}
-              value={formData.examname}
+              value={examname}
               onChange={(e) => {
                   handleOnChange(e, "examname")
               }}
@@ -407,7 +735,7 @@ const StudentEnrollment = () => {
               id="examnumber"
               label="Exam Number"
               error={error["examnumber"]}
-              value={formData.examnumber}
+              value={examnumber}
               onChange={(e) => {
                   handleOnChange(e, "examnumber")
               }}
@@ -419,7 +747,7 @@ const StudentEnrollment = () => {
               id="examresult"
               label="Result"
               error={error["examresult"]}
-              // value={lastname}
+              value={examresult}
               onChange={(e) => {
                   handleOnChange(e, "examresult")
               }}
@@ -434,7 +762,7 @@ const StudentEnrollment = () => {
               id="jambnumber"
               label="Jamb Number"
               error={error["jambnumber"]}
-              value={formData.jambnumber}
+              value={jambnumber}
               onChange={(e) => {
                   handleOnChange(e, "jambnumber")
               }}
@@ -445,7 +773,7 @@ const StudentEnrollment = () => {
               id="jambscore"
               label="Jamb Score"
               error={error["jambscore"]}
-              value={formData.jambscore}
+              value={jambscore}
               onChange={(e) => {
                   handleOnChange(e, "jambscore")
               }}
@@ -457,7 +785,7 @@ const StudentEnrollment = () => {
               id="jambresult"
               label="Result"
               error={error["jambresult"]}
-              // value={lastname}
+              value={jambresult}
               onChange={(e) => {
                   handleOnChange(e, "jambresult")
               }}
@@ -474,7 +802,7 @@ const StudentEnrollment = () => {
         id="otherexamname"
         label="Exam Name"
         error={error["otherexamname"]}
-        value={field.otherexamname}
+        value={addInputFields.otherexamname}
         onChange={(e) => {
             handleOnChange(e, "otherexamname", index)
         }}
@@ -483,10 +811,10 @@ const StudentEnrollment = () => {
         className="h-[70px] mt-6"
         required
         type="file"
-        id="document"
-        label="Document"
-        error={error["document"]}
-        // value={lastname}
+        id="otherexamcertificate"
+        label="Exam Certificate"
+        error={error["otherexamcertificate"]}
+        value={addInputFields.otherexamcertificate}
         onChange={(e) => {
             handleOnChange(e, "document", index)
         }}
@@ -495,12 +823,12 @@ const StudentEnrollment = () => {
         className=""
         type="date"
         required
-        id="enYear"
+        id="otherexamdate"
         label="End Year"
-        error={error["endYear"]}
-        value={field.dateValue}
+        error={error["otherexamdate"]}
+        value={addInputFields.otherexamdate}
         onChange={(e) => {
-          handleOnChangeDate(e, "endYear", index)
+          handleOnChange(e, "endYear", index)
         }}
     />
      <Button
@@ -557,7 +885,7 @@ const StudentEnrollment = () => {
               id="faculty"
               label="Faculty"
               error={error["faculty"]}
-              value={formData.faculty}
+              value={faculty}
               onChange={(e) => {
                   handleOnChange(e, "faculty")
               }}
@@ -568,7 +896,7 @@ const StudentEnrollment = () => {
               id="department"
               label="Department"
               error={error["department"]}
-              value={formData.department}
+              value={department}
               onChange={(e) => {
                   handleOnChange(e, "department")
               }}
@@ -584,7 +912,7 @@ const StudentEnrollment = () => {
               id="morefaculty"
               label="Faculty"
               error={error["morefaculty"]}
-              value={formData.morefaculty}
+              value={morefaculty}
               onChange={(e) => {
                   handleOnChange(e, "morefaculty")
               }}
@@ -595,7 +923,7 @@ const StudentEnrollment = () => {
               id="moredeparment"
               label="Department"
               error={error["moredepartment"]}
-              value={formData.moredepartment}
+              value={moredepartment}
               onChange={(e) => {
                   handleOnChange(e, "moredepartment")
               }}
@@ -603,6 +931,16 @@ const StudentEnrollment = () => {
             </div>
       </div>
       </div>
+              </>
+            )}
+             {activeStep === 3 && (
+              <>
+            <h1>hgyufuyfguiguigtiugiug</h1>
+            {/* {data.map((datas, index)=>(
+              <div key={index}>
+              <h2>{datas.firstname}</h2>
+              </div> */}
+            ))}
               </>
             )}
           </Grid>
@@ -621,7 +959,7 @@ const StudentEnrollment = () => {
               variant="contained"
               color="primary"
               onClick={handleNext}
-              disabled={activeStep === steps.length - 1}
+              disabled={activeStep === steps.length + 1}
             >
               {activeStep === steps.length - 1 ? "Submit" : "Next"}
             </Button>
