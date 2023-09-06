@@ -2,7 +2,8 @@
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { routes, PrivateAdminRoute } from "./routes";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           {privateRoutes}
         </Routes>
       </BrowserRouter>
+      <ToastContainer/>
     </div>
   );
 }
