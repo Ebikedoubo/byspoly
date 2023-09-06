@@ -11,7 +11,7 @@ function Staffs() {
   const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
   const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
   const [selectedStaffs, setSelectedStaffs] = useState(null);
-const [staffs, setStaffs] = useState([])
+  const [staffs, setStaffs] = useState([])
 
   const sampleStaffs = Array.from({ length: 100 }, (_, index) => ({
     id: index + 1,
@@ -19,20 +19,6 @@ const [staffs, setStaffs] = useState([])
     description: `Description for Staff ${index + 1}`,
   }));
 
-  const options = [
-    {
-      value: "Manager",
-      label: "Manager"
-    },
-    {
-      value: "Staff",
-      label: "Staff"
-    },
-    {
-      value: "Admin",
-      label: "Admin"
-    }
-  ]
 
   const [inputFields, setInputFields] = useState([
     {
@@ -59,32 +45,32 @@ const [staffs, setStaffs] = useState([])
 
 
   const fetchMoreDataProps = async () => {
-     try {
-       const apiUrl = `${process.env.REACT_APP_API_URL}/admin`;
-    const token = localStorage.getItem('token');
-    const axiosConfig = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    try {
+      const apiUrl = `${process.env.REACT_APP_API_URL}/admin`;
+      const token = localStorage.getItem('token');
+      const axiosConfig = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-    // Make a GET request to the API endpoint with the authorization header
-    const response = await axios.get(apiUrl, axiosConfig);
-
-
-    const newStaffData = response.data;
+      // Make a GET request to the API endpoint with the authorization header
+      const response = await axios.get(apiUrl, axiosConfig);
 
 
-    setStaffs(newStaffData);
+      const newStaffData = response.data;
 
-  } catch (error) {
-    console.error('Error fetching more staff data:', error);
-  }
+
+      setStaffs(newStaffData);
+
+    } catch (error) {
+      console.error('Error fetching more staff data:', error);
+    }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMoreDataProps()
-  },[])
+  }, [])
 
   const columns = ["ID", "Staff Name", "Staff Code", "Actions"];
   const dataKeyAccessors = ["id", "staffName", "staffCode", "CTA"];
@@ -205,7 +191,7 @@ const [staffs, setStaffs] = useState([])
 
                 value={inputFields.designation}
                 onChange={handleChange}
-                label="Designation"
+                label="Registrar/Staff/Admin"
               />
 
             </div>
