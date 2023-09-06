@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import TableComponent from "../TableComponent";
 import AppModal from "../AppModal";
 import TextInput from "../TextInput";
-
+import axios from "axios"
+import { toast } from 'react-toastify';
 
 function Staffs() {
-  const rowsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [paginatedStaffs, setPaginatedStaffs] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  const [loading, setLoading] = useState(false);
   const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
   const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
   const [selectedStaffs, setSelectedStaffs] = useState(null);
-
+const [staffs, setStaffs] = useState([])
 
   const sampleStaffs = Array.from({ length: 100 }, (_, index) => ({
     id: index + 1,
@@ -40,7 +39,7 @@ function Staffs() {
       firstname: "",
       lastname: "",
       email: "",
-      designation:""
+      designation: ""
     },
   ]);
 
@@ -54,28 +53,38 @@ function Staffs() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputFields);
-    setCreateModalIsOpen(false);
+    postStaffToServer()
+
   };
 
-  useEffect(() => {
-    const startIndex = currentPage * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const paginatedData = sampleStaffs.slice(startIndex, endIndex);
-    setPaginatedStaffs(paginatedData);
-    setLoading(false);
-  }, [currentPage]);
+
+  const fetchMoreDataProps = async () => {
+     try {
+       const apiUrl = `${process.env.REACT_APP_API_URL}/admin`;
+    const token = localStorage.getItem('token');
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    // Make a GET request to the API endpoint with the authorization header
+    const response = await axios.get(apiUrl, axiosConfig);
 
 
+    const newStaffData = response.data;
 
-  const paginationChange = (newPage) => {
-    setCurrentPage(newPage);
+
+    setStaffs(newStaffData);
+
+  } catch (error) {
+    console.error('Error fetching more staff data:', error);
+  }
   };
 
-  const fetchMoreDataProps = () => {
-    // Fetch more data logic
-    // Update the paginated data state accordingly
-  };
+  useEffect(()=>{
+    fetchMoreDataProps()
+  },[])
 
   const columns = ["ID", "Staff Name", "Staff Code", "Actions"];
   const dataKeyAccessors = ["id", "staffName", "staffCode", "CTA"];
@@ -86,15 +95,56 @@ function Staffs() {
     setViewModalIsOpen(true); // Open the view modal
   };
 
-  const createStaff = () => {
-    setInputFields({
-      firstname: "",
-      lastname: "",
-      email: "",
-      designation: "",
-    });
-    setCreateModalIsOpen(true); // Open the create modal
+  const postStaffToServer = async () => {
+    const token = localStorage.getItem("token");
+    const url = `${process.env.REACT_APP_API_URL}/admin/create`;
+
+    try {
+
+      setLoading(true);
+
+      const response = await axios.post(
+        url,
+        inputFields,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Staff created successfully:", response.data);
+
+      toast.success("Staff created successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        closeOnClick: true,
+      });
+      // Clear the input fields
+      setInputFields({
+        firstname: "",
+        lastname: "",
+        email: "",
+        designation: "",
+      });
+
+      // Close the create modal
+      setCreateModalIsOpen(false);
+
+    } catch (error) {
+      console.error("Error creating staff:", error);
+      toast.error("Error creating staff!", {
+        position: toast.POSITION.TOP_LEFT
+      });
+    } finally {
+
+      setLoading(false);
+    }
   };
+
+  const createStaff = () => {
+    setCreateModalIsOpen(true)
+  }
 
   const editAction = (staffId) => { };
 
@@ -107,7 +157,7 @@ function Staffs() {
       <h2>Staff List</h2>
       <TableComponent
         columns={columns}
-        data={paginatedStaffs}
+        data={sampleStaffs}
         actionText="Create Staff"
         action={createStaff}
         dataKeyAccessors={dataKeyAccessors}
@@ -115,7 +165,7 @@ function Staffs() {
         loading={loading}
         viewAction={viewAction}
         editAction={editAction}
-        paginationChange={paginationChange}
+
         fetchMoreDataProps={fetchMoreDataProps}
       />
 
@@ -127,42 +177,42 @@ function Staffs() {
         <form onSubmit={handleSubmit}>
 
 
-            <div className="flex flex-col items-center">
-              <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-4">
-                <TextInput label="First Name"
+          <div className="flex flex-col items-center">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-4">
+              <TextInput label="First Name"
                 name="firstname"
                 value={inputFields.firstname}
                 onChange={handleChange}
-                />
-                <TextInput label="Last Name"
+              />
+              <TextInput label="Last Name"
                 name="lastname"
                 value={inputFields.lastname}
                 onChange={handleChange}
-                />
+              />
 
 
-              </div>
-              <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+            </div>
+            <div className="flex flex-col md:flex-row gap-6 md:gap-12">
 
 
               <TextInput name="email" label="Email" type="email"
                 value={inputFields.email}
                 onChange={handleChange}
-                />
-                <TextInput
+              />
+              <TextInput
 
                 name="designation"
 
                 value={inputFields.designation}
                 onChange={handleChange}
-                  label="Designation"
-                />
+                label="Designation"
+              />
 
-              </div>
-              <div className="flex items-center w-full justify-center">
-                <button className="mt-4 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500" type="submit">Submit</button>
-              </div>
             </div>
+            <div className="flex items-center w-full justify-center">
+              <button className="mt-4 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500" type="submit">{loading ? 'Submitting' : 'Submit'}</button>
+            </div>
+          </div>
 
         </form>
       </AppModal>
