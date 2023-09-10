@@ -12,12 +12,25 @@ import {
   StepLabel,
 } from "@mui/material";
 import TextInput from "./TextInput";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const steps = ["Personal Details", "Educational Detail", "Faculty", "Summary"];
 
+const theme = createTheme({
+  palette: {
+    neutral: {
+      main: "#64748B",
+      contrastText: "#fff"
+    },
+    danger: {
+      main: "#DC3545",
+      contrastText: "#fff"
+    }
+  }
+});
+
 const StudentEnrollment = () => {
     const [activeStep, setActiveStep] = useState(0);
-    const [addForm, setAddForm] = useState(false)
     const [status, setStatus] = React.useState("success");
     const [message, setMessage] = React.useState("")
     // BIO
@@ -56,7 +69,7 @@ const StudentEnrollment = () => {
     const [morefaculty, setMorefaculty] = React.useState("")
     const [moredepartment, setMoredepartment] = React.useState("")
 
-    const [addInputFields, setAddInputFields] = useState([{
+    const [addInputFields, setAddInputFields] = React.useState([{
       otherexamname:"",
       otherexamcertificate: "",
       otherexamdate: ""
@@ -89,8 +102,19 @@ const StudentEnrollment = () => {
         faculty: false,
         department: false,
         morefaculty: false,
-        moredepartment: false
+        moredepartment: false,
+        addInputFields: false
     });
+
+    const handleAddInputOnchange = (e) =>{
+      console.log(e)
+      return
+      const value = e.target.value;
+      setAddInputFields({
+    ...addInputFields,
+    [e.target.id]: value
+  });
+    }
 
     const handleOnChange = (e, inputeName) => {
       console.log(e)
@@ -117,7 +141,7 @@ const StudentEnrollment = () => {
                 break;
           case "dateofbirth":
                   // code to be executed when the expression matches value1
-                setDateofbirth(moment(dateofbirth).format("MM/DD/YYYY"))
+                  setDateofbirth(moment(dateofbirth).format("MM/DD/YYYY"))
                 break;
           case "birthcertificate":
                   // code to be executed when the expression matches value1
@@ -179,22 +203,22 @@ const StudentEnrollment = () => {
                 // code to be executed when the expression matches value1
               setJambresult(e.target.value)
               break;
-          case "otherexamname":
-                // code to be executed when the expression matches value1
-                setAddInputFields(e.target.value)
-              break;
-          case "otherexamcertificate":
-                // code to be executed when the expression matches value1
-                setAddInputFields(e.target.value)
-              break;
-          case "otherexamnumber":
-                // code to be executed when the expression matches value1
-                setAddInputFields(e.target.value)
-              break;
-          case "otherexamdate":
-                // code to be executed when the expression matches value1
-                setAddInputFields(moment(otherexamdate).format("MM/DD/YYYY"))
-              break;
+          // case "otherexamname":
+          //       // code to be executed when the expression matches value1
+          //       setAddInputFields(e.target.value)
+          //     break;
+          // case "otherexamcertificate":
+          //       // code to be executed when the expression matches value1
+          //       setAddInputFields(e.target.value)
+          //     break;
+          // case "otherexamnumber":
+          //       // code to be executed when the expression matches value1
+          //       setAddInputFields(e.target.value)
+          //     break;
+          // case "otherexamdate":
+          //       // code to be executed when the expression matches value1
+          //       setAddInputFields(moment(otherexamdate).format("MM/DD/YYYY"))
+          //     break;
           case "faculty":
                 // code to be executed when the expression matches value1
               setFaculty(e.target.value)
@@ -797,15 +821,17 @@ const StudentEnrollment = () => {
       {addInputFields.map((field, index) => (
         <div key={index} className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
         <TextInput
+
+
         className="h-[70px] mt-6"
         required
         id="otherexamname"
         label="Exam Name"
         error={error["otherexamname"]}
-        value={addInputFields.otherexamname}
-        onChange={(e) => {
-            handleOnChange(e, "otherexamname", index)
-        }}
+        value={field.otherexamname}
+        onChange={() => 
+          handleAddInputOnchange(index)
+        }
     />
     <TextInput
         className="h-[70px] mt-6"
@@ -813,32 +839,33 @@ const StudentEnrollment = () => {
         type="file"
         id="otherexamcertificate"
         label="Exam Certificate"
-        error={error["otherexamcertificate"]}
-        value={addInputFields.otherexamcertificate}
-        onChange={(e) => {
-            handleOnChange(e, "document", index)
-        }}
+      error={error["otherexamcertificate"]}
+        value={field.otherexamcertificate}
+        onChange={() => 
+          handleAddInputOnchange(index)
+        }
     />
        <TextInput
-        className=""
         type="date"
         required
         id="otherexamdate"
         label="End Year"
         error={error["otherexamdate"]}
-        value={addInputFields.otherexamdate}
-        onChange={(e) => {
-          handleOnChange(e, "endYear", index)
-        }}
+        value={field.otherexamdate}
+        onChange={() => 
+          handleAddInputOnchange(index)
+        }
     />
+    <ThemeProvider theme={theme}>
      <Button
                 variant="contained"
-                color="secondary"
+                color="danger"
                 onClick={() => handleRemoveForm(index)}
-                sx={{ marginLeft: 8 }}
+                sx={{ marginLeft: 120 }}
               >
                 Cancel
               </Button>
+              </ThemeProvider>
     </div>
                         // <div  className="field-wrapper">
                         //     <input
@@ -856,9 +883,6 @@ const StudentEnrollment = () => {
                         //     <button onClick={() => removeField(index)}>Remove</button>
                         // </div>
                     ))}
-                    {/* <button onClick={addField} className="add-button">
-                        Add Field
-                    </button> */}
       <Button
                 variant="contained"
                 color="primary"
@@ -935,7 +959,7 @@ const StudentEnrollment = () => {
             )}
              {activeStep === 3 && (
               <>
-            <h1>hgyufuyfguiguigtiugiug</h1>
+            <h1>{email}</h1>
             {/* {data.map((datas, index)=>(
               <div key={index}>
               <h2>{datas.firstname}</h2>
@@ -946,20 +970,23 @@ const StudentEnrollment = () => {
           </Grid>
           <Grid item xs={0}>
           {activeStep > 0 && (
+             <ThemeProvider theme={theme}>
               <Button
                 variant="contained"
-                color="secondary"
+                color="danger"
                 onClick={handleBack}
                 sx={{ marginLeft: 8 }}
               >
                 Back
               </Button>
+              </ThemeProvider>
             )}
             <Button
               variant="contained"
-              color="primary"
+              color={activeStep === steps.length - 1 ? "success" : "primary"}
               onClick={handleNext}
               disabled={activeStep === steps.length + 1}
+              sx={{ marginLeft: 2 }}
             >
               {activeStep === steps.length - 1 ? "Submit" : "Next"}
             </Button>
