@@ -1,6 +1,7 @@
 import React,{ useState } from "react";
 import moment from "moment";
 import Moment from 'react-moment';
+import logo from "../assests/bayelsalogo.png"
 import {
   Container,
   Grid,
@@ -13,20 +14,12 @@ import {
 } from "@mui/material";
 import TextInput from "./TextInput";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import SnackbarComponent from "./SnackbarComponent";
 
 const steps = ["Personal Details", "Educational Detail", "Faculty", "Summary"];
 
 const theme = createTheme({
-  palette: {
-    neutral: {
-      main: "#64748B",
-      contrastText: "#fff"
-    },
-    danger: {
-      main: "#DC3545",
-      contrastText: "#fff"
-    }
-  }
+ 
 });
 
 const StudentEnrollment = () => {
@@ -62,12 +55,14 @@ const StudentEnrollment = () => {
     // const [otherexamname, setOtherexamname] = React.useState("")
     // const [otherexamnumber, setOtherexamnumber] = React.useState("")
     // const [otherexamcertificate, setOtherexamcertificate] = React.useState("")
-    const [otherexamdate, setOtherexamdate] = React.useState("")
+    // const [otherexamdate, setOtherexamdate] = React.useState("")
     // faculty and department
     const [faculty, setFaculty] = React.useState("")
     const [department, setDepartment] = React.useState("")
     const [morefaculty, setMorefaculty] = React.useState("")
     const [moredepartment, setMoredepartment] = React.useState("")
+    const [validateInput, setValidateInput] = React.useState(false)
+    const [show, setShow] = React.useState(false);
 
     const [addInputFields, setAddInputFields] = React.useState([{
       otherexamname:"",
@@ -106,22 +101,23 @@ const StudentEnrollment = () => {
         addInputFields: false
     });
 
-    const handleAddInputOnchange = (e) =>{
+    const handleAddInputOnchange = ((index, e) =>{
       console.log(e)
-      return
-      const value = e.target.value;
-      setAddInputFields({
-    ...addInputFields,
-    [e.target.id]: value
-  });
-    }
+       const { id, value } = e.target;
+
+    // Create a copy of the addInputFields array and update the specific field by index
+    const updatedFields = [...addInputFields];
+    updatedFields[index][id] = value;
+    // Set the updated array back to state
+    setAddInputFields(updatedFields);
+    })
 
     const handleOnChange = (e, inputeName) => {
-      console.log(e)
       switch (inputeName) {
           case "firstname":
               // code to be executed when the expression matches value1
               setFirstname(e.target.value)
+              
               break;
           case "middlename":
                 // code to be executed when the expression matches value1
@@ -134,10 +130,6 @@ const StudentEnrollment = () => {
           case "maidenname":
                     // code to be executed when the expression matches value1
                 setMaidenname(e.target.value)
-                break;
-          case "gender":
-                  // code to be executed when the expression matches value1
-                setGender(e.target.value)
                 break;
           case "dateofbirth":
                   // code to be executed when the expression matches value1
@@ -203,22 +195,6 @@ const StudentEnrollment = () => {
                 // code to be executed when the expression matches value1
               setJambresult(e.target.value)
               break;
-          // case "otherexamname":
-          //       // code to be executed when the expression matches value1
-          //       setAddInputFields(e.target.value)
-          //     break;
-          // case "otherexamcertificate":
-          //       // code to be executed when the expression matches value1
-          //       setAddInputFields(e.target.value)
-          //     break;
-          // case "otherexamnumber":
-          //       // code to be executed when the expression matches value1
-          //       setAddInputFields(e.target.value)
-          //     break;
-          // case "otherexamdate":
-          //       // code to be executed when the expression matches value1
-          //       setAddInputFields(moment(otherexamdate).format("MM/DD/YYYY"))
-          //     break;
           case "faculty":
                 // code to be executed when the expression matches value1
               setFaculty(e.target.value)
@@ -477,7 +453,51 @@ const StudentEnrollment = () => {
         
   
     const handleNext = () => {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    
+      let status = false
+     
+      if (firstname.trim() === "" ||
+      middlename.trim() === ""  ||
+      lastname.trim() === "" ||
+      gender.trim() === "" ||
+      dateofbirth.trim() === "" ||
+      birthcertificate.trim() === "" ||
+      phone.trim() === "" ||
+      email.trim() === "" ||
+      nationality === "" ||
+      address.trim() === "" ||
+      stateArea === "" ||
+      localGovt === "" 
+      // schoolname.trim() === "" ||
+      // schooldate.trim() === "" ||
+      // examname.trim() === "" ||
+      // examnumber.trim() === "" ||
+      // examresult.trim() === "" ||
+      // jambnumber.trim() === "" ||
+      // jambscore.trim() === "" ||
+      // jambresult.trim() === "" ||
+      // addInputFields === "" ||
+      // faculty === "" ||
+      // department === "" ||
+      // morefaculty === "" ||
+      // moredepartment === ""
+      
+      ) {
+        setError((prevError) => ({ ...prevError, firstname: true }));
+        status = true;
+
+        if (status) {
+          setStatus("error")
+          setMessage("all fields are required")
+          setShow(true)
+          setTimeout(()=>{
+            setShow(false)
+        },6000)
+          return;
+      }
+    }
+   
+  setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
   
     const handleBack = () => {
@@ -511,7 +531,10 @@ const StudentEnrollment = () => {
     ];
   
     return (
+      <>
+      <SnackbarComponent status={status} show={show} message={message} />
       <Container maxWidth="lg" sx={{ mt: 2 }}>
+        <img src={logo} alt="schoollogo" className="w-[150px]"/>
         <Stepper activeStep={activeStep}>
           {steps.map((label) => (
             <Step key={label}>
@@ -528,7 +551,6 @@ const StudentEnrollment = () => {
   
   <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Applicant Bio</span>
-  
       <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
           <TextInput
               className="h-[70px] mt-6"
@@ -818,7 +840,7 @@ const StudentEnrollment = () => {
       </div>
       <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-2">
       <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Other Exam Certificate</span>
-      {addInputFields.map((field, index) => (
+      {addInputFields?.map((field, index) => (
         <div key={index} className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
         <TextInput
 
@@ -829,8 +851,8 @@ const StudentEnrollment = () => {
         label="Exam Name"
         error={error["otherexamname"]}
         value={field.otherexamname}
-        onChange={() => 
-          handleAddInputOnchange(index)
+        onChange={(e) => 
+          handleAddInputOnchange(index, e)
         }
     />
     <TextInput
@@ -839,10 +861,10 @@ const StudentEnrollment = () => {
         type="file"
         id="otherexamcertificate"
         label="Exam Certificate"
-      error={error["otherexamcertificate"]}
+        error={error["otherexamcertificate"]}
         value={field.otherexamcertificate}
-        onChange={() => 
-          handleAddInputOnchange(index)
+        onChange={(e) => 
+          handleAddInputOnchange(index, e)
         }
     />
        <TextInput
@@ -852,8 +874,8 @@ const StudentEnrollment = () => {
         label="End Year"
         error={error["otherexamdate"]}
         value={field.otherexamdate}
-        onChange={() => 
-          handleAddInputOnchange(index)
+        onChange={(e) => 
+          handleAddInputOnchange(index, e)
         }
     />
     <ThemeProvider theme={theme}>
@@ -994,6 +1016,7 @@ const StudentEnrollment = () => {
           </Grid>
         </Grid>
       </Container>
+      </>
     );
   };
   
