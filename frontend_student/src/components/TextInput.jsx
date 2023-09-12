@@ -63,7 +63,7 @@ const Selects = styled(Select)(({ theme, error }) => ({
 }));
 
 export default function TextInput(props) {
-  let { type, label, textArea, isSelect, onChange, value, options, error } = props;
+  let { type, label, textArea, isSelect, onChange, value, options, error, id } = props;
   //const classes = useStyles();
   const inputClasses =
     'w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500';
@@ -104,6 +104,7 @@ export default function TextInput(props) {
         return (<LocalizationProvider dateAdapter={AdapterDateFns}>
           
             <DatePickers
+              id={id}
               error={error}
               label={label}
               value={value}
