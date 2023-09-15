@@ -1,7 +1,8 @@
 import React,{ useState } from "react";
 import moment from "moment";
 import Moment from 'react-moment';
-import logo from "../assests/bayelsalogo.png"
+import Logo from "../assests/bayelsalogo.jpeg";
+import logo1 from "../assests/bayelsalogo.png"
 import {
   Container,
   Grid,
@@ -621,11 +622,22 @@ const StudentEnrollment = () => {
   
     return (
       <>
+      <div className="flex w-screen w-[100%] ">
+      <div className="flex w-[50%] bg-blue-600 items-center justify-center">
+                <div className=" ">
+                    <div className="flex justify-center h-[160px]"><img src={Logo} alt="logo" className="rounded-lg"/></div>
+                    <div className="flex justify-center text-[15px] text-[white] font-medium mt-[15px]">BAYELSA STATE POLYTECNIC ALEIBIRI</div>
+                    <div className="w-[410px] flex justify-center text-[16px] mt-[17px] text-slate-400">
+                       Light, Skill and Self-Reliance
+                    </div>
+                </div>
+            </div>
+            <div className="flex items-center justify-center w-[70%] h-screen">
       <SnackbarComponent status={status} show={show} message={message} />
       <Container maxWidth="lg" sx={{ mt: 2 }}>
       <div className="min-screen flex items-center justify-center">
       <div className="text-center">
-        <img src={logo} alt="schoollogo" className="w-[150px]"/>
+        <img src={logo1} alt="schoollogo" className="w-[150px]"/>
         </div>
         </div>
         <Stepper activeStep={activeStep}>
@@ -935,7 +947,7 @@ const StudentEnrollment = () => {
       </div>
       </div>
       <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-2">
-      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Other Exam Certificate</span>
+      <span style={{position:"relative", left:"-300px", bottom:"24px"}}>Other Exam Certificate</span>
       {addInputFields?.map((field, index) => (
         <div key={index} className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
         <TextInput
@@ -979,7 +991,7 @@ const StudentEnrollment = () => {
                 variant="contained"
                 aria-label="Cancel"
                 onClick={() => handleRemoveForm(index)}
-                sx={{ marginLeft: 130 }}
+                sx={{ marginLeft: 120 }}
               >
                  <CancelIcon />
               </IconButton>
@@ -1139,6 +1151,8 @@ const StudentEnrollment = () => {
           </Grid>
         </Grid>
       </Container>
+      </div>
+      </div>
       </>
     );
   };

@@ -1,16 +1,11 @@
-// import React from 'react';
-// import Accordion from '@mui/material/Accordion';
-// import AccordionSummary from '@mui/material/AccordionSummary';
-// import AccordionDetails from '@mui/material/AccordionDetails';
-// import Typography from '@mui/material/Typography';
-import * as React from 'react';
+import React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-function FormDataDisplay({ 
+function StudentEnrollmentPage({ 
     firstname, 
     middlename, 
     lastname,
@@ -45,35 +40,6 @@ function FormDataDisplay({
         setExpanded(isExpanded ? panel : false);
       };
   return (
-    // <Accordion>
-    //   <AccordionSummary>
-    //     <Typography>Data Summary</Typography>
-    //   </AccordionSummary>
-    //   <AccordionDetails>
-    //     {/* Render the data here */}
-    //     <div>
-    //       <p>First Name: {firstname}</p>
-    //       <p>Middle Name: {middlename}</p>
-    //       <p>Last Name: {lastname}</p>
-    //     </div>
-    //   </AccordionDetails>
-    //   <AccordionDetails>
-    //     {/* Render the data here */}
-    //     <div>
-    //       <p>First Name: {firstname}</p>
-    //       <p>Middle Name: {middlename}</p>
-    //       <p>Last Name: {lastname}</p>
-    //     </div>
-    //   </AccordionDetails>
-    //   <AccordionDetails>
-    //     {/* Render the data here */}
-    //     <div>
-    //       <p>First Name: {firstname}</p>
-    //       <p>Middle Name: {middlename}</p>
-    //       <p>Last Name: {lastname}</p>
-    //     </div>
-    //   </AccordionDetails>
-    // </Accordion>
 
     <div>
     <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
@@ -118,14 +84,14 @@ function FormDataDisplay({
             <p>Date: {schooldate}</p>
             <p>Exam Name: {examname}</p>
             <p>Exam Number: {examnumber}</p>
-            <img src={examresult} alt="exam result" />
+            <p>Exam Result: <img src={examresult} alt="exam result" /></p>
             <p>Jamb Number: {jambnumber}</p>
             <p>Jame Score: {jambscore}</p>
-            <img src={jambresult} alt="Jamb Result" />
+            <p>Jamb Result: <img src={jambresult} alt="Jamb Result" /></p>
            {addInputFields.map((data, index)=>(
             <div key={index}>
             <p>Other Exam: {data.otherexamname}</p>
-            <p>Other Exam Result: {data.otherexamcertificate}</p>
+            <p>Other Exam Certificate: <img src={data.otherexamcertificate} alt="" /></p>
             <p>Other Exam Date: {data.otherexamdate}</p>
             
             </div>
@@ -170,4 +136,4 @@ function FormDataDisplay({
   );
 }
 
-export default FormDataDisplay;
+export default StudentEnrollmentPage;
