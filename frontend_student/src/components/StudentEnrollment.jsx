@@ -17,6 +17,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import TextInput from "./TextInput";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SnackbarComponent from "./SnackbarComponent";
+import StudentEnrollmentPage from "../pages/studentEnrollmentPage/StudentEnrollmentPage"
 
 
 
@@ -50,7 +51,7 @@ const StudentEnrollment = () => {
     const [lastname, setLastname] = React.useState("")
     const [maidenname, setMaidenname] = React.useState("")
     const [gender, setGender] = React.useState("");
-    const [dateofbirth, setDateofbirth] = React.useState("")
+    const [dateofbirth, setDateofbirth] = React.useState(null)
     const [birthcertificate, setBirthcertificate] = React.useState("")
     // // contact address
     const [phone, setPhone] = React.useState("")
@@ -61,7 +62,7 @@ const StudentEnrollment = () => {
     const [localGovt, setLocalGovt] = React.useState("");
     // // step 2/secondary school
     const [schoolname, setSchoolname] = React.useState("")
-    const [schooldate, setSchooldate] = React.useState("")
+    const [schooldate, setSchooldate] = React.useState(null)
     const [examname, setExamname] = React.useState("")
     const [examnumber, setExamnumber] = React.useState("")
     const [examresult, setExamresult] = React.useState("")
@@ -113,7 +114,6 @@ const StudentEnrollment = () => {
         department: false,
         morefaculty: false,
         moredepartment: false,
-        addInputFields: false
     });
 
     const handleAddInputOnchange = (index, e) =>{
@@ -449,22 +449,43 @@ const StudentEnrollment = () => {
     // send to save and use feedback to show toast message.
 };
        
-  
+// const handleOnChangeDate = (newDate)=> {
+//   console.log(newDate)
+//   setDateofbirth(newDate);
+// };
 
         const handleOnChangeDate = e => {
-          const formattedDate = moment(dateofbirth).format('MM/DD/YYYY');
-          setDateofbirth(formattedDate)
-          console.log(formattedDate); //value picked from date picker
+          console.log(e)
+          if (e && e.target) {
+            const selectedDate = e.target.value; // Extract the selected date from the event
+        
+            // Use moment to format the date
+            const formattedDate = moment(selectedDate).format('MM/DD/YYYY');
+        
+            setDateofbirth(formattedDate); // Set the formatted date in your state
+          } 
         };
         const handleOnChangeDate1 = e => {
-          const formattedDate = moment(schooldate).format('MM/DD/YYYY');
-          setSchooldate(formattedDate)
-          console.log(formattedDate); //value picked from date picker
+          console.log(e)
+          if (e && e.target) {
+            const selectedDate = e.target.value; // Extract the selected date from the event
+        
+            // Use moment to format the date
+            const formattedDate = moment(selectedDate).format('MM/DD/YYYY');
+        
+            setSchooldate(formattedDate); // Set the formatted date in your state
+          } 
         };
         const handleOnChangeDate2 = e => {
-          const formattedDate = moment(e).format('MM/DD/YYYY');
-          setDateValue(formattedDate)
-          console.log(formattedDate); //value picked from date picker
+          console.log(e)
+          if (e && e.target) {
+            const selectedDate = e.target.value; // Extract the selected date from the event
+        
+            // Use moment to format the date
+            const formattedDate = moment(selectedDate).format('MM/DD/YYYY');
+        
+            setDateofbirth(formattedDate); // Set the formatted date in your state
+          } 
         };
 
   const handleNext = () => {
@@ -586,16 +607,16 @@ const StudentEnrollment = () => {
       { label: "Female", value: "Female" },
   ];
   const option = [
-      { label: "Lagos", value: 2 },
-      { label: "FCT-Abuja", value: 5 },
-      { label: "Nassarawa", value: 3 },
-      { label: "Kogi", value: 4 },
+      { label: "Lagos", value: "Lagos" },
+      { label: "FCT-Abuja", value: "FCT-Abuja" },
+      { label: "Nassarawa", value: "Nassarawa" },
+      { label: "Kogi", value: "Kogi" },
     ];
     const option2 = [
-      { label: "ikeja", value: 2 },
-      { label: "Gwagwalada", value: 5 },
-      { label: "Lafia", value: 3 },
-      { label: "Lokoja", value: 4 },
+      { label: "ikeja", value: "ikeja" },
+      { label: "Gwagwalada", value: "Gwagwalada" },
+      { label: "Lafia", value: "Lafia" },
+      { label: "Lokoja", value: "Lokoja" },
     ];
   
     return (
@@ -825,16 +846,16 @@ const StudentEnrollment = () => {
                 handleOnChange(e, "schoolname")
               }}
           />
-        <TextInput
+         <TextInput
               className=""
               type="date"
               required
               name="schooldate"
-              label="End Year"
+              label="Date"
               error={error["schooldate"]}
               value={schooldate}
               onChange={(e) => {
-                handleOnChangeDate1(e, "schooldate")
+                handleOnChangeDate1(e, "dateofbirth")
               }}
           />
       </div>
@@ -1044,7 +1065,7 @@ const StudentEnrollment = () => {
               name="moredepartment"
               error={error["moredepartment"]}
               label="Select More Department"
-              value= {stateArea < 1 ? "" : stateArea}
+              value= {moredepartment < 1 ? "" : moredepartment}
               onChange={
                   (e) => {
   
@@ -1061,12 +1082,34 @@ const StudentEnrollment = () => {
             )}
              {activeStep === 3 && (
               <>
-            <h1>{dateValue}</h1>
-            {/* {data.map((datas, index)=>(
-              <div key={index}>
-              <h2>{datas.firstname}</h2>
-              </div>
-            ))} */}
+            <StudentEnrollmentPage 
+                firstname={firstname}
+                middlename={middlename}
+                lastname={lastname}
+                maidenname ={maidenname}
+                gender ={gender}
+                phone = {phone}
+                email = {email}
+                dateofbirth ={dateofbirth}
+                birthcertificate = {birthcertificate}
+                nationality = {nationality}
+                address = {address}
+                stateArea = {stateArea}
+                localGovt = {localGovt}
+                schoolname ={schoolname}
+                schooldate = {schooldate}
+                examname = {examname}
+                examnumber = {examnumber}
+                examresult= {examresult}
+                jambnumber = {jambnumber}
+                jambscore = {jambscore}
+                jambresult = {jambresult}
+                faculty = {faculty}
+                department = {department}
+                morefaculty = {morefaculty}
+                moredepartment = {moredepartment}
+                addInputFields = {addInputFields}
+            />
               </>
             )}
           </Grid>
