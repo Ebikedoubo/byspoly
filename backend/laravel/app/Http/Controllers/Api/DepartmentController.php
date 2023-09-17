@@ -2,28 +2,47 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\DepartmentResource;
 use App\Models\Department;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class DepartmentController extends Controller
 {
      /**
      * @OA\Get(
-     *     path="/api/faculty",
-     *     summary="Faculty List",
-     *     tags={"Faculty"},
+     *     path="/api/department",
+     *     summary="Department List",
+     *     tags={"Department"},
      * 
      *    
      *     @OA\Response(
      *         response=201,
-     *         description="Faculty List",
+     *         description="Department List",
      *         @OA\JsonContent(
      *    
      *             @OA\Property(property="data", type="array",
      *              @OA\Items(
+     * 
      *                 @OA\Property(property="id", type="integer"),
-     *                 @OA\Property(property="faculty_code", type="string"),
+     *                 @OA\Property(property="department_code", type="string"),
      *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="faculty", type="array",
+     *              @OA\Items(
+     * {
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="department_code", type="string"),
+     *                 @OA\Property(property="title", type="string"),
+     *                }
+     * 
+     *                 
+     * )
+     *                  
+     *             )
+     * ),
      *                 
      * )
      *                  
@@ -48,18 +67,18 @@ class DepartmentController extends Controller
      *     ),
      * )
      */
-    public function index(): FacultyResource | AnonymousResourceCollection
+    public function index(): DepartmentResource | AnonymousResourceCollection
     {
-        $faculty = $this->model()->where(["status" => 1])->get();
-        return FacultyResource::collection($faculty);
+        $department = $this->model()->where(["status" => 1])->with("faculty")->get();
+        return DepartmentResource::collection($department);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/faculty/create",
-     *     summary="Create A New Faculty",
+     *     path="/api/department/create",
+     *     summary="Create A New Department",
      *     description = " Create a new faculty, enables a user to add to the faculty etc",
-     *     tags={"Faculty"},
+     *     tags={"Department"},
      * 
      *   @OA\Parameter(
      *      name="code",
@@ -134,37 +153,29 @@ class DepartmentController extends Controller
         $validator = Validator::make($request->all(), [
             'code' => 'required',
             'title' => 'required',
+            'faculty' => 'required',
         ]);
         if ($validator->fails()) {
             return  response()->json(["status" => "error", "data" => $validator->errors()], 400);
         }
-        $faculty = $this->model();
-        $faculty->title = $request->title;
-        $faculty->faculty_code = $request->code;
+        $department = $this->model();
+        $department->title = $request->title;
+        $department->department_code = $request->code;
+        $department->faculty_id = $request->faculty;
         DB::beginTransaction();
         try {
-            if ($faculty->save()) {
-                // if faculty has been saved ,check to see if department is available.
-                if (!empty($request->department)) {
-                    $departments = json_decode($request->department);
-                    foreach ($departments as $department) {
-                        $departmentModel = $this->departmentModel();
-                        $departmentModel->faculty_id = $faculty->id;
-                        $departmentModel->title = $department["title"];
-                        $departmentModel->department_code = $department["code"];
-                        $departmentModel->save();
-                    }
-                }
+            if ($department->save()) {
+                DB::commit(); 
+                return response()->json(
+                    [
+                        'status' => "success",
+                        "message" => "Department created",
+                        "data" => $department
+                    ],
+                    200
+                ); 
             }
-            DB::commit();
-            return response()->json(
-                [
-                    'status' => "success",
-                    "message" => "faculty created",
-                    "data" => $faculty
-                ],
-                200
-            );
+            return response()->json(["status" => "error", "message" => "Something whent wrong, Please try again later", "data" => $e], 400);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(["status" => "error", "message" => "Something whent wrong, Please try again later", "data" => $e], 400);
@@ -173,10 +184,10 @@ class DepartmentController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/faculty/view/{id}",
-     *     summary="View a Faculty details",
+     *     path="/api/department/view/{id}",
+     *     summary="View a Department details",
      *     description = "This endpoint would be used to view a faculty details by providing the perticular faculty id",
-     *     tags={"Faculty"},
+     *     tags={"Department"},
      * 
      *   @OA\Parameter(
      *      name="id",
@@ -226,21 +237,21 @@ class DepartmentController extends Controller
      *     ),
      * )
      */
-    public function view($id): FacultyResource | JsonResponse
+    public function view($id): DepartmentResource | AnonymousResourceCollection | JsonResponse
     {
         $model = $this->model()->where(["id" => $id])->first();
         if (!empty($model)) {
-            return new FacultyResource($model);
+            return new DepartmentResource($model);
         }
         return response()->json(["status" => "error"], 400);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/faculty/update/{id}",
-     *     summary="Update a faculty",
+     *     path="/api/department/update/{id}",
+     *     summary="Update a department",
      *     description = " this route enable admin to update a faculty detail",
-     *     tags={"Faculty"},
+     *     tags={"Department"},
      * 
      *    @OA\Parameter(
      *      name="id",
@@ -313,19 +324,23 @@ class DepartmentController extends Controller
      *     ),
      * )
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
-        $faculty = $this->model();
+        $department = $this->model()->where("id",$id)->first();
         if (!empty($request->title)) {
-            $faculty->title = $request->title;
+            $department->title = $request->title;
         }
 
         if (!empty($request->code)) {
-            $faculty->faculty_code = $request->code;
+            $department->department_code = $request->code;
         }
 
-        if (!empty($request->code) || !empty($request->title)) {
-            if ($faculty->save()) {
+        if (!empty($request->faculty)) {
+            $department->faculty_id = $request->faculty;
+        }
+
+        if (!empty($request->code) || !empty($request->title) || !empty($request->faculty)) {
+            if ($department->save()) {
                 return response()->json(["status" => "success"], 200);
             }
             return response()->json(["status" => "error", "message" => "something went wrong, please try again later"], 400);
@@ -336,10 +351,10 @@ class DepartmentController extends Controller
 
      /**
      * @OA\Delete(
-     *     path="/api/faculty/delete/{id}",
-     *     summary="Delete a faculty",
+     *     path="/api/department/delete/{id}",
+     *     summary="Delete a department",
      *     description = "This endpoint would be used to delete a faculty details by providing the perticular faculty id",
-     *     tags={"Faculty"},
+     *     tags={"Department"},
      * 
      *   @OA\Parameter(
      *      name="id",
