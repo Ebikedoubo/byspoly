@@ -22,10 +22,10 @@ class UserController extends Controller
 {
 
     /**
-     * @OA\Get(
+     * @OA\Post(
      *     path="/api/admin",
      *     summary="Get a list of users with pagination",
-     *     tags={"Users"},
+     *     tags={"Admin"},
      *     @OA\Parameter(
      *         name="perpage",
      *         in="query",
