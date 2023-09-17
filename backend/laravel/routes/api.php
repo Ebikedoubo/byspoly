@@ -1,4 +1,7 @@
 <?php
+
+use App\Http\Controllers\Api\FacultyController;
+use App\Http\Controllers\Api\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
@@ -32,6 +35,26 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::post("create", [UserController::class, 'register']);
     Route::post("/search",[UserController::class,"search"]);
     Route::get("/logout",[UserController::class,"logout"])->name("logout");
+});
+
+Route::group(['prefix' => 'student', 'middleware' => ['auth:student']], function(){ 
+    Route::get('/', [StudentController::class, 'index'])->name('student-index');
+    
+});
+
+Route::group(['prefix' => 'student'], function(){ 
+    Route::post('/login', [StudentController::class, 'login'])->name('student-login');
+    Route::post('/application', [StudentController::class, 'studentApplicationRegistraton'])->name('student-application');
+    
+});
+
+Route::group(['prefix' => 'faculty'], function(){ 
+    Route::get('/', [FacultyController::class, 'index'])->name('faculty-list');
+    Route::post('/create', [FacultyController::class, 'create'])->name('create-faculty');
+    Route::put('/update/{id}', [FacultyController::class, 'update'])->name('update-faculty');
+    Route::delete('/delete/{id}', [FacultyController::class, 'delete'])->name('delete-faculty');
+    Route::get('/view/{id}', [FacultyController::class, 'view'])->name('view-faculty');
+    
 });
 
 

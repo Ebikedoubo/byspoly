@@ -22,10 +22,10 @@ class UserController extends Controller
 {
 
     /**
-     * @OA\Get(
+     * @OA\Post(
      *     path="/api/admin",
      *     summary="Get a list of users with pagination",
-     *     tags={"Users"},
+     *     tags={"Admin"},
      *     @OA\Parameter(
      *         name="perpage",
      *         in="query",
@@ -78,6 +78,15 @@ class UserController extends Controller
      *     path="/api/admin/create",
      *     summary="Register a new staff member",
      *     tags={"Admin"},
+     *  @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     * 
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
      *     @OA\RequestBody(
      *         required=true,
      *         description="Staff member registration data",
@@ -186,6 +195,25 @@ class UserController extends Controller
      *             @OA\Property(property="password", type="string", format="password", example="secret")
      *         )
      *     ),
+     * 
+     * @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     * 
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *  @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     * 
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
      *     @OA\Response(
      *         response=200,
      *         description="User logged in successfully",
@@ -462,7 +490,7 @@ class UserController extends Controller
     }
 
     public function logout()
-    { 
+    {
         $auth = Auth::user();
         if ($auth->tokens()->delete()) {
             return response()->json(["status" => "success"], 200);
