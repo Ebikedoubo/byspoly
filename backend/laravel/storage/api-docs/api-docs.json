@@ -11,13 +11,1013 @@
         }
     ],
     "paths": {
-        "/api/admin": {
+        "/api/faculty": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Faculty"
+                ],
+                "summary": "Faculty List",
+                "operationId": "a90fd252ddcae20a9fa15ffdbf8c35e3",
+                "responses": {
+                    "201": {
+                        "description": "Faculty List",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "faculty_code": {
+                                                        "type": "string"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Please confirm you have access"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/faculty/create": {
+            "post": {
+                "tags": [
+                    "Faculty"
+                ],
+                "summary": "Create A New Faculty",
+                "description": " Create a new faculty, enables a user to add to the faculty etc",
+                "operationId": "922b97b88f0c45568e5e5beb25c86579",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "This holds value of the faculty code",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "This holds value of the faculty name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Staff member registration data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code",
+                                    "title"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "example": "ARSS"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Arts And Social Science"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Faculty Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "faculty_code": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Please confirm you have access "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/faculty/view/{id}": {
+            "get": {
+                "tags": [
+                    "Faculty"
+                ],
+                "summary": "View a Faculty details",
+                "description": "This endpoint would be used to view a faculty details by providing the perticular faculty id",
+                "operationId": "f62ea0c19abbed1fb110b673816db012",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "This id of the faculty",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Faculty Details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "faculty_code": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Please confirm you have access "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/faculty/update/{id}": {
+            "put": {
+                "tags": [
+                    "Faculty"
+                ],
+                "summary": "Update a faculty",
+                "description": " this route enable admin to update a faculty detail",
+                "operationId": "6314a51a6ae1f2e6a9d327f29451fc91",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "This faculty id to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "This holds value of the faculty code",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "This holds value of the faculty name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Staff member registration data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code",
+                                    "title"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "example": "ARSS"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Arts And Social Science"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Faculty Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Please confirm you have access "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/faculty/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Faculty"
+                ],
+                "summary": "Delete a faculty",
+                "description": "This endpoint would be used to delete a faculty details by providing the perticular faculty id",
+                "operationId": "a67be57a93370a412761bd194ea8bde6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "This id of the faculty",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Faculty Details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Please confirm you have access "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/student/login": {
+            "post": {
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Student Login",
+                "operationId": "10bb6cce779797b42ad7d7945a452693",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Student login data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Student loggedin successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user logged in"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "first_name": {
+                                                    "type": "string"
+                                                },
+                                                "middle_name": {
+                                                    "type": "string"
+                                                },
+                                                "last_name": {
+                                                    "type": "string"
+                                                },
+                                                "maiden_name": {
+                                                    "type": "string"
+                                                },
+                                                "reg_number": {
+                                                    "type": "string"
+                                                },
+                                                "dob": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "email_verified_at": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "password": {
+                                                    "type": "string"
+                                                },
+                                                "country_id": {
+                                                    "type": "integer"
+                                                },
+                                                "state_id": {
+                                                    "type": "integer"
+                                                },
+                                                "lga_id": {
+                                                    "type": "integer"
+                                                },
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "status": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/student/application": {
+            "post": {
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Student Application",
+                "description": "This endpoint is used when a student is applying for a course of study in the university",
+                "operationId": "5341051c4b9983d6240f09ba0c5ce132",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "middle_name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "first_name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maiden_name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dob",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "country_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "state_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "lga_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "student_results",
+                        "in": "query",
+                        "description": "JSON array containing multiple student result objects with properties like exam_type_id ,exam_number, exam_date ,image",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "required": [
+                                            "exam_type_id",
+                                            "exam_number",
+                                            "exam_date",
+                                            "image"
+                                        ],
+                                        "properties": {
+                                            "exam_type_id": {
+                                                "type": "string"
+                                            },
+                                            "exam_number": {
+                                                "type": "string"
+                                            },
+                                            "exam_date": {
+                                                "type": "string"
+                                            },
+                                            "exam_score": {
+                                                "type": "string"
+                                            },
+                                            "image": {
+                                                "type": "string",
+                                                "format": "binary"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "choice",
+                        "in": "query",
+                        "description": "JSON array containing multiple student course choice objects with properties like faculty_id,department_id",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "faculty_id": {
+                                                "type": "integer"
+                                            },
+                                            "department_id": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "schools_attended",
+                        "in": "query",
+                        "description": "JSON array containing multiple student school attended  objects with properties like school_name , graduation_year, image",
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "school_name": {
+                                                "type": "string"
+                                            },
+                                            "graduation_year": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "image": {
+                                                "type": "string",
+                                                "format": "binary"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Student Application Data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "first_name",
+                                    "last_name",
+                                    "maiden_name",
+                                    "dob",
+                                    "country_id",
+                                    "state_id",
+                                    "lga_id",
+                                    "choice",
+                                    "schools_attended",
+                                    "student_results"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "maiden_name": {
+                                        "type": "string"
+                                    },
+                                    "dob": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "country_id": {
+                                        "type": "integer"
+                                    },
+                                    "state_id": {
+                                        "type": "integer"
+                                    },
+                                    "lga_id": {
+                                        "type": "integer"
+                                    },
+                                    "middle_name": {
+                                        "type": "string"
+                                    },
+                                    "student_results": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "exam_type_id",
+                                                "exam_number",
+                                                "exam_date",
+                                                "image"
+                                            ],
+                                            "properties": {
+                                                "exam_type_id": {
+                                                    "type": "integer"
+                                                },
+                                                "exam_number": {
+                                                    "type": "string"
+                                                },
+                                                "exam_date": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "exam_score": {
+                                                    "type": "string"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "format": "binary"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "schools_attended": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "school_name": {
+                                                    "type": "string"
+                                                },
+                                                "graduation_year": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "format": "binary"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "choice": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "faculty_id": {
+                                                    "type": "integer"
+                                                },
+                                                "department_id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Student Application successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Application successfull"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "first_name": {
+                                                    "type": "string"
+                                                },
+                                                "middle_name": {
+                                                    "type": "string"
+                                                },
+                                                "last_name": {
+                                                    "type": "string"
+                                                },
+                                                "maiden_name": {
+                                                    "type": "string"
+                                                },
+                                                "dob": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "country_id": {
+                                                    "type": "integer"
+                                                },
+                                                "state_id": {
+                                                    "type": "integer"
+                                                },
+                                                "lga_id": {
+                                                    "type": "integer"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin": {
+            "post": {
+                "tags": [
+                    "Admin"
                 ],
                 "summary": "Get a list of users with pagination",
-                "operationId": "10dbe338241b57b9ac801f11e5d68fae",
+                "operationId": "000e5abc22343f7b37934670f21bbf9c",
                 "parameters": [
                     {
                         "name": "perpage",
@@ -130,6 +1130,16 @@
                 ],
                 "summary": "Register a new staff member",
                 "operationId": "e04e77ed441285182224f004dd145088",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "description": "Staff member registration data",
                     "required": true,
@@ -270,6 +1280,24 @@
                 ],
                 "summary": "User Login",
                 "operationId": "280d3f5340f789a7e96f9194414e9873",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "description": "User login data",
                     "required": true,
