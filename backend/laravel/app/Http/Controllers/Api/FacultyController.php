@@ -319,9 +319,12 @@ class FacultyController extends Controller
      *     ),
      * )
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
-        $faculty = $this->model();
+        $faculty = $this->model()->where(["id" => $id])->first();
+        if(empty($faculty)){
+            return response()->json(["status" => "error", "message" => "There is no faculty with the provided id "], 400);
+        }
         if (!empty($request->title)) {
             $faculty->title = $request->title;
         }
