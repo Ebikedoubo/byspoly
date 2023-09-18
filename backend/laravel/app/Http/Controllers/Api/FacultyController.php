@@ -319,10 +319,10 @@ class FacultyController extends Controller
      *     ),
      * )
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $faculty = $this->model()->where(["id" => $id])->first();
-        if(empty($faculty)){
+        if (empty($faculty)) {
             return response()->json(["status" => "error", "message" => "There is no faculty with the provided id "], 400);
         }
         if (!empty($request->title)) {
@@ -343,7 +343,7 @@ class FacultyController extends Controller
         }
     }
 
-     /**
+    /**
      * @OA\Delete(
      *     path="/api/faculty/delete/{id}",
      *     summary="Delete a faculty",
@@ -403,7 +403,66 @@ class FacultyController extends Controller
         return response()->json(["status" => "error", "message" => "The requested record does not exixt"], 400);
     }
 
-    public function getFacultyDepartment(Faculty $id){
+    /**
+     * @OA\Get(
+     *     path="/api/faculty/faculty-departments/{id}",
+     *     summary="get faculty department",
+     *     description = "This endpoint would be used to fetch all department of a particular faculty",
+     *     tags={"Faculty"},
+     * 
+     *   @OA\Parameter(
+     *      name="id",
+     *      description="faculty Id",
+     *      in="path",
+     *      required=true,
+     *
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     * 
+     * 
+     *    
+     *     @OA\Response(
+     *         response=201,
+     *         description="Faculty Details",
+     *         @OA\JsonContent(
+     *    
+     *             @OA\Property(property="data", type="array",
+     *              {
+     *               @OA\Items(
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="faculty_id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="department_code", type="string"),
+     *                 
+     *              )
+     *          }
+     *      )
+     *                  
+     *             
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="Please confirm you have access ")
+     *         )
+     *     ),
+     * )
+     */
+    public function getFacultyDepartment(Faculty $id)
+    {
         return response()->json(["data" => $id->department]);
     }
 
