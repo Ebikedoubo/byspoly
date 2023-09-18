@@ -176,21 +176,18 @@
                                                         "type": "string"
                                                     },
                                                     "faculty": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "integer"
-                                                                },
-                                                                "department_code": {
-                                                                    "type": "string"
-                                                                },
-                                                                "title": {
-                                                                    "type": "string"
-                                                                }
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
                                                             },
-                                                            "type": "object"
-                                                        }
+                                                            "faculty_code": {
+                                                                "type": "string"
+                                                            },
+                                                            "title": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     }
                                                 },
                                                 "type": "object"
@@ -211,13 +208,13 @@
                     "Department"
                 ],
                 "summary": "Create A New Department",
-                "description": " Create a new faculty, enables a user to add to the faculty etc",
+                "description": " Create a new department, enables a user to add to the department etc",
                 "operationId": "fd3f7e491f5149f11501e41322b758ce",
                 "parameters": [
                     {
                         "name": "code",
                         "in": "query",
-                        "description": "This holds value of the faculty code",
+                        "description": "This holds value of the department code",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -226,7 +223,16 @@
                     {
                         "name": "title",
                         "in": "query",
-                        "description": "This holds value of the faculty name",
+                        "description": "This holds value of the department name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "faculty",
+                        "in": "query",
+                        "description": "This holds value of the faculty the department would belong to",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -241,16 +247,21 @@
                             "schema": {
                                 "required": [
                                     "code",
-                                    "title"
+                                    "title",
+                                    "faculty"
                                 ],
                                 "properties": {
                                     "code": {
                                         "type": "string",
-                                        "example": "ARSS"
+                                        "example": "PSC"
+                                    },
+                                    "faculty": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
                                     "title": {
                                         "type": "string",
-                                        "example": "Arts And Social Science"
+                                        "example": "Political Science"
                                     }
                                 },
                                 "type": "object"
@@ -260,21 +271,36 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Faculty Created",
+                        "description": "Department Created",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Department Created"
+                                        },
                                         "data": {
                                             "properties": {
                                                 "id": {
-                                                    "type": "integer"
+                                                    "type": "integer",
+                                                    "example": "1"
                                                 },
-                                                "faculty_code": {
-                                                    "type": "string"
+                                                "department_code": {
+                                                    "type": "string",
+                                                    "example": "PSC"
+                                                },
+                                                "faculty_id": {
+                                                    "type": "integer",
+                                                    "example": "1"
                                                 },
                                                 "title": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "example": "Political Science"
                                                 }
                                             },
                                             "type": "object"
@@ -333,13 +359,13 @@
                     "Department"
                 ],
                 "summary": "View a Department details",
-                "description": "This endpoint would be used to view a faculty details by providing the perticular faculty id",
+                "description": "This endpoint would be used to view a department details by providing the perticular department id",
                 "operationId": "6ff4962bffe40c448fe9c3571fd4dcc7",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "This id of the faculty",
+                        "description": "This id of the department",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -358,11 +384,25 @@
                                                 "id": {
                                                     "type": "integer"
                                                 },
-                                                "faculty_code": {
-                                                    "type": "string"
-                                                },
                                                 "title": {
                                                     "type": "string"
+                                                },
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "faculty": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "faculty_code": {
+                                                            "type": "string"
+                                                        },
+                                                        "title": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"
@@ -421,13 +461,13 @@
                     "Department"
                 ],
                 "summary": "Update a department",
-                "description": " this route enable admin to update a faculty detail",
+                "description": " this route enable admin to update a department detail",
                 "operationId": "0fce24e949506fc9273a7a1d6f103b8b",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "This faculty id to be updated",
+                        "description": "The department id to be updated",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -436,7 +476,7 @@
                     {
                         "name": "code",
                         "in": "query",
-                        "description": "This holds value of the faculty code",
+                        "description": "This holds value of the department code",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -445,7 +485,16 @@
                     {
                         "name": "title",
                         "in": "query",
-                        "description": "This holds value of the faculty name",
+                        "description": "This holds value of the department name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "faculty",
+                        "in": "query",
+                        "description": "This holds value of the faculty id of the department",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -458,18 +507,18 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "code",
-                                    "title"
-                                ],
                                 "properties": {
                                     "code": {
                                         "type": "string",
-                                        "example": "ARSS"
+                                        "example": "PSC"
+                                    },
+                                    "faculty": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
                                     "title": {
                                         "type": "string",
-                                        "example": "Arts And Social Science"
+                                        "example": "Political Science"
                                     }
                                 },
                                 "type": "object"
@@ -479,7 +528,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Faculty Created",
+                        "description": "Department Updated",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -542,13 +591,13 @@
                     "Department"
                 ],
                 "summary": "Delete a department",
-                "description": "This endpoint would be used to delete a faculty details by providing the perticular faculty id",
+                "description": "This endpoint would be used to delete a department details by providing the perticular department id",
                 "operationId": "09faf81f125822264218dadad1825475",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "This id of the faculty",
+                        "description": "The id of the department",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -565,6 +614,10 @@
                                         "status": {
                                             "type": "string",
                                             "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record has been deleted"
                                         }
                                     },
                                     "type": "object"

@@ -62,15 +62,16 @@ Route::group(['prefix' => 'faculty'], function(){
     Route::put('/update/{id}', [FacultyController::class, 'update'])->name('update-faculty');
     Route::delete('/delete/{id}', [FacultyController::class, 'delete'])->name('delete-faculty');
     Route::get('/view/{id}', [FacultyController::class, 'view'])->name('view-faculty');
-    
+    Route::get('/faculty-departments/{id}', [FacultyController::class, 'getFacultyDepartment'])->name('faculty-departments');
+  
 });
 
 Route::group(['prefix' => 'department'], function(){ 
-    Route::get('/', [DepartmentController::class, 'index'])->name('faculty-list');
-    Route::post('/create', [DepartmentController::class, 'create'])->name('create-faculty');
-    Route::put('/update/{id}', [DepartmentController::class, 'update'])->name('update-faculty');
-    Route::delete('/delete/{id}', [DepartmentController::class, 'delete'])->name('delete-faculty');
-    Route::get('/view/{id}', [DepartmentController::class, 'view'])->name('view-faculty');
+    Route::get('/', [DepartmentController::class, 'index'])->name('department-list');
+    Route::post('/create', [DepartmentController::class, 'create'])->name('create-department');
+    Route::put('/update/{id}', [DepartmentController::class, 'update'])->name('update-department');
+    Route::delete('/delete/{id}', [DepartmentController::class, 'delete'])->name('delete-department');
+    Route::get('/view/{id}', [DepartmentController::class, 'view'])->name('view-department');
     
 });
 

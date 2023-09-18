@@ -30,16 +30,16 @@ class DepartmentController extends Controller
      *                 @OA\Property(property="id", type="integer"),
      *                 @OA\Property(property="department_code", type="string"),
      *                 @OA\Property(property="title", type="string"),
-     *                 @OA\Property(property="faculty", type="array",
-     *              @OA\Items(
-     * {
+     *                 @OA\Property(property="faculty", type="object",
+     *              {
+     * 
      *                 @OA\Property(property="id", type="integer"),
-     *                 @OA\Property(property="department_code", type="string"),
+     *                 @OA\Property(property="faculty_code", type="string"),
      *                 @OA\Property(property="title", type="string"),
-     *                }
+     *                
      * 
      *                 
-     * )
+     * }
      *                  
      *             )
      * ),
@@ -77,13 +77,13 @@ class DepartmentController extends Controller
      * @OA\Post(
      *     path="/api/department/create",
      *     summary="Create A New Department",
-     *     description = " Create a new faculty, enables a user to add to the faculty etc",
+     *     description = " Create a new department, enables a user to add to the department etc",
      *     tags={"Department"},
      * 
      *   @OA\Parameter(
      *      name="code",
      *      in="query",
-     *      description="This holds value of the faculty code",
+     *      description="This holds value of the department code",
      *      required=true,
      * 
      *      @OA\Schema(
@@ -93,7 +93,18 @@ class DepartmentController extends Controller
      * 
      *   @OA\Parameter(
      *      name="title",
-     *      description="This holds value of the faculty name",
+     *      description="This holds value of the department name",
+     *      in="query",
+     *      required=true,
+     * 
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     * 
+     *   @OA\Parameter(
+     *      name="faculty",
+     *      description="This holds value of the faculty the department would belong to",
      *      in="query",
      *      required=true,
      * 
@@ -106,23 +117,26 @@ class DepartmentController extends Controller
      *         required=true,
      *         description="Staff member registration data",
      *         @OA\JsonContent(
-     *             required={"code", "title"},
-     *             @OA\Property(property="code", type="string",  example="ARSS"),
-     *             @OA\Property(property="title", type="string", example="Arts And Social Science"),
+     *             required={"code", "title","faculty"},
+     *             @OA\Property(property="code", type="string",  example="PSC"),
+     *             @OA\Property(property="faculty", type="integer",  example="1"),
+     *             @OA\Property(property="title", type="string", example="Political Science"),
      *             
      *         )
      *     ),
      *    
      *     @OA\Response(
      *         response=201,
-     *         description="Faculty Created",
+     *         description="Department Created",
      *         @OA\JsonContent(
-     *    
+     *              @OA\Property(property="status", type="string",example="success"),
+     *              @OA\Property(property="message", type="string", example="Department Created"),
      *             @OA\Property(property="data", type="object",
      *              {
-     *                 @OA\Property(property="id", type="integer"),
-     *                 @OA\Property(property="faculty_code", type="string"),
-     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="id", type="integer",example="1"),
+     *                 @OA\Property(property="department_code", type="string",example="PSC"),
+     *                 @OA\Property(property="faculty_id", type="integer",example="1"),
+     *                 @OA\Property(property="title", type="string",example="Political Science"),
      *               }
      *                 
      * )
@@ -186,12 +200,12 @@ class DepartmentController extends Controller
      * @OA\Get(
      *     path="/api/department/view/{id}",
      *     summary="View a Department details",
-     *     description = "This endpoint would be used to view a faculty details by providing the perticular faculty id",
+     *     description = "This endpoint would be used to view a department details by providing the perticular department id",
      *     tags={"Department"},
      * 
      *   @OA\Parameter(
      *      name="id",
-     *      description="This id of the faculty",
+     *      description="This id of the department",
      *      in="path",
      *      required=true,
      *
@@ -210,8 +224,14 @@ class DepartmentController extends Controller
      *             @OA\Property(property="data", type="object",
      *              {
      *                 @OA\Property(property="id", type="integer"),
-     *                 @OA\Property(property="faculty_code", type="string"),
      *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="code", type="string"),
+     *                 @OA\Property(property="faculty", type="object",
+     *                  {
+     *                      @OA\Property(property="id", type="integer"),
+     *                      @OA\Property(property="faculty_code", type="string"),
+     *                      @OA\Property(property="title", type="string"),
+     *                  }),
      *               }
      *                 
      * )
@@ -250,13 +270,13 @@ class DepartmentController extends Controller
      * @OA\Put(
      *     path="/api/department/update/{id}",
      *     summary="Update a department",
-     *     description = " this route enable admin to update a faculty detail",
+     *     description = " this route enable admin to update a department detail",
      *     tags={"Department"},
      * 
      *    @OA\Parameter(
      *      name="id",
      *      in="path",
-     *      description="This faculty id to be updated",
+     *      description="The department id to be updated",
      *      required=true,
      * 
      *      @OA\Schema(
@@ -266,7 +286,7 @@ class DepartmentController extends Controller
      *   @OA\Parameter(
      *      name="code",
      *      in="query",
-     *      description="This holds value of the faculty code",
+     *      description="This holds value of the department code",
      *      required=false,
      * 
      *      @OA\Schema(
@@ -276,7 +296,18 @@ class DepartmentController extends Controller
      * 
      *   @OA\Parameter(
      *      name="title",
-     *      description="This holds value of the faculty name",
+     *      description="This holds value of the department name",
+     *      in="query",
+     *      required=false,
+     * 
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     * 
+     *   @OA\Parameter(
+     *      name="faculty",
+     *      description="This holds value of the faculty id of the department",
      *      in="query",
      *      required=false,
      * 
@@ -289,16 +320,17 @@ class DepartmentController extends Controller
      *         required=true,
      *         description="Staff member registration data",
      *         @OA\JsonContent(
-     *             required={"code", "title"},
-     *             @OA\Property(property="code", type="string",  example="ARSS"),
-     *             @OA\Property(property="title", type="string", example="Arts And Social Science"),
+     *             
+     *             @OA\Property(property="code", type="string",  example="PSC"),
+     *             @OA\Property(property="faculty", type="integer", example="1"),
+     *             @OA\Property(property="title", type="string", example="Political Science"),
      *             
      *         )
      *     ),
      *    
      *     @OA\Response(
      *         response=201,
-     *         description="Faculty Created",
+     *         description="Department Updated",
      *         @OA\JsonContent(
      *    
      *             @OA\Property(property="status", type="string",example="success" )
@@ -353,12 +385,12 @@ class DepartmentController extends Controller
      * @OA\Delete(
      *     path="/api/department/delete/{id}",
      *     summary="Delete a department",
-     *     description = "This endpoint would be used to delete a faculty details by providing the perticular faculty id",
+     *     description = "This endpoint would be used to delete a department details by providing the perticular department id",
      *     tags={"Department"},
      * 
      *   @OA\Parameter(
      *      name="id",
-     *      description="This id of the faculty",
+     *      description="The id of the department",
      *      in="path",
      *      required=true,
      *
@@ -374,7 +406,8 @@ class DepartmentController extends Controller
      *         description="Faculty Details",
      *         @OA\JsonContent(
      *    
-     *             @OA\Property(property="status", type="string", example="success" )
+     *             @OA\Property(property="status", type="string", example="success" ),
+     *             @OA\Property(property="message", type="string", example="Record has been deleted" )
      *                  
      *             
      *         )

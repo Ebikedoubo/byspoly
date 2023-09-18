@@ -403,6 +403,10 @@ class FacultyController extends Controller
         return response()->json(["status" => "error", "message" => "The requested record does not exixt"], 400);
     }
 
+    public function getFacultyDepartment(Faculty $id){
+        return response()->json(["data" => $id->department]);
+    }
+
 
 
 

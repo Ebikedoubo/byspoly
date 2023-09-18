@@ -10,6 +10,6 @@ class Department extends Model
     use HasFactory;
 
     public function faculty(){
-        $this->belongsTo(Faculty::class,"faculty_id","id") ; 
+        return $this->belongsTo(Faculty::class,"faculty_id","id") ; 
     }
 }
