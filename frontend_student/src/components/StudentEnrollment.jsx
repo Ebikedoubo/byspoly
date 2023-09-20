@@ -933,7 +933,7 @@ const StudentEnrollment = () => {
           />
       </div>
       <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
-          <TextInput
+          {/* <TextInput
               className="h-[70px] mt-6"
               required
               name="examname"
@@ -943,7 +943,24 @@ const StudentEnrollment = () => {
               onChange={(e) => {
                 handleOnChange(e, "examname")
               }}
-          />
+          /> */}
+          <TextInput
+              className="h-[70px] mt-6"
+              required
+              type="select"
+              name="examname"
+              error={error["examname"]}
+              label="Select Exam Type"
+              value= {examname < 1 ? "" : examname}
+              onChange={
+                  (e) => {
+  
+                    handleOnChange(e, "examname")
+                  }
+              }
+              isSelect={true}
+              options={option}
+            />
           <TextInput
               className="h-[70px] mt-6"
               required
@@ -1019,7 +1036,7 @@ const StudentEnrollment = () => {
         required
         name="otherexamname"
         label="Exam Name"
-        error={error.addInputFields[index].otherexamname}
+        error={error.addInputFields?.[index]?.otherexamname}
         value={field.otherexamname}
         onChange={(e) =>{
           handleAddInputOnchange(index, e)
@@ -1031,7 +1048,7 @@ const StudentEnrollment = () => {
         type="file"
         name="otherexamcertificate"
         label="Exam Certificate"
-        error={error.addInputFields[index].otherexamcertificate}
+        error={error.addInputFields?.[index]?.otherexamcertificate}
         value={field.otherexamcertificate}
         onChange={(e) =>{
           handleAddInputOnchange(index, e)
@@ -1042,7 +1059,7 @@ const StudentEnrollment = () => {
         required
         name="otherexamdate"
         label="Exam Year"
-        error={error.addInputFields[index].otherexamdate}
+        error={error.addInputFields?.[index]?.otherexamdate}
         onChange={(e) =>{ 
           handleOnChangeDate2(index, e)
         }}
@@ -1169,6 +1186,9 @@ const StudentEnrollment = () => {
                 address = {address}
                 stateArea = {stateArea}
                 localGovt = {localGovt}
+                primaryname = {primaryname}
+                primaryresult = {primaryresult}
+                primarydate = {primarydate}
                 schoolname ={schoolname}
                 schooldate = {schooldate}
                 examname = {examname}
