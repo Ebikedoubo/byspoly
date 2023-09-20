@@ -19,6 +19,9 @@ function StudentEnrollmentPage({
     address,
     stateArea,
     localGovt,
+    primaryname,
+    primaryresult,
+    primarydate,
     schoolname,
     schooldate,
     examname,
@@ -52,19 +55,82 @@ function StudentEnrollmentPage({
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-            <p>First Name: {firstname}</p>
-            <p>Middle Name: {middlename}</p>
-            <p>Last Name: {lastname}</p>
-            <p>maidenname: {maidenname}</p>
-            <p>gender: {gender}</p>
-            <p>phone: {phone}</p>
-            <p>email: {email}</p>
-            <p>dateofbirth: {dateofbirth}</p>
-            <img src={birthcertificate} alt="birthcertificate" />
-            <p>nationality: {nationality}</p>
-            <p>address: {address}</p>
-            <p>stateArea: {stateArea}</p>
-            <p>localGovt: {localGovt}</p>
+            <table class="min-w-full bg-white border rounded-lg">
+        <thead>
+            <tr>
+                <th class="border-b-2 border-gray-300 py-2">Serial Number</th>
+                <th class="border-b-2 border-gray-300 py-2">Title</th>
+                <th class="border-b-2 border-gray-300 py-2">Datas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">1</td>
+                <td class="border-b border-gray-300 py-2 px-4">First Name:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{firstname}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">2</td>
+                <td class="border-b border-gray-300 py-2 px-4">Middle name:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{middlename}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">3</td>
+                <td class="border-b border-gray-300 py-2 px-4">Last Name:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{lastname}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">4</td>
+                <td class="border-b border-gray-300 py-2 px-4">Mother's Maiden Name:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{maidenname}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">5</td>
+                <td class="border-b border-gray-300 py-2 px-4">Gender:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{gender}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">6</td>
+                <td class="border-b border-gray-300 py-2 px-4">Phone Number:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{phone}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">7</td>
+                <td class="border-b border-gray-300 py-2 px-4">Email:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{email}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">8</td>
+                <td class="border-b border-gray-300 py-2 px-4">Date of Birth:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{dateofbirth}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">9</td>
+                <td class="border-b border-gray-300 py-2 px-4">Birth Certificate:</td>
+                <td class="border-b border-gray-300 py-2 px-4"><img src={birthcertificate} alt="birthcertificate" /></td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">10</td>
+                <td class="border-b border-gray-300 py-2 px-4">Nationality:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{nationality}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">11</td>
+                <td class="border-b border-gray-300 py-2 px-4">Residential Address:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{address}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">12</td>
+                <td class="border-b border-gray-300 py-2 px-4">State of Origin:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{stateArea}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">13</td>
+                <td class="border-b border-gray-300 py-2 px-4">Local Government:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{localGovt}</td>
+            </tr>
+        </tbody>
+    </table>
         </Typography>
       </AccordionDetails>
     </Accordion>
@@ -80,22 +146,91 @@ function StudentEnrollmentPage({
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-            <p>School Name: {schoolname}</p>
-            <p>Date: {schooldate}</p>
-            <p>Exam Name: {examname}</p>
-            <p>Exam Number: {examnumber}</p>
-            <p>Exam Result: <img src={examresult} alt="exam result" /></p>
-            <p>Jamb Number: {jambnumber}</p>
-            <p>Jame Score: {jambscore}</p>
-            <p>Jamb Result: <img src={jambresult} alt="Jamb Result" /></p>
-           {addInputFields.map((data, index)=>(
+                <table class="min-w-full bg-white border rounded-lg">
+        <thead>
+            <tr>
+                <th class="border-b-2 border-gray-300 py-2">Serial Number</th>
+                <th class="border-b-2 border-gray-300 py-2">Title</th>
+                <th class="border-b-2 border-gray-300 py-2">Datas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">1</td>
+                <td class="border-b border-gray-300 py-2 px-4">Primary School Name:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{primaryname}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">2</td>
+                <td class="border-b border-gray-300 py-2 px-4">Primary School Result:</td>
+                <td class="border-b border-gray-300 py-2 px-4"><img src={primaryresult} alt="primaryschoolresult" /></td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">3</td>
+                <td class="border-b border-gray-300 py-2 px-4">Date of Graduation:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{primarydate}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">4</td>
+                <td class="border-b border-gray-300 py-2 px-4">Secondary School Name:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{schoolname}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">5</td>
+                <td class="border-b border-gray-300 py-2 px-4">Date:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{schooldate}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">6</td>
+                <td class="border-b border-gray-300 py-2 px-4">Exam Name:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{examname}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">7</td>
+                <td class="border-b border-gray-300 py-2 px-4">Exam Number:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{examnumber}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">8</td>
+                <td class="border-b border-gray-300 py-2 px-4">Exam Result:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{examresult}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">9</td>
+                <td class="border-b border-gray-300 py-2 px-4">Jamb Number:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{jambnumber}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">10</td>
+                <td class="border-b border-gray-300 py-2 px-4">Jamb Score:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{jambscore}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">11</td>
+                <td class="border-b border-gray-300 py-2 px-4">Jamb Result:</td>
+                <td class="border-b border-gray-300 py-2 px-4"><img src={jambresult} alt="jambresult" /></td>
+            </tr>
+            {addInputFields.map((data, index)=>(
             <div key={index}>
-            <p>Other Exam: {data.otherexamname}</p>
-            <p>Other Exam Certificate: <img src={data.otherexamcertificate} alt="" /></p>
-            <p>Other Exam Date: {data.otherexamdate}</p>
-            
-            </div>
-           ))}
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">12</td>
+                <td class="border-b border-gray-300 py-2 px-4">Other Exam Name:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{data.otherexamname}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">13</td>
+                <td class="border-b border-gray-300 py-2 px-4">Other Exam Certificate:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{data.otherexamcertificate}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">14</td>
+                <td class="border-b border-gray-300 py-2 px-4">Other Exam Date:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{data.otherexamdate}</td>
+            </tr>
+             </div>
+             ))}
+        </tbody>
+    </table>
         </Typography>
       </AccordionDetails>
     </Accordion>
@@ -111,10 +246,37 @@ function StudentEnrollmentPage({
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-            <p>Faculty: {faculty}</p>
-            <p>Department: {department}</p>
-            <p>More Faculty: {morefaculty}</p>
-            <p>More Department: {moredepartment}</p>
+            <table class="min-w-full bg-white border rounded-lg">
+        <thead>
+            <tr>
+                <th class="border-b-2 border-gray-300 py-2">Serial Number</th>
+                <th class="border-b-2 border-gray-300 py-2">Title</th>
+                <th class="border-b-2 border-gray-300 py-2">Datas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">1</td>
+                <td class="border-b border-gray-300 py-2 px-4">Faculty:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{faculty}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">2</td>
+                <td class="border-b border-gray-300 py-2 px-4">Department:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{department}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">3</td>
+                <td class="border-b border-gray-300 py-2 px-4">Other Faculty:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{morefaculty}</td>
+            </tr>
+            <tr>
+                <td class="border-b border-gray-300 py-2 px-4">4</td>
+                <td class="border-b border-gray-300 py-2 px-4">Other Department:</td>
+                <td class="border-b border-gray-300 py-2 px-4">{moredepartment}</td>
+            </tr>
+        </tbody>
+    </table>
         </Typography>
       </AccordionDetails>
     </Accordion>

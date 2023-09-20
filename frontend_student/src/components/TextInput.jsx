@@ -124,7 +124,6 @@ export default function TextInput(props) {
           fullWidth
           sx={{ m: 1, maxWidth: "100%" }}
           className={`flex justify-center ${error ? errorClasses : ''}`}
-          required
         />);
     }
 
@@ -136,3 +135,8 @@ export default function TextInput(props) {
     </div>
   );
 }
+
+
+
+
+
