@@ -4,7 +4,7 @@ import AppModal from "../AppModal";
 import TextInput from "../TextInput";
 import axios from "axios"
 import { toast } from 'react-toastify';
-
+import Card from "../card/Card"
 function Staffs() {
 
   const [loading, setLoading] = useState(false);
@@ -52,12 +52,12 @@ function Staffs() {
       const response = await axios.post(apiUrl, {}, axiosConfig);
 
       const newStaffData = response.data.data.map((data, index) => {
-      return {
-        ...data,
-        id: staffs.length + index + 1
-      };
-    });
-    console.log(newStaffData)
+        return {
+          ...data,
+          id:  index + 1
+        };
+      });
+      console.log(newStaffData)
 
       setStaffs([...newStaffData]);
       console.log(staffs)
@@ -210,17 +210,20 @@ function Staffs() {
           modalIsOpen={viewModalIsOpen}
           title={`View Staffs: ${selectedStaffs?.name}`}
         >
-        <div className=" flex flex-col gap-8">
 
-        <span className="flex">
-          <h3 className="font-semibold pr-8">Staff Name: </h3>
-          <p>{selectedStaffs?.name}</p>
-</span>
+
+          <div className=" flex flex-col gap-6">
+
+            <span className="flex">
+              <h3 className="font-semibold pr-8">Staff Name: </h3>
+              <p>{selectedStaffs?.name}</p>
+            </span>
             <span className="flex">
               <h3 className="font-semibold pr-8">Staff Email: </h3>
-            <p>{selectedStaffs?.email}</p>
-          </span>
-        </div>
+              <p>{selectedStaffs?.email}</p>
+            </span>
+          </div>
+
         </AppModal>
       )}
     </div>
