@@ -1,6 +1,7 @@
 import { height } from "@mui/system";
 import React from "react";
 import Modal from "react-modal";
+import Card from "./card/Card";
 
 /**
  * Represents the Default Modal Component
@@ -50,15 +51,19 @@ export default function AppModal({ children, setIsOpen, modalIsOpen, title }) {
         ariaHideApp={false}
       >
         <div
-        className=" max-h-[700px] z-50"
+          className=" max-h-[700px] z-50"
         >
-          <div className="flex gap-40 lg:justify-between mb-10 mt-10">
-            <h2 className="cursor-pointer mt-7" ref={(_subtitle) => (subtitle = _subtitle)}>
+          <div className="flex gap-80 lg:justify-between mb-10 mt-10">
+            <h2 className="cursor-pointer md-max:ml-12" ref={(_subtitle) => (subtitle = _subtitle)}>
               <b>{title?.toUpperCase()}</b>
             </h2>
             <button onClick={closeModal}><b>Close</b></button>
           </div>
-          <div className="h-[100%] items-center flex flex-col">{children}</div>
+          <div className="h-[100%] items-center flex flex-col">
+            <Card extra={"items-center flex-col w-full h-full p-[16px] bg-cover"}>
+              {children}
+            </Card>
+          </div>
 
         </div>
       </Modal>
