@@ -13,12 +13,6 @@ function Staffs() {
   const [selectedStaffs, setSelectedStaffs] = useState(null);
   const [staffs, setStaffs] = useState([])
 
-  const sampleStaffs = Array.from({ length: 100 }, (_, index) => ({
-    id: index + 1,
-    staffName: `Staff ${index + 1}`,
-    description: `Description for Staff ${index + 1}`,
-  }));
-
 
   const [inputFields, setInputFields] = useState([
     {
@@ -55,13 +49,18 @@ function Staffs() {
       };
 
       // Make a GET request to the API endpoint with the authorization header
-      const response = await axios.get(apiUrl, axiosConfig);
+      const response = await axios.post(apiUrl, {}, axiosConfig);
 
+      const newStaffData = response.data.data.map((data, index) => {
+      return {
+        ...data,
+        id: staffs.length + index + 1
+      };
+    });
+    console.log(newStaffData)
 
-      const newStaffData = response.data;
-
-
-      setStaffs(newStaffData);
+      setStaffs([...newStaffData]);
+      console.log(staffs)
 
     } catch (error) {
       console.error('Error fetching more staff data:', error);
@@ -72,12 +71,14 @@ function Staffs() {
     fetchMoreDataProps()
   }, [])
 
-  const columns = ["ID", "Staff Name", "Staff Code", "Actions"];
-  const dataKeyAccessors = ["id", "staffName", "staffCode", "CTA"];
+  const columns = ["ID", "Staff Name", "Email", "Actions"];
+  const dataKeyAccessors = ["id", "name", "email", "CTA"];
 
   const viewAction = (staffId) => {
-    const staff = sampleStaffs.find((f) => f.id === staffId);
-    setSelectedStaffs(staff);
+
+    const staff = staffs.find((f) => f.id === staffId);
+    setSelectedStaffs(prevStaff => ({ ...prevStaff, ...staff }));
+
     setViewModalIsOpen(true); // Open the view modal
   };
 
@@ -143,7 +144,7 @@ function Staffs() {
       <h2>Staff List</h2>
       <TableComponent
         columns={columns}
-        data={sampleStaffs}
+        data={staffs}
         actionText="Create Staff"
         action={createStaff}
         dataKeyAccessors={dataKeyAccessors}
@@ -196,21 +197,30 @@ function Staffs() {
 
             </div>
             <div className="flex items-center w-full justify-center">
-              <button className="mt-4 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500" type="submit">{loading ? 'Submitting' : 'Submit'}</button>
+              <button className="my-6 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500" type="submit">{loading ? 'Submitting' : 'Submit'}</button>
             </div>
           </div>
 
         </form>
       </AppModal>
 
-      {selectedStaffs && (
+      {viewModalIsOpen && (
         <AppModal
           setIsOpen={setViewModalIsOpen}
           modalIsOpen={viewModalIsOpen}
-          title={`View Staffs: ${selectedStaffs?.staffName}`}
+          title={`View Staffs: ${selectedStaffs?.name}`}
         >
-          <h3>{selectedStaffs?.staffName}</h3>
-          <p>{selectedStaffs?.description}</p>
+        <div className=" flex flex-col gap-8">
+
+        <span className="flex">
+          <h3 className="font-semibold pr-8">Staff Name: </h3>
+          <p>{selectedStaffs?.name}</p>
+</span>
+            <span className="flex">
+              <h3 className="font-semibold pr-8">Staff Email: </h3>
+            <p>{selectedStaffs?.email}</p>
+          </span>
+        </div>
         </AppModal>
       )}
     </div>
