@@ -52,13 +52,13 @@ export default function AppModal({ children, setIsOpen, modalIsOpen, title }) {
         <div
         className=" max-h-[700px] z-50"
         >
-          <div className="flex justify-between mb-10">
-            <h2 className="cursor-pointer" ref={(_subtitle) => (subtitle = _subtitle)}>
+          <div className="flex gap-40 lg:justify-between mb-10 mt-10">
+            <h2 className="cursor-pointer mt-7" ref={(_subtitle) => (subtitle = _subtitle)}>
               <b>{title?.toUpperCase()}</b>
             </h2>
             <button onClick={closeModal}><b>Close</b></button>
           </div>
-          <div className="h-[100%]">{children}</div>
+          <div className="h-[100%] items-center flex flex-col">{children}</div>
 
         </div>
       </Modal>
