@@ -383,7 +383,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $loggedinuser = $userAuth = auth()->guard('sanctum')->user();;
+        $loggedinuser = $userAuth = auth()->guard('sanctum')->user();
         if (empty($loggedinuser)) {
             return response()->json(['status' => 'error', 'message' => 'you dont have write and edit access',  'data' => ''], 400);
         }

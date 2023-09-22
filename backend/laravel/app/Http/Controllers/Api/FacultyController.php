@@ -467,8 +467,6 @@ class FacultyController extends Controller
     }
 
 
-
-
     private function model()
     {
         return new Faculty();

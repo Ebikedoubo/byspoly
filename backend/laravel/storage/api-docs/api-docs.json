@@ -11,6 +11,511 @@
         }
     ],
     "paths": {
+        "/api/accademic-session": {
+            "get": {
+                "tags": [
+                    "Accademic Session"
+                ],
+                "summary": "list of all accademic session",
+                "description": "This endpoint would fetch the list of all accademic sessions",
+                "operationId": "cbc4050be0773b072b9fb3cebb6fbc70",
+                "responses": {
+                    "200": {
+                        "description": "Accademic session list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "session_title": {
+                                                        "type": "string"
+                                                    },
+                                                    "session_code": {
+                                                        "type": "string"
+                                                    },
+                                                    "session_start_date": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "session_end_date": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/accademic-session/create": {
+            "post": {
+                "tags": [
+                    "Accademic Session"
+                ],
+                "summary": "Create new accademic session",
+                "description": "This endpoint would create a new accademic sessions",
+                "operationId": "09862fef150040c9ec95d6d7ae7ae192",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Student login data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "code",
+                                    "start_date",
+                                    "end_date"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "2007/2008"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "code"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Accademic session successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/accademic-session/view/{id}": {
+            "get": {
+                "tags": [
+                    "Accademic Session"
+                ],
+                "summary": "view a perticular accademic session",
+                "description": "This endpoint would fetch details of an accademic sessions",
+                "operationId": "cf27f6163df5d91afb023205f669985d",
+                "responses": {
+                    "200": {
+                        "description": "Accademic session fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "session_title": {
+                                                    "type": "string"
+                                                },
+                                                "session_code": {
+                                                    "type": "string"
+                                                },
+                                                "session_start_date": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "session_end_date": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/accademic-session/update/{id}": {
+            "put": {
+                "tags": [
+                    "Accademic Session"
+                ],
+                "summary": "Update accademic session",
+                "description": "This endpoint would update accademic sessions",
+                "operationId": "37fc46b68d955f900a20763e9902fe04",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Student login data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "2007/2008"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "code"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Accademic session successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/accademic-session/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Accademic Session"
+                ],
+                "summary": "Delete a perticular accademic session",
+                "description": "This endpoint would delete a perticular accademic sessions",
+                "operationId": "a7ffcac48d2f67eee215cd2c7b602638",
+                "responses": {
+                    "200": {
+                        "description": "Accademic session  has been removed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record has been removed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/accademic-session/mark-as-current-session/{id}": {
+            "get": {
+                "tags": [
+                    "Accademic Session"
+                ],
+                "summary": "Make a perticular accademic session current",
+                "description": "This endpoint would make a perticular accademic sessions to be the current session ",
+                "operationId": "00dda47a036dc7872dd6815fe2fa7511",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Current session has been updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Current session has been updated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/site/state": {
             "get": {
                 "tags": [
@@ -667,6 +1172,364 @@
                 }
             }
         },
+        "/api/exam-type": {
+            "get": {
+                "tags": [
+                    "Exam Type"
+                ],
+                "summary": "list of all types of exams",
+                "description": "This endpoint would fetch the list of all examination types",
+                "operationId": "246d08184d7c7a489a4fd88d6219af2b",
+                "responses": {
+                    "200": {
+                        "description": "Exam Type list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "log_user_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/exam-type/create": {
+            "post": {
+                "tags": [
+                    "Exam Type"
+                ],
+                "summary": "Create new exam type",
+                "description": "This endpoint would create a new exam type",
+                "operationId": "5fa5163e344cabb2cae5672f2ecdbbca",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Student login data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "WAEC"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Exam Type successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/exam-type/view/{id}": {
+            "get": {
+                "tags": [
+                    "Exam Type"
+                ],
+                "summary": "view a perticular exam type",
+                "description": "This endpoint would fetch details of an exam type",
+                "operationId": "572717aadf69dc599a26094625118767",
+                "responses": {
+                    "200": {
+                        "description": "Exam TYpe fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "log_user_id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/exam-type/update/{id}": {
+            "put": {
+                "tags": [
+                    "Exam Type"
+                ],
+                "summary": "Update exam type",
+                "description": "This endpoint would update exam type",
+                "operationId": "8056293d130cd3bd9a62a88e6059b255",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Exam type update data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "WAEC"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Exam Type successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/exam-type/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Exam Type"
+                ],
+                "summary": "Delete a perticular exam type",
+                "description": "This endpoint would delete a perticular exam type",
+                "operationId": "1354abeedc9df22e81ecdb642aa6aaee",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Exam type  has been removed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record has been removed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/faculty": {
             "get": {
                 "tags": [
@@ -1239,6 +2102,1179 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Please confirm you have access "
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/fee": {
+            "get": {
+                "tags": [
+                    "Fee"
+                ],
+                "summary": "list of all types of fee",
+                "description": "This endpoint would fetch the list of all fee",
+                "operationId": "05edebb1bccf01bc1a50a4919c9f5689",
+                "responses": {
+                    "200": {
+                        "description": "Fee list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "amount": {
+                                                        "type": "string",
+                                                        "example": "500"
+                                                    },
+                                                    "fee": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": "1"
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "School Fee"
+                                                            },
+                                                            "status": {
+                                                                "type": "string",
+                                                                "example": "1"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "faculty": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": "1"
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Arts and Social Science"
+                                                            },
+                                                            "status": {
+                                                                "type": "string",
+                                                                "example": "1"
+                                                            },
+                                                            "faculty_code": {
+                                                                "type": "string",
+                                                                "example": "ASS"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "department": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": "1"
+                                                            },
+                                                            "faculty_id": {
+                                                                "type": "integer",
+                                                                "example": "1"
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Political Science"
+                                                            },
+                                                            "status": {
+                                                                "type": "string",
+                                                                "example": "1"
+                                                            },
+                                                            "department_code": {
+                                                                "type": "string",
+                                                                "example": "PSC"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "session": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": "1"
+                                                            },
+                                                            "session_title": {
+                                                                "type": "string",
+                                                                "example": "2006/2007"
+                                                            },
+                                                            "status": {
+                                                                "type": "string",
+                                                                "example": "1"
+                                                            },
+                                                            "session_code": {
+                                                                "type": "string",
+                                                                "example": "Test101"
+                                                            },
+                                                            "session_start_date": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            },
+                                                            "session_end_date": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/fee/create": {
+            "post": {
+                "tags": [
+                    "Fee"
+                ],
+                "summary": "Create new fee",
+                "description": "This endpoint would create a new fee",
+                "operationId": "83e71f214974e8d9142ce9c055f488f5",
+                "parameters": [
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "faculty",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "department",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "session",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Student login data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "type",
+                                    "faculty",
+                                    "department",
+                                    "session"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "type": "string",
+                                        "example": "500"
+                                    },
+                                    "type": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "faculty": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "department": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "session": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Fee successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/fee/view/{id}": {
+            "get": {
+                "tags": [
+                    "Fee"
+                ],
+                "summary": "view a perticular fee",
+                "description": "This endpoint would fetch details of fee",
+                "operationId": "8c870929077af656778d9191090fc65f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fee fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "amount": {
+                                                    "type": "string",
+                                                    "example": "500"
+                                                },
+                                                "fee": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "School Fee"
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "example": "1"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "faculty": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Arts and Social Science"
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "example": "1"
+                                                        },
+                                                        "faculty_code": {
+                                                            "type": "string",
+                                                            "example": "ASS"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "department": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "faculty_id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Political Science"
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "example": "1"
+                                                        },
+                                                        "department_code": {
+                                                            "type": "string",
+                                                            "example": "PSC"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "session": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "session_title": {
+                                                            "type": "string",
+                                                            "example": "2006/2007"
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "example": "1"
+                                                        },
+                                                        "session_code": {
+                                                            "type": "string",
+                                                            "example": "Test101"
+                                                        },
+                                                        "session_start_date": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "session_end_date": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "page not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/fee/update/{id}": {
+            "put": {
+                "tags": [
+                    "Fee"
+                ],
+                "summary": "Update fee",
+                "description": "This endpoint would update Fee",
+                "operationId": "c3a7bb2e79cf97bc0d40a38764617129",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "faculty",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "department",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "session",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "fee Update data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "amount": {
+                                        "type": "string",
+                                        "example": "500"
+                                    },
+                                    "type": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "faculty": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "department": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "session": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "fee successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/fee/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Fee"
+                ],
+                "summary": "Delete a perticular fee",
+                "description": "This endpoint would delete a perticular fee",
+                "operationId": "650cb7e6b025816584834d35c5304b08",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fee  has been removed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record has been removed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/fee/type": {
+            "get": {
+                "tags": [
+                    "Fee Type"
+                ],
+                "summary": "list of all types of fee type",
+                "description": "This endpoint would fetch the list of all fee type",
+                "operationId": "343e77cce2a3cc3962cf907c2f10aa69",
+                "responses": {
+                    "200": {
+                        "description": "Fee type list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Application fee"
+                                                    },
+                                                    "status": {
+                                                        "type": "integer"
+                                                    },
+                                                    "log_user_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    },
+                                                    "update_at": {
+                                                        "type": "string",
+                                                        "format": "date"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/fee/type/create": {
+            "post": {
+                "tags": [
+                    "Fee Type"
+                ],
+                "summary": "Create new fee",
+                "description": "This endpoint would create a new fee type",
+                "operationId": "e884501a3ca6225583b8a4cd28d65f84",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Application Fee"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Fee type successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Fee type created succefully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/fee/type/view/{id}": {
+            "get": {
+                "tags": [
+                    "Fee Type"
+                ],
+                "summary": "view a perticular fee type",
+                "description": "This endpoint would fetch details of fee type",
+                "operationId": "d7dc34defd0dc5f37056eaf5e23235ff",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fee Type fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Application Fee"
+                                                },
+                                                "status": {
+                                                    "type": "integer"
+                                                },
+                                                "log_user_id": {
+                                                    "type": "integer"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "could not find any record with the above id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/fee/type/update/{id}": {
+            "put": {
+                "tags": [
+                    "Fee Type"
+                ],
+                "summary": "Update fee type",
+                "description": "This endpoint would update Fee type",
+                "operationId": "f2fe33654a75c19855f0dcf95d370f62",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "fee Update data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Application fee"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "fee type successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/fee/type/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Fee Type"
+                ],
+                "summary": "Delete a perticular fee type",
+                "description": "This endpoint would delete a perticular fee type",
+                "operationId": "4894f9dc2a4381eb026d36c2cc6325ec",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fee type  has been removed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Record has been removed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/fee/current-application-fee": {
+            "get": {
+                "tags": [
+                    "Fee"
+                ],
+                "summary": "view current application fee",
+                "description": "This endpoint would fetch details of the current application fee",
+                "operationId": "281d580dacaea04ecec9af463022d486",
+                "responses": {
+                    "200": {
+                        "description": "Current Application fee",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "faculty_id": {
+                                                    "type": "integer"
+                                                },
+                                                "department_id": {
+                                                    "type": "integer"
+                                                },
+                                                "fee_type": {
+                                                    "type": "integer"
+                                                },
+                                                "status": {
+                                                    "type": "integer"
+                                                },
+                                                "amount": {
+                                                    "type": "integer"
+                                                },
+                                                "session_id": {
+                                                    "type": "integer"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "could not find any record with the above id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
                                         }
                                     },
                                     "type": "object"
