@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fee_managers', function (Blueprint $table) {
-            $table->id();
-            $table->integer("faculty_id");
-            $table->integer("department_id");
-            $table->integer("fee_type");
-            $table->string("amount");
+        Schema::table('students', function (Blueprint $table) {
             $table->integer("session_id");
-            $table->timestamps();
         });
     }
 
@@ -27,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fee_managers');
+        Schema::table('students', function (Blueprint $table) {
+            $table->dropColumn("session_id");
+        });
     }
 };
