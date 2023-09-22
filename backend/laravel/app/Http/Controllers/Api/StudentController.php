@@ -353,6 +353,7 @@ class StudentController extends Controller
     public function studentApplicationRegistraton(Request $request): JsonResponse
     {
         $studentModel = new Student();
+        
         //$studentModel = new ApplicationSchoolHistory();
         // validate request entry 
         $validator = Validator::make($request->all(), [
