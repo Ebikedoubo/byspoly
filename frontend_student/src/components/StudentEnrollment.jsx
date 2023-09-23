@@ -1,8 +1,9 @@
-import React,{ useState } from "react";
+import React,{ useState,useEffect } from "react";
 import moment from "moment";
 import Moment from 'react-moment';
 import Logo from "../assests/bayelsalogo.jpeg";
 import logo1 from "../assests/bayelsalogo.png"
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Grid,
@@ -129,6 +130,16 @@ const StudentEnrollment = () => {
         ]
     });
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      const token = localStorage.getItem("token")
+
+      if (token !== null) {
+          navigate('/dashboard');
+      }
+
+  }, [])
     const handleAddInputOnchange = (index, e) =>{
       console.log(e);
   // Create a copy of the addInputFields array and update the specific field by index
