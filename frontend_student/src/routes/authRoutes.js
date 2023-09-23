@@ -1,5 +1,5 @@
 import Login from "../pages/auth/Login";
-import StudentEnrollment from "../components/StudentEnrollment";
+import StudentEnrollmentPage from "../pages/studentEnrollmentPage/StudentEnrollmentPage";
 
 export const authRoutes = [
   {
@@ -9,7 +9,7 @@ export const authRoutes = [
   },
   {
     path: '/studentenrollment',
-    component: StudentEnrollment,
+    component: StudentEnrollmentPage,
     exact: true,
   },
 ];
