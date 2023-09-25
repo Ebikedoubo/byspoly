@@ -396,17 +396,21 @@ class StudentController extends Controller
                     $applicationSchools->school_name = $schoolAttended["school_name"];
                     $applicationSchools->graduation_year = $schoolAttended["graduation_year"];
                     // make document upload here 
-                    $image = $schoolAttended['image'];
-                    $imageName = time() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('images/application'), $imageName);
-                    $document->file_path = '/images/project/' . $imageName;
-                    $document->status = 1;
-                    // save school details and uploaded documents
-                    if ($applicationSchools->save() && $document->save()) {
-                        $applicationDocument->student_id = $student->id;
-                        $applicationDocument->document_id = $document->id;
-                        $applicationDocument->status = 1;
-                        $applicationDocument->save();
+                    if (!empty($schoolAttended['image'])) {
+                        $image = $schoolAttended['image'];
+                        $imageName = time() . '.' . $image->getClientOriginalExtension();
+                        $image->move(public_path('images/application'), $imageName);
+                        $document->file_path = '/images/project/' . $imageName;
+                        $document->status = 1;
+                        // save school details and uploaded documents
+                        if ($applicationSchools->save() && $document->save()) {
+                            $applicationDocument->student_id = $student->id;
+                            $applicationDocument->document_id = $document->id;
+                            $applicationDocument->status = 1;
+                            $applicationDocument->save();
+                        }
+                    } else {
+                        $applicationSchools->save();
                     }
                 }
 
