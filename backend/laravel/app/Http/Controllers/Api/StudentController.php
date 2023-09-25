@@ -353,7 +353,7 @@ class StudentController extends Controller
     public function studentApplicationRegistraton(Request $request): JsonResponse
     {
         $studentModel = new Student();
-        
+
         //$studentModel = new ApplicationSchoolHistory();
         // validate request entry 
         $validator = Validator::make($request->all(), [
@@ -388,17 +388,21 @@ class StudentController extends Controller
                     $applicationSchools->school_name = $schoolAttended["school_name"];
                     $applicationSchools->graduation_year = $schoolAttended["graduation_year"];
                     // make document upload here 
-                    $image = $schoolAttended['image'];
-                    $imageName = time() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('images/application'), $imageName);
-                    $document->file_path = '/images/project/' . $imageName;
-                    $document->status = 1;
-                    // save school details and uploaded documents
-                    if ($applicationSchools->save() && $document->save()) {
-                        $applicationDocument->student_id = $student->id;
-                        $applicationDocument->document_id = $document->id;
-                        $applicationDocument->status = 1;
-                        $applicationDocument->save();
+                    if (!empty($schoolAttended['image'])) {
+                        $image = $schoolAttended['image'];
+                        $imageName = time() . '.' . $image->getClientOriginalExtension();
+                        $image->move(public_path('images/application'), $imageName);
+                        $document->file_path = '/images/project/' . $imageName;
+                        $document->status = 1;
+                        // save school details and uploaded documents
+                        if ($applicationSchools->save() && $document->save()) {
+                            $applicationDocument->student_id = $student->id;
+                            $applicationDocument->document_id = $document->id;
+                            $applicationDocument->status = 1;
+                            $applicationDocument->save();
+                        }
+                    } else {
+                        $applicationSchools->save();
                     }
                 }
 
@@ -446,7 +450,7 @@ class StudentController extends Controller
             }
             // remeber to send email to dtudent to confirm that their application was a success and the schould would reach out to them via their email
             DB::commit();
-            return response()->json(['status' => "success",'message' => "Application was a success",'data' => $student], 200);
+            return response()->json(['status' => "success", 'message' => "Application was a success", 'data' => $student], 200);
         } catch (\Exception $e) {
 
             DB::rollBack();

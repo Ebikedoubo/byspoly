@@ -90,6 +90,9 @@ function StudentEnrollmentDetailsComponent(props) {
                                 <BlockSectionComponent title="Primary School">
                                     {data.primaryname}
                                 </BlockSectionComponent>
+                                <BlockSectionComponent title="First Leaving school Certificate">
+                                    {data.primaryresult}
+                                </BlockSectionComponent>
                                 <BlockSectionComponent title="Date of Graduation">
                                     {data.primarydate}
                                 </BlockSectionComponent>
