@@ -3656,7 +3656,8 @@
                                                 "exam_type_id",
                                                 "exam_number",
                                                 "exam_date",
-                                                "image"
+                                                "image",
+                                                "title"
                                             ],
                                             "properties": {
                                                 "exam_type_id": {
@@ -3675,6 +3676,11 @@
                                                 "image": {
                                                     "type": "string",
                                                     "format": "binary"
+                                                },
+                                                "title": {
+                                                    "description": "this is used to identify document in the document table relationship",
+                                                    "type": "string",
+                                                    "example": "Waec result"
                                                 }
                                             },
                                             "type": "object"
@@ -3683,6 +3689,12 @@
                                     "schools_attended": {
                                         "type": "array",
                                         "items": {
+                                            "required": [
+                                                "school_name",
+                                                "graduation_year",
+                                                "image",
+                                                "title"
+                                            ],
                                             "properties": {
                                                 "school_name": {
                                                     "type": "string"
@@ -3694,6 +3706,11 @@
                                                 "image": {
                                                     "type": "string",
                                                     "format": "binary"
+                                                },
+                                                "title": {
+                                                    "description": "this is used to identify document in the document table relationship",
+                                                    "type": "string",
+                                                    "example": "First leaving school certificate"
                                                 }
                                             },
                                             "type": "object"

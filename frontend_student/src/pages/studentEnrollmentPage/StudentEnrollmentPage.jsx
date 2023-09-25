@@ -76,12 +76,14 @@ const StudentEnrollmentPage = () => {
   const [schoolname, setSchoolname] = React.useState("")
   const [schooldate, setSchooldate] = React.useState("")
   const [examname, setExamname] = React.useState("")
+  const [examdate, setExamdate] = React.useState("")
   const [examnumber, setExamnumber] = React.useState("")
   const [examresult, setExamresult] = React.useState("")
   // // jamb result
   const [jambnumber, setJambnumber] = React.useState("")
   const [jambscore, setJambscore] = React.useState("")
   const [jambresult, setJambresult] = React.useState("")
+  const [jambdate, setJambdate] = React.useState("")
   // faculties/deparment
 
   const [faculty, setFaculty] = React.useState("")
@@ -93,7 +95,8 @@ const StudentEnrollmentPage = () => {
   const [addInputFields, setAddInputFields] = React.useState([{
     otherexamname: "",
     otherexamcertificate: "",
-    otherexamdate: ""
+    otherexamdate: "",
+    otherexamnumber: ""
   }]);
 
   const [error, setError] = React.useState({
@@ -118,11 +121,13 @@ const StudentEnrollmentPage = () => {
     schooldate: false,
     examname: false,
     examnumber: false,
+    examdate: false,
     examresult: false,
     jambname: false,
     jambnumber: false,
     jambscore: false,
     jambresult: false,
+    jambdate: false,
     faculty: false,
     department: false,
     morefaculty: false,
@@ -131,7 +136,8 @@ const StudentEnrollmentPage = () => {
       {
         otherexamname: false,
         otherexamcertificate: false,
-        otherexamdate: false
+        otherexamdate: false,
+        otherexamnumber: false,
       }
     ]
   });
@@ -221,6 +227,16 @@ const StudentEnrollmentPage = () => {
         // code to be executed when the expression matches value1
         setExamname(e.target.value)
         break;
+      case "examdate":
+        // code to be executed when the expression matches value1
+        let formattedDate = moment(e).format("YYYY-MM-DD");
+        setExamdate(formattedDate)
+        break;
+      case "jambdate":
+        // code to be executed when the expression matches value1
+        let formattedJambDate = moment(e).format("YYYY-MM-DD");
+        setJambdate(formattedJambDate)
+        break;
       case "examnumber":
         // code to be executed when the expression matches value1
         setExamnumber(e.target.value)
@@ -288,10 +304,12 @@ const StudentEnrollmentPage = () => {
       examname: false,
       examnumber: false,
       examresult: false,
+      examdate: false,
       jambname: false,
       jambnumber: false,
       jambscore: false,
       jambresult: false,
+      jambdate: false,
       faculty: false,
       department: false,
       morefaculty: false,
@@ -489,6 +507,10 @@ const StudentEnrollmentPage = () => {
     setAddInputFields(updatedFields)
   };
 
+  const checkOtherExamIsGreaterthanOne = (field) => {
+
+
+  }
   const handleNext = () => {
     let status = false;
     scrollToTop()
@@ -537,55 +559,117 @@ const StudentEnrollmentPage = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     } else if (activeStep === 1) {
-      if (
-        primaryname.trim() === "" ||
-        primaryresult.trim() === "" ||
-        primarydate === "" ||
-        schoolname.trim() === "" ||
-        schooldate === "" ||
-        examname.trim() === "" ||
-        examnumber.trim() === "" ||
-        examresult.trim() === "" ||
-        jambnumber.trim() === "" ||
-        jambscore.trim() === "" ||
-        jambresult.trim() === "" ||
-        addInputFields.some((field) =>
-          Object.values(field).some((value) => value.trim() === "")
-        )
-      ) {
+      if (addInputFields.length == 1) {
+        if (
+          primaryname.trim() === "" ||
+          primaryresult.trim() === "" ||
+          primarydate === "" ||
+          schoolname.trim() === "" ||
+          schooldate === "" ||
+          examname.trim() === "" ||
+          examnumber.trim() === "" ||
+          examdate.trim() === "" ||
+          examresult.trim() === "" ||
+          jambdate.trim() === "" ||
+          jambnumber.trim() === "" ||
+          jambscore.trim() === "" ||
+          jambresult.trim() === ""
+        ) {
 
-        setError((prevError) => ({
-          ...prevError,
-          primaryname: primaryname.trim() === "",
-          primaryresult: primaryresult.trim() === "",
-          primarydate: primarydate === "",
-          schoolname: schoolname.trim() === "",
-          schooldate: schooldate === "",
-          examname: examname.trim() === "",
-          examnumber: examnumber.trim() === "",
-          examresult: examresult.trim() === "",
-          jambnumber: jambnumber.trim() === "",
-          jambscore: jambscore.trim() === "",
-          jambresult: jambresult.trim() === "",
-          addInputFields: addInputFields.map((field) => ({
-            otherexamname: field.otherexamname.trim() === "",
-            otherexamcertificate: field.otherexamcertificate.trim() === "",
-            otherexamdate: field.otherexamdate === "",
-          })),
+          setError((prevError) => ({
+            ...prevError,
+            primaryname: primaryname.trim() === "",
+            primaryresult: primaryresult.trim() === "",
+            primarydate: primarydate === "",
+            schoolname: schoolname.trim() === "",
+            schooldate: schooldate === "",
+            examname: examname.trim() === "",
+            examnumber: examnumber.trim() === "",
+            examresult: examresult.trim() === "",
+            jambnumber: jambnumber.trim() === "",
+            jambscore: jambscore.trim() === "",
+            jambresult: jambresult.trim() === "",
+            jambdate: jambdate.trim() === "",
+            examdate: examdate.trim() === "",
 
-        }));
-        status = true;
 
-        setStatus("error");
-        setMessage("All fields are required");
-        setShow(true);
-        setTimeout(() => {
-          setShow(false);
-        }, 6000);
-        return;
+          }));
+          status = true;
+
+          setStatus("error");
+          setMessage("All fields are required");
+          setShow(true);
+          setTimeout(() => {
+            setShow(false);
+          }, 6000);
+          return;
+        } else {
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
       } else {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if (
+          primaryname.trim() === "" ||
+          primaryresult.trim() === "" ||
+          primarydate === "" ||
+          schoolname.trim() === "" ||
+          schooldate === "" ||
+          examname.trim() === "" ||
+          examnumber.trim() === "" ||
+          examdate.trim() === "" ||
+          examresult.trim() === "" ||
+          jambdate.trim() === "" ||
+          jambnumber.trim() === "" ||
+          jambscore.trim() === "" ||
+          jambresult.trim() === "" ||
+          addInputFields.some((field) =>
+            Object.values(field).some((value) => value.trim() === "")
+
+          )
+        ) {
+
+          setError((prevError) => ({
+            ...prevError,
+            primaryname: primaryname.trim() === "",
+            primaryresult: primaryresult.trim() === "",
+            primarydate: primarydate === "",
+            schoolname: schoolname.trim() === "",
+            schooldate: schooldate === "",
+            examname: examname.trim() === "",
+            examnumber: examnumber.trim() === "",
+            examresult: examresult.trim() === "",
+            jambnumber: jambnumber.trim() === "",
+            jambscore: jambscore.trim() === "",
+            jambresult: jambresult.trim() === "",
+            jambdate: jambdate.trim() === "",
+            examdate: examdate.trim() === "",
+            addInputFields: addInputFields.map((field) => {
+              console.log("abc", field.otherexamnumber)
+              return {
+
+                otherexamname: field.otherexamname.trim() === "",
+                otherexamcertificate: field.otherexamcertificate.trim() === "",
+                otherexamdate: field.otherexamdate === "",
+                otherexamnumber: field.otherexamnumber === "",
+
+              }
+            }),
+
+          }));
+          status = true;
+
+          setStatus("error");
+          setMessage("All fields are required");
+          setShow(true);
+          setTimeout(() => {
+            setShow(false);
+          }, 6000);
+          return;
+        } else {
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
       }
+
+
     } else if (activeStep === 2) {
       if (
         faculty === "" ||
@@ -634,9 +718,11 @@ const StudentEnrollmentPage = () => {
           examname: examname,
           examnumber: examnumber,
           examresult: examresult,
+          examdate: examdate,
           jambnumber: jambnumber,
           jambscore: jambscore,
           jambresult: jambresult,
+          jambdate: jambdate,
           faculty: faculty,
           department: department,
           morefaculty: morefaculty,
@@ -984,7 +1070,7 @@ const StudentEnrollmentPage = () => {
                           }}
                         />
                       </div>
-                      <div className="grid grid-cols-3 gap-4  ">
+                      <div className="grid grid-cols-4 gap-4  ">
                         <TextInput
                           className="h-[70px] "
                           required
@@ -1025,11 +1111,22 @@ const StudentEnrollmentPage = () => {
                             handleOnChange(e, "examresult")
                           }}
                         />
+                        <TextInput
+                          className=""
+                          type="date"
+                          required
+                          name="examdate"
+                          label="Exam Date"
+                          error={error["examdate"]}
+                          onChange={(e) => {
+                            handleOnChange(e, "examdate")
+                          }}
+                        />
                       </div>
                     </BlockSectionComponent>
 
                     <BlockSectionComponent title="Jamb Result">
-                      <div className="grid grid-cols-3 gap-4  mb-6 mt-2 ">
+                      <div className="grid grid-cols-4 gap-4  mb-6 mt-2 ">
                         <TextInput
                           className="h-[70px] mt-6"
                           required
@@ -1064,6 +1161,17 @@ const StudentEnrollmentPage = () => {
                             handleOnChange(e, "jambresult")
                           }}
                         />
+                        <TextInput
+                          className=""
+                          type="date"
+                          required
+                          name="jambdate"
+                          label="Jamb Date"
+                          error={error["jambdate"]}
+                          onChange={(e) => {
+                            handleOnChange(e, "jambdate")
+                          }}
+                        />
                       </div>
                     </BlockSectionComponent>
                     <BlockSectionComponent title="Other Exams">
@@ -1089,7 +1197,21 @@ const StudentEnrollmentPage = () => {
                               />
                             </div>
 
-                            <div className="col-span-4">
+                            <div className="col-span-2">
+                              <TextInput
+                                className="h-[70px] mt-6"
+                                required
+                                name="otherexamnumber"
+                                label="Exam Number"
+                                error={error.addInputFields?.[index]?.otherexamnumber}
+
+                                onChange={(e) => {
+                                  handleAddInputOnchange(index, e)
+                                }}
+                              />
+                            </div>
+
+                            <div className="col-span-2">
                               <TextInput
                                 className="h-[70px] mt-6"
                                 required
