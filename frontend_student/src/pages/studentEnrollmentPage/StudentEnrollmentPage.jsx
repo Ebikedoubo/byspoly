@@ -649,6 +649,7 @@ const StudentEnrollmentPage = () => {
 
   const handleBack = () => {
     scrollToTop()
+    setBirthcertificate("");
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
   const handleRemoveForm = (index) => {
@@ -810,7 +811,7 @@ const StudentEnrollmentPage = () => {
                           name="birthcertificate"
 
                           error={error["birthcertificate"]}
-                          value={birthcertificate}
+
                           onChange={(e) => {
                             handleOnChange(e, "birthcertificate")
                           }}
@@ -935,7 +936,7 @@ const StudentEnrollmentPage = () => {
                           name="primaryresult"
                           label="Result"
                           error={error["primaryresult"]}
-                          value={primaryresult}
+
                           onChange={(e) => {
                             handleOnChange(e, "primaryresult")
                           }}
@@ -1016,7 +1017,7 @@ const StudentEnrollmentPage = () => {
                           name="examresult"
                           label="Result"
                           error={error["examresult"]}
-                          value={examresult}
+
                           onChange={(e) => {
                             handleOnChange(e, "examresult")
                           }}
@@ -1055,7 +1056,7 @@ const StudentEnrollmentPage = () => {
                           name="jambresult"
                           label="Result"
                           error={error["jambresult"]}
-                          value={jambresult}
+
                           onChange={(e) => {
                             handleOnChange(e, "jambresult")
                           }}
@@ -1093,7 +1094,7 @@ const StudentEnrollmentPage = () => {
                                 name="otherexamcertificate"
                                 label="Exam Certificate"
                                 error={error.addInputFields?.[index]?.otherexamcertificate}
-                                value={field.otherexamcertificate}
+
                                 onChange={(e) => {
                                   handleAddInputOnchange(index, e)
                                 }}
