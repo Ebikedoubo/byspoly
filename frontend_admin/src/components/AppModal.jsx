@@ -60,7 +60,7 @@ export default function AppModal({ children, setIsOpen, modalIsOpen, title }) {
             <button onClick={closeModal}><b>Close</b></button>
           </div>
           <div className="h-[100%] items-center flex flex-col">
-            <Card extra={"items-center flex-col w-full h-full p-[16px] bg-cover"}>
+            <Card extra={"items-center flex-col w-full h-full p-[16px] bg-cover dark:!bg-white"}>
               {children}
             </Card>
           </div>
