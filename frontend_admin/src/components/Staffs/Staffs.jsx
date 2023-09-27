@@ -4,7 +4,7 @@ import AppModal from "../AppModal";
 import TextInput from "../TextInput";
 import axios from "axios"
 import { toast } from 'react-toastify';
-import Card from "../card/Card"
+
 function Staffs() {
 
   const [loading, setLoading] = useState(false);
