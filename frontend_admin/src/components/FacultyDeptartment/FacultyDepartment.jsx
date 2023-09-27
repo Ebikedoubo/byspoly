@@ -4,16 +4,14 @@ import AppModal from "../AppModal";
 import TextInput from "../TextInput";
 import { RiAddLine } from "react-icons/ri";
 import { AiOutlineMinus } from "react-icons/ai";
-
+import axios from "axios"
+import { toast } from 'react-toastify';
 function FacultyDepartment() {
-  const rowsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [paginatedFaculties, setPaginatedFaculties] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
   const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
   const [selectedFaculty, setSelectedFaculty] = useState(null);
-
+  const [faculty, setFaculty] = useState([])
 
   const sampleFaculties = Array.from({ length: 100 }, (_, index) => ({
     id: index + 1,
@@ -44,6 +42,7 @@ function FacultyDepartment() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputFields);
+    postFacultyToServer()
     setCreateModalIsOpen(false);
   };
 
@@ -64,25 +63,90 @@ function FacultyDepartment() {
     setInputFields(updatedFields);
   };
 
+  const postFacultyToServer = async () => {
+    const token = localStorage.getItem("token");
+    const url = `${process.env.REACT_APP_API_URL}/faculty/create`;
+
+    try {
+
+      setLoading(true);
+
+      const response = await axios.post(
+        url,
+        inputFields,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Faculty created successfully:", response.data);
+
+      toast.success("Faculty created successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        closeOnClick: true,
+      });
+      // Clear the input fields
+      setInputFields([
+    {
+      facultyName: "",
+      facultyCode: "",
+      departments: [{ departmentName: "", departmentCode: "" }],
+    },
+  ]);
+
+      // Close the create modal
+      setCreateModalIsOpen(false);
+
+    } catch (error) {
+      console.error("Error creating faculty:", error);
+      toast.error("Error creating faculty!", {
+        position: toast.POSITION.TOP_LEFT
+      });
+    } finally {
+
+      setLoading(false);
+    }
+  };
+
+
+  const fetchMoreDataProps = async () => {
+    try {
+      const apiUrl = `${process.env.REACT_APP_API_URL}/faculty`;
+      const token = localStorage.getItem('token');
+      const axiosConfig = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      // Make a GET request to the API endpoint with the authorization header
+      const response = await axios.get(apiUrl, axiosConfig);
+
+      const newFacultyData = response.data.data.map((data, index) => {
+        return {
+          ...data,
+          id: index + 1
+        };
+      });
+      console.log(newFacultyData)
+
+      setFaculty([...newFacultyData]);
+      console.log('faculty',faculty)
+
+    } catch (error) {
+      console.error('Error fetching more faculty data:', error);
+    }
+  };
+
   useEffect(() => {
-    const startIndex = currentPage * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const paginatedData = sampleFaculties.slice(startIndex, endIndex);
-    setPaginatedFaculties(paginatedData);
-    setLoading(false);
-  }, [currentPage]);
-
-  const paginationChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
-  const fetchMoreDataProps = () => {
-    // Fetch more data logic
-    // Update the paginated data state accordingly
-  };
+    fetchMoreDataProps()
+  }, [])
 
   const columns = ["ID", "Faculty Name", "Faculty Code", "Actions"];
-  const dataKeyAccessors = ["id", "facultyName", "facultyCode", "CTA"];
+  const dataKeyAccessors = ["id", "title", "faculty_code", "CTA"];
 
   const viewAction = (facultyId) => {
     const faculty = sampleFaculties.find((f) => f.id === facultyId);
@@ -112,7 +176,7 @@ function FacultyDepartment() {
       <h2>Faculty List</h2>
       <TableComponent
         columns={columns}
-        data={paginatedFaculties}
+        data={faculty}
         actionText="Create Faculty"
         action={createFaculty}
         dataKeyAccessors={dataKeyAccessors}
@@ -120,7 +184,7 @@ function FacultyDepartment() {
         loading={loading}
         viewAction={viewAction}
         editAction={editAction}
-        paginationChange={paginationChange}
+
         fetchMoreDataProps={fetchMoreDataProps}
       />
 
