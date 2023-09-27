@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import moment from "moment";
+import { state, localGovts} from "../../services/Sites.module"
 // import Moment from 'react-moment';
 import Logo from "../../assests/bayelsalogo.jpeg";
 import logo1 from "../../assests/bayelsalogo.png"
@@ -48,7 +49,8 @@ const StudentEnrollmentPage = () => {
     }
   };
 
-
+const [stateOptions, setStateOptions] = useState([])
+const [localGovtOptions, setLocalGovtOptions] = useState([])
   const [data, setData] = useState({});
   const [activeStep, setActiveStep] = useState(0);
   const [status, setStatus] = React.useState("success");
@@ -144,9 +146,29 @@ const StudentEnrollmentPage = () => {
 
   const navigate = useNavigate();
 
+  const stateData = async () =>{
+    let response = await state()
+   
+    let reArrangeData = []
+    response.data.data.map((datas)=>{
+      reArrangeData.push({ label: datas.name, value: datas.id })
+    })
+    setStateOptions(reArrangeData)
+    console.log("data message", response.data)
+  }
+  const localGovtData = async (id) =>{
+    let response = await localGovts(id)
+   
+    let reArrangeData = []
+    response.data.data.map((datas)=>{
+      reArrangeData.push({ label: datas.name, value: datas.id })
+    })
+    setLocalGovtOptions(reArrangeData)
+    console.log("data message", response.data)
+  }
   useEffect(() => {
+    stateData();
     const token = localStorage.getItem("token")
-
     if (token !== null) {
       navigate('/dashboard');
     }
@@ -204,7 +226,9 @@ const StudentEnrollmentPage = () => {
         break;
       case "stateArea":
         // code to be executed when the expression matches value1
+        localGovtData(e.target.value)
         setStateArea(e.target.value)
+        console.log("ehredydy", e)
         break;
       case "localGovt":
         // code to be executed when the expression matches value1
@@ -898,9 +922,9 @@ const StudentEnrollmentPage = () => {
                           type="file"
                           required
                           name="birthcertificate"
-
+                          label="birth certificate"
                           error={error["birthcertificate"]}
-
+                          value={birthcertificate}
                           onChange={(e) => {
                             handleOnChange(e, "birthcertificate")
                           }}
@@ -976,7 +1000,7 @@ const StudentEnrollmentPage = () => {
                             }
                           }
                           isSelect={true}
-                          options={option}
+                          options={stateOptions}
                         />
 
                         <TextInput
@@ -993,7 +1017,7 @@ const StudentEnrollmentPage = () => {
                             }
                           }
                           isSelect={true}
-                          options={option2}
+                          options={localGovtOptions}
                         />
                       </div>
 
@@ -1025,7 +1049,7 @@ const StudentEnrollmentPage = () => {
                           name="primaryresult"
                           label="Result"
                           error={error["primaryresult"]}
-
+                          value={primaryresult}
                           onChange={(e) => {
                             handleOnChange(e, "primaryresult")
                           }}
@@ -1106,7 +1130,7 @@ const StudentEnrollmentPage = () => {
                           name="examresult"
                           label="Result"
                           error={error["examresult"]}
-
+                          value={examresult}
                           onChange={(e) => {
                             handleOnChange(e, "examresult")
                           }}
@@ -1156,7 +1180,7 @@ const StudentEnrollmentPage = () => {
                           name="jambresult"
                           label="Result"
                           error={error["jambresult"]}
-
+                          value={jambresult}
                           onChange={(e) => {
                             handleOnChange(e, "jambresult")
                           }}
@@ -1219,7 +1243,7 @@ const StudentEnrollmentPage = () => {
                                 name="otherexamcertificate"
                                 label="Exam Certificate"
                                 error={error.addInputFields?.[index]?.otherexamcertificate}
-
+                                value={field.otherexamcertificate}
                                 onChange={(e) => {
                                   handleAddInputOnchange(index, e)
                                 }}

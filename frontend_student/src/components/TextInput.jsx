@@ -9,6 +9,9 @@ import InputBase from "@mui/material/InputBase";
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { styled } from '@mui/system';
+import UploadButton from "./UploadButton";
+import UploadIcon from "../assests/upload.svg";
+import projectUploadIcon from "../assests/projectUploadIcon.svg";
 // const useStyles = makeStyles({
 //   fullWidth: {
 //     width: '100%',
@@ -99,6 +102,21 @@ export default function TextInput(props) {
             ))}
           </Selects>
         </FormControl>)
+
+case "file":
+  return (
+    <div>
+    <UploadButton
+     handleOnChange={onChange}
+     text={label}
+     accept= "image/*"
+     leftIcon={projectUploadIcon}
+     rightIcon={UploadIcon}
+     isSelected={value}
+     error={error}
+    />
+  </div>)
+
 
       case "date":
         return (<LocalizationProvider dateAdapter={AdapterDateFns}>
