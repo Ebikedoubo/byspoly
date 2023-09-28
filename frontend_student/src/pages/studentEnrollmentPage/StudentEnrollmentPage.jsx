@@ -235,12 +235,14 @@ const StudentEnrollmentPage = () => {
   }
 
   const handleAddInputOnchange = (index, e) => {
-   
-    // Create a copy of the updatedFiaddInputFields array and update the specific field by index
     const updatedFields = [...addInputFields];
-    console.log("pls work",e.target.name)
-    updatedFields[index][e.target.name] = e.target.type === 'file' ? e.target.files[0].name : e.target.value;
-    // Set the updated array back to state
+    if (e.target.type === 'file') {
+      // For file input, store the file name in otherexamcertificate
+      updatedFields[index].otherexamcertificate = e.target.files[0].name;
+    } else {
+      // For other input types, store the value directly
+      updatedFields[index][e.target.name] = e.target.value;
+    }
     setAddInputFields(updatedFields);
   }
 
@@ -733,7 +735,7 @@ const StudentEnrollmentPage = () => {
               return {
 
                 otherexamname: field.otherexamname.trim() === "",
-                otherexamcertificate: field.otherexamcertificate.trim() === "",
+                otherexamcertificate: field.otherexamcertificate === "",
                 otherexamdate: field.otherexamdate === "",
                 otherexamnumber: field.otherexamnumber === "",
 
@@ -1261,6 +1263,7 @@ const StudentEnrollmentPage = () => {
                       </div>
                     </BlockSectionComponent>
                     <BlockSectionComponent title="Other Exams">
+                    {console.log(addInputFields)}
                       {addInputFields?.map((field, index) => (
                         <div>
 
