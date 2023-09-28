@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import moment from "moment";
-import { state, localGovts} from "../../services/Sites.module"
+import { fetchFacultyData, fetchDepartmentData } from "../../services/Choice.module"
+import { state, localGovts } from "../../services/Sites.module"
+import { examTypeData } from "../../services/Exams.module"
+import { currentApplicationFeeData } from "../../services/Currentfee.module"
 // import Moment from 'react-moment';
 import Logo from "../../assests/bayelsalogo.jpeg";
 import logo1 from "../../assests/bayelsalogo.png"
@@ -42,15 +45,12 @@ const theme = createTheme({
 });
 
 const StudentEnrollmentPage = () => {
-  const contentArea = useRef(null);
-  const scrollToTop = () => {
-    if (contentArea.current) {
-      contentArea.current.scrollTop = 0;
-    }
-  };
-
-const [stateOptions, setStateOptions] = useState([])
-const [localGovtOptions, setLocalGovtOptions] = useState([])
+  const [paymentOptions, setpaymentOptions] = useState({})
+  const [localGovtOptions, setLocalGovtOptions] = useState([])
+  const [facultyOption, setFacultyOption] = useState([])
+  const [departmentOption, setDepartmentOption] = useState([])
+  const [stateOptions, setStateOptions] = useState([])
+  const [examOptions, setExamOptions] = useState([])
   const [data, setData] = useState({});
   const [activeStep, setActiveStep] = useState(0);
   const [status, setStatus] = React.useState("success");
@@ -144,42 +144,102 @@ const [localGovtOptions, setLocalGovtOptions] = useState([])
     ]
   });
 
+  useEffect(() => {
+    bootstrap()
+
+  }, [])
+
+  const bootstrap = () => {
+    const token = localStorage.getItem("token")
+    if (token !== null) {
+      navigate('/dashboard');
+    }
+    examTypeDatas()
+    facultyData()
+    stateData()
+    currentApplicationFee()
+  }
+  const contentArea = useRef(null);
+
+  const scrollToTop = () => {
+    if (contentArea.current) {
+      contentArea.current.scrollTop = 0;
+    }
+  };
+
   const navigate = useNavigate();
 
-  const stateData = async () =>{
+  const ApiDatas = async (importer, id = 0) => {
+    let response
+    if (id !== 0) {
+      response = await importer(id)
+    } else {
+      response = await importer()
+    }
+    return response
+    console.log("data messagesss", response.data)
+  }
+
+  const currentApplicationFee = async () => {
+    let apiData = await ApiDatas(currentApplicationFeeData)
+    setpaymentOptions(apiData.data.data)
+    console.log("are you working", apiData.data.data)
+  }
+  const stateData = async () => {
     let response = await state()
-   
+
     let reArrangeData = []
-    response.data.data.map((datas)=>{
+    response.data.data.map((datas) => {
       reArrangeData.push({ label: datas.name, value: datas.id })
     })
     setStateOptions(reArrangeData)
     console.log("data message", response.data)
   }
-  const localGovtData = async (id) =>{
+  const localGovtData = async (id) => {
     let response = await localGovts(id)
-   
+
     let reArrangeData = []
-    response.data.data.map((datas)=>{
+    response.data.data.map((datas) => {
       reArrangeData.push({ label: datas.name, value: datas.id })
     })
     setLocalGovtOptions(reArrangeData)
     console.log("data message", response.data)
   }
-  useEffect(() => {
-    stateData();
-    const token = localStorage.getItem("token")
-    if (token !== null) {
-      navigate('/dashboard');
-    }
+  const facultyData = async () => {
+    let apiData = await ApiDatas(fetchFacultyData)
+    let reArrangeData = []
+    apiData.data.data.map((datas) => {
+      reArrangeData.push({ label: datas.title, value: datas.id })
+    })
+    setFacultyOption(reArrangeData)
+    console.log("see it", reArrangeData)
+  }
+  const departmentData = async (id) => {
+    let apiData = await ApiDatas(fetchDepartmentData, id)
+    let reArrangeData = []
+    apiData.data.data.map((datas) => {
+      reArrangeData.push({ label: datas.title, value: datas.id })
+    })
+    setDepartmentOption(reArrangeData)
+    console.log("see it", reArrangeData)
+  }
+  const examTypeDatas = async () => {
+    let apiData = await ApiDatas(examTypeData)
+    let reArrangeData = []
+    apiData.data.data.map((datas) => {
+      reArrangeData.push({ label: datas.title, value: datas.id })
+    })
+    setExamOptions(reArrangeData)
+    console.log("see it", reArrangeData)
 
-  }, [])
+  }
 
   const handleAddInputOnchange = (index, e) => {
-    console.log(e);
-    // Create a copy of the addInputFields array and update the specific field by index
+   
+    // Create a copy of the updatedFiaddInputFields array and update the specific field by index
     const updatedFields = [...addInputFields];
-    updatedFields[index][e.target.name] = e.target.value;
+    console.log("pls work",e.target.name)
+    updatedFields[index][e.target.name] = e.target.type === 'file' ? e.target.files[0].name : e.target.value;
     // Set the updated array back to state
     setAddInputFields(updatedFields);
   }
@@ -206,6 +266,7 @@ const [localGovtOptions, setLocalGovtOptions] = useState([])
 
       case "birthcertificate":
         // code to be executed when the expression matches value1
+        console.log()
         setBirthcertificate(e.target.value)
         break;
       case "email":
@@ -283,6 +344,7 @@ const [localGovtOptions, setLocalGovtOptions] = useState([])
         break;
       case "faculty":
         // code to be executed when the expression matches value1
+        departmentData(e.target.value)
         setFaculty(e.target.value)
         break;
       case "department":
@@ -590,7 +652,7 @@ const [localGovtOptions, setLocalGovtOptions] = useState([])
           primarydate === "" ||
           schoolname.trim() === "" ||
           schooldate === "" ||
-          examname.trim() === "" ||
+          examname === "" ||
           examnumber.trim() === "" ||
           examdate.trim() === "" ||
           examresult.trim() === "" ||
@@ -1110,7 +1172,7 @@ const [localGovtOptions, setLocalGovtOptions] = useState([])
                             }
                           }
                           isSelect={true}
-                          options={option}
+                          options={examOptions}
                         />
                         <TextInput
                           className="h-[70px]"
@@ -1245,6 +1307,7 @@ const [localGovtOptions, setLocalGovtOptions] = useState([])
                                 error={error.addInputFields?.[index]?.otherexamcertificate}
                                 value={field.otherexamcertificate}
                                 onChange={(e) => {
+                                  console.log("fgf gfgddf")
                                   handleAddInputOnchange(index, e)
                                 }}
                               />
@@ -1297,7 +1360,7 @@ const [localGovtOptions, setLocalGovtOptions] = useState([])
                             }
                           }
                           isSelect={true}
-                          options={option}
+                          options={facultyOption}
                         />
                         <TextInput
                           required
@@ -1313,7 +1376,7 @@ const [localGovtOptions, setLocalGovtOptions] = useState([])
                             }
                           }
                           isSelect={true}
-                          options={option}
+                          options={departmentOption}
                         />
                       </div>
                     </BlockSectionComponent>

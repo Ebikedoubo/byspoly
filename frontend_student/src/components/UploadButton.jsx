@@ -35,7 +35,7 @@ export default function UploadButton({
             />
             {text}
           </div>
-          <div clasName="text-center ">
+          <div className="text-center ">
             {isSelected.length > 0 ? <DoneIcon className="text-[green]" /> :  
             <img src={rightIcon} alt="upload" />
       }
