@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\AcademicSession;
 use App\Models\ApplicationDocument;
 use App\Models\ApplicationSchoolHistory;
 use App\Models\Choice;
@@ -353,7 +354,7 @@ class StudentController extends Controller
     public function studentApplicationRegistraton(Request $request): JsonResponse
     {
         $studentModel = new Student();
-        
+
         //$studentModel = new ApplicationSchoolHistory();
         // validate request entry 
         $validator = Validator::make($request->all(), [
@@ -372,10 +373,17 @@ class StudentController extends Controller
         if ($validator->fails()) {
             return  response()->json(["status" => "error", "data" => $validator->errors()], 400);
         }
+
+        $getCurrentAcademicSession = AcademicSession::where(["status" => 1])->first();
+        if (!$getCurrentAcademicSession) {
+            return  response()->json(["status" => "error", "message" => "session id is required please ."], 400);
+        }
         DB::beginTransaction();
         try {
             // create a new student 
-            $student = $studentModel->create($request->all());
+            $studentDetails = $request->all();
+            array_push($studentDetails, ["session_id" => $getCurrentAcademicSession->id]);
+            $student = $studentModel->create($studentDetails);
             if ($student) {
                 // insert application school history
 
@@ -446,7 +454,7 @@ class StudentController extends Controller
             }
             // remeber to send email to dtudent to confirm that their application was a success and the schould would reach out to them via their email
             DB::commit();
-            return response()->json(['status' => "success",'message' => "Application was a success",'data' => $student], 200);
+            return response()->json(['status' => "success", 'message' => "Application was a success", 'data' => $student], 200);
         } catch (\Exception $e) {
 
             DB::rollBack();
