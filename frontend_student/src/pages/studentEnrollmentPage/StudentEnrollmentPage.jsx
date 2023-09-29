@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import moment from "moment";
 import { fetchFacultyData, fetchDepartmentData } from "../../services/Choice.module"
 import { state, localGovts } from "../../services/Sites.module"
 import { examTypeData } from "../../services/Exams.module"
 import { currentApplicationFeeData } from "../../services/Currentfee.module"
+import { jambData } from "../../services/Jamb.module"
 // import Moment from 'react-moment';
 import Logo from "../../assests/bayelsalogo.jpeg";
 import logo1 from "../../assests/bayelsalogo.png"
@@ -46,9 +48,11 @@ const theme = createTheme({
 
 const StudentEnrollmentPage = () => {
   const [paymentOptions, setpaymentOptions] = useState({})
+  const [jambExamId, setJambExamId] = useState()
   const [localGovtOptions, setLocalGovtOptions] = useState([])
   const [facultyOption, setFacultyOption] = useState([])
   const [departmentOption, setDepartmentOption] = useState([])
+  const [moreDepartmentOption, setMoreDepartmentOption] = useState([])
   const [stateOptions, setStateOptions] = useState([])
   const [examOptions, setExamOptions] = useState([])
   const [data, setData] = useState({});
@@ -158,6 +162,7 @@ const StudentEnrollmentPage = () => {
     facultyData()
     stateData()
     currentApplicationFee()
+    jambTypeDatas()
   }
   const contentArea = useRef(null);
 
@@ -223,6 +228,15 @@ const StudentEnrollmentPage = () => {
     setDepartmentOption(reArrangeData)
     console.log("see it", reArrangeData)
   }
+  const moreDepartmentData = async (id) => {
+    let apiData = await ApiDatas(fetchDepartmentData, id)
+    let reArrangeData = []
+    apiData.data.data.map((datas) => {
+      reArrangeData.push({ label: datas.title, value: datas.id })
+    })
+    setMoreDepartmentOption(reArrangeData)
+    
+  }
   const examTypeDatas = async () => {
     let apiData = await ApiDatas(examTypeData)
     let reArrangeData = []
@@ -233,12 +247,17 @@ const StudentEnrollmentPage = () => {
     console.log("see it", reArrangeData)
 
   }
+  const jambTypeDatas = async () => {
+    let apiData = await ApiDatas(jambData)
+    setJambExamId(apiData.data.data.id)
+
+  }
 
   const handleAddInputOnchange = (index, e) => {
     const updatedFields = [...addInputFields];
     if (e.target.type === 'file') {
       // For file input, store the file name in otherexamcertificate
-      updatedFields[index].otherexamcertificate = e.target.files[0].name;
+      updatedFields[index].otherexamcertificate = e.target.files[0];
     } else {
       // For other input types, store the value directly
       updatedFields[index][e.target.name] = e.target.value;
@@ -269,7 +288,7 @@ const StudentEnrollmentPage = () => {
       case "birthcertificate":
         // code to be executed when the expression matches value1
         console.log()
-        setBirthcertificate(e.target.value)
+        setBirthcertificate(e.target.file[0])
         break;
       case "email":
         // code to be executed when the expression matches value2
@@ -304,7 +323,7 @@ const StudentEnrollmentPage = () => {
         break;
       case "primaryresult":
         // code to be executed when the expression matches value1
-        setPrimaryresult(e.target.value)
+        setPrimaryresult(e.target.file[0])
         break;
       case "schoolname":
         // code to be executed when the expression matches value1
@@ -312,6 +331,7 @@ const StudentEnrollmentPage = () => {
         break;
       case "examname":
         // code to be executed when the expression matches value1
+        
         setExamname(e.target.value)
         break;
       case "examdate":
@@ -330,7 +350,7 @@ const StudentEnrollmentPage = () => {
         break;
       case "examresult":
         // code to be executed when the expression matches value1
-        setExamresult(e.target.value)
+        setExamresult(e.target.file[0])
         break;
       case "jambnumber":
         // code to be executed when the expression matches value1
@@ -342,7 +362,7 @@ const StudentEnrollmentPage = () => {
         break;
       case "jambresult":
         // code to be executed when the expression matches value1
-        setJambresult(e.target.value)
+        setJambresult(e.target.file[0])
         break;
       case "faculty":
         // code to be executed when the expression matches value1
@@ -355,6 +375,7 @@ const StudentEnrollmentPage = () => {
         break;
       case "morefaculty":
         // code to be executed when the expression matches value1
+        moreDepartmentData(e.target.value)
         setMorefaculty(e.target.value)
         break;
       case "moredepartment":
@@ -368,200 +389,92 @@ const StudentEnrollmentPage = () => {
     }
   };
 
-  const submit = () => {
-    // validate input 
-    setLoading(true)
-    let status = false
-    setError({
-      firstname: false,
-      middlename: false,
-      lastname: false,
-      maidenname: false,
-      email: false,
-      address: false,
-      phone: false,
-      gender: false,
-      dateofbirth: false,
-      birthcertificate: false,
-      nationality: false,
-      address: false,
-      stateArea: false,
-      localGovt: false,
-      schoolname: false,
-      schooldate: false,
-      examname: false,
-      examnumber: false,
-      examresult: false,
-      examdate: false,
-      jambname: false,
-      jambnumber: false,
-      jambscore: false,
-      jambresult: false,
-      jambdate: false,
-      faculty: false,
-      department: false,
-      morefaculty: false,
-      moredepartment: false
-    })
-    if (firstname.trim() === "") {
-      setError((prevError) => ({ ...prevError, firstname: true }));
-      status = true;
+  const submit = async (e) => {
+    e.preventDefault();
+
+    // Create a new FormData object
+    const formData = new FormData();
+    // Append data from your form fields to the FormData object
+    formData.append('email', email);
+    formData.append('first_name', firstname);
+    formData.append('middle_name', middlename);
+    formData.append('last_name', lastname);
+    formData.append('maiden_name', maidenname);
+    formData.append('gender', gender);
+    formData.append('dob', dateofbirth);
+    formData.append('certificate', birthcertificate);
+    formData.append('phone_number', phone);
+    formData.append('country_id', nationality);
+    formData.append('address', address);
+    formData.append('state_id', stateArea);
+    formData.append('lga_id', localGovt);
+
+    let studentResult = [{
+      exam_type_id: examname,
+      exam_number: examnumber,
+      exam_date: examdate,
+      image: examresult,
+    },
+    {
+      exam_type_id: jambExamId,
+      exam_number: jambnumber,
+      exam_date: jambdate,
+      image: jambresult,
+      exam_score: jambscore,
     }
+    ];
 
-    if (middlename.trim() === "") {
-      setError((prevError) => ({ ...prevError, middlename: true }));
-      status = true;
+    addInputFields.forEach((field, index) => {
+
+      let otherExams = {
+        exam_type_id: field.otherexamname,
+        exam_number: field.otherexamnumber,
+        exam_date: field.otherexamdate,
+        image: field.otherexamcertificate,
+      }
+      studentResult.push(otherExams);
+
+    });
+    formData.append('student_results', JSON.stringify(studentResult) );
+    let schoolsAttended = [
+      {
+        school_name: primaryname,
+        graduation_year: primarydate,
+        image: primaryresult
+      },
+
+      {
+        school_name: schoolname,
+        graduation_year: schooldate,
+      }
+    ]
+   
+    formData.append('schools_attended', JSON.stringify(schoolsAttended));
+    let choice = [
+      {
+        faculty_id: faculty,
+        department_id: department
+      },
+      {
+        faculty_id: morefaculty,
+        department_id: moredepartment
+      }
+    ]
+    formData.append('choice', JSON.stringify(choice));
+    
+    // console.log(formData);
+    // return ;
+
+    try {
+      // Make an HTTP POST request to the API endpoint
+      const response = await axios.post(process.env.REACT_APP_API_URL+'/student/application', formData);
+
+      // Handle the API response as needed
+      console.log('API Response:', response.data.data);
+    } catch (error) {
+      // Handle errors, such as network issues or API validation errors
+      console.error('API Error:', error);
     }
-
-    if (lastname.trim() === "") {
-      setError((prevError) => ({ ...prevError, lastname: true }));
-      status = true;
-    }
-
-    if (maidenname.trim() === "") {
-      setError((prevError) => ({ ...prevError, maidenname: true }));
-      status = true;
-    }
-
-    if (email.trim() === "") {
-      setError((prevError) => ({ ...prevError, email: true }));
-      status = true;
-    }
-
-    if (gender.trim() === "") {
-      setError((prevError) => ({ ...prevError, gender: true }));
-      status = true;
-    }
-
-    if (address.trim() === "") {
-      setError((prevError) => ({ ...prevError, address: true }));
-      status = true;
-    }
-
-    if (phone.trim() === "") {
-      setError((prevError) => ({ ...prevError, phone_number: true }));
-      status = true;
-    }
-    if (dateofbirth.trim() === "") {
-      setError((prevError) => ({ ...prevError, dateofbirth: true }));
-      status = true;
-    }
-
-    if (birthcertificate.trim() === "") {
-      setError((prevError) => ({ ...prevError, birthcertificate: true }));
-      status = true;
-    }
-
-    if (nationality.trim() === "") {
-      setError((prevError) => ({ ...prevError, nationality: true }));
-      status = true;
-    }
-
-    if (stateArea.trim() === "") {
-      setError((prevError) => ({ ...prevError, stateArea: true }));
-      status = true;
-    }
-
-    if (localGovt.trim() === "") {
-      setError((prevError) => ({ ...prevError, localGovt: true }));
-      status = true;
-    }
-
-    if (schoolname.trim() === "") {
-      setError((prevError) => ({ ...prevError, schoolname: true }));
-      status = true;
-    }
-
-    if (schooldate.trim() === "") {
-      setError((prevError) => ({ ...prevError, schooldate: true }));
-      status = true;
-    }
-
-    if (examname.trim() === "") {
-      setError((prevError) => ({ ...prevError, examname: true }));
-      status = true;
-    }
-
-    if (examnumber.trim() === "") {
-      setError((prevError) => ({ ...prevError, examnumber: true }));
-      status = true;
-    }
-
-    if (examresult.trim() === "") {
-      setError((prevError) => ({ ...prevError, examresult: true }));
-      status = true;
-    }
-
-    if (jambname.trim() === "") {
-      setError((prevError) => ({ ...prevError, jambname: true }));
-      status = true;
-    }
-
-    if (jambnumber.trim() === "") {
-      setError((prevError) => ({ ...prevError, jambnumber: true }));
-      status = true;
-    }
-
-    if (jambscore.trim() === "") {
-      setError((prevError) => ({ ...prevError, jambscore: true }));
-      status = true;
-    }
-
-    if (jambresult.trim() === "") {
-      setError((prevError) => ({ ...prevError, jambresult: true }));
-      status = true;
-    }
-
-    if (faculty.trim() === "") {
-      setError((prevError) => ({ ...prevError, faculty: true }));
-      status = true;
-    }
-
-    if (department.trim() === "") {
-      setError((prevError) => ({ ...prevError, department: true }));
-      status = true;
-    }
-
-    if (otherexamname.trim() === "") {
-      setError((prevError) => ({ ...prevError, otherexamname: true }));
-      status = true;
-    }
-
-    if (otherexamcertificate.trim() === "") {
-      setError((prevError) => ({ ...prevError, otherexamcertificate: true }));
-      status = true;
-    }
-
-    if (otherexamdate.trim() === "") {
-      setError((prevError) => ({ ...prevError, otherexamdate: true }));
-      status = true;
-    }
-
-    if (morefaculty.trim() === "") {
-      setError((prevError) => ({ ...prevError, morefaculty: true }));
-      status = true;
-    }
-
-    if (moredepartment.trim() === "") {
-      setError((prevError) => ({ ...prevError, moredepartment: true }));
-      status = true;
-    }
-
-
-    if (status) {
-      setLoading(false)
-      setStatus("error")
-      setMessage("all fields are required")
-      setShow(true)
-      setTimeout(() => {
-        setShow(false)
-      }, 6000)
-      return;
-    }
-    create(data)
-
-
-    // send to save and use feedback to show toast message.
   };
 
 
@@ -609,7 +522,7 @@ const StudentEnrollmentPage = () => {
         maidenname.trim() === "" ||
         gender.trim() === "" ||
         dateofbirth === "" ||
-        birthcertificate.trim() === "" ||
+        birthcertificate === "" ||
         phone.trim() === "" ||
         email.trim() === "" ||
         nationality === "" ||
@@ -624,7 +537,7 @@ const StudentEnrollmentPage = () => {
           lastname: lastname.trim() === "",
           dateofbirth: dateofbirth === "",
           gender: gender.trim() === "",
-          birthcertificate: birthcertificate.trim() === "",
+          birthcertificate: birthcertificate === "",
           phone: phone.trim() === "",
           email: email.trim() === "",
           nationality: nationality === "",
@@ -697,7 +610,7 @@ const StudentEnrollmentPage = () => {
       } else {
         if (
           primaryname.trim() === "" ||
-          primaryresult.trim() === "" ||
+          primaryresult === "" ||
           primarydate === "" ||
           schoolname.trim() === "" ||
           schooldate === "" ||
@@ -718,7 +631,7 @@ const StudentEnrollmentPage = () => {
           setError((prevError) => ({
             ...prevError,
             primaryname: primaryname.trim() === "",
-            primaryresult: primaryresult.trim() === "",
+            primaryresult: primaryresult === "",
             primarydate: primarydate === "",
             schoolname: schoolname.trim() === "",
             schooldate: schooldate === "",
@@ -988,7 +901,6 @@ const StudentEnrollmentPage = () => {
                           name="birthcertificate"
                           label="birth certificate"
                           error={error["birthcertificate"]}
-                          value={birthcertificate}
                           onChange={(e) => {
                             handleOnChange(e, "birthcertificate")
                           }}
@@ -1113,7 +1025,6 @@ const StudentEnrollmentPage = () => {
                           name="primaryresult"
                           label="Result"
                           error={error["primaryresult"]}
-                          value={primaryresult}
                           onChange={(e) => {
                             handleOnChange(e, "primaryresult")
                           }}
@@ -1263,7 +1174,7 @@ const StudentEnrollmentPage = () => {
                       </div>
                     </BlockSectionComponent>
                     <BlockSectionComponent title="Other Exams">
-                    {console.log(addInputFields)}
+                      {console.log(addInputFields)}
                       {addInputFields?.map((field, index) => (
                         <div>
 
@@ -1400,7 +1311,7 @@ const StudentEnrollmentPage = () => {
                             }
                           }
                           isSelect={true}
-                          options={option}
+                          options={facultyOption}
                         />
                         <TextInput
                           required
@@ -1416,7 +1327,7 @@ const StudentEnrollmentPage = () => {
                             }
                           }
                           isSelect={true}
-                          options={option}
+                          options={moreDepartmentOption}
                         />
                       </div>
                     </BlockSectionComponent>
@@ -1453,7 +1364,7 @@ const StudentEnrollmentPage = () => {
                     <Button
                       variant="contained"
                       color={activeStep === steps.length - 1 ? "success" : "primary"}
-                      onClick={handleNext}
+                      onClick={activeStep === steps.length - 1 ? submit : handleNext}
                       disabled={activeStep === steps.length + 1}
 
 
