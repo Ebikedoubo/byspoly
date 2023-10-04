@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import moment from "moment";
-import { fetchFacultyData, fetchDepartmentData } from "../../services/Choice.module"
-import { state, localGovts } from "../../services/Sites.module"
-import { examTypeData } from "../../services/Exams.module"
-import { currentApplicationFeeData } from "../../services/Currentfee.module"
-import { jambData } from "../../services/Jamb.module"
+import {
+  fetchFacultyData,
+  fetchDepartmentData,
+} from "../../services/Choice.module";
+import { state, localGovts } from "../../services/Sites.module";
+import { examTypeData } from "../../services/Exams.module";
+import { currentApplicationFeeData } from "../../services/Currentfee.module";
+import { jambData } from "../../services/Jamb.module";
 // import Moment from 'react-moment';
 import Logo from "../../assests/bayelsalogo.jpeg";
-import logo1 from "../../assests/bayelsalogo.png"
-import { useNavigate } from 'react-router-dom';
+import logo1 from "../../assests/bayelsalogo.png";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Grid,
@@ -19,91 +22,108 @@ import {
   Stepper,
   Step,
   StepLabel,
-  IconButton
+  IconButton,
+  CircularProgress,
 } from "@mui/material";
-import CancelIcon from '@mui/icons-material/Cancel';
-import AddIcon from '@mui/icons-material/Add';
+import CancelIcon from "@mui/icons-material/Cancel";
+import AddIcon from "@mui/icons-material/Add";
 import TextInput from "../../components/TextInput";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SnackbarComponent from "../../components/SnackbarComponent";
 import StudentEnrollmentDetailsComponent from "../../components/StudentEnrollmentDetailsComponent";
 import BlockSectionComponent from "../../components/BlockSectionComponent";
+import AppModal from "../../components/AppModal";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-
-
-const steps = ["Personal Details", "Educational Detail", "Course Of Study", "Summary"];
+const steps = [
+  "Personal Details",
+  "Educational Detail",
+  "Course Of Study",
+  "Summary",
+];
 
 const theme = createTheme({
   palette: {
     neutral: {
       main: "#64748B",
-      contrastText: "#fff"
+      contrastText: "#fff",
     },
     danger: {
       main: "#DC3545",
-      contrastText: "#fff"
-    }
-  }
+      contrastText: "#fff",
+    },
+  },
 });
 
 const StudentEnrollmentPage = () => {
-  const [paymentOptions, setpaymentOptions] = useState({})
-  const [jambExamId, setJambExamId] = useState()
-  const [localGovtOptions, setLocalGovtOptions] = useState([])
-  const [facultyOption, setFacultyOption] = useState([])
-  const [departmentOption, setDepartmentOption] = useState([])
-  const [moreDepartmentOption, setMoreDepartmentOption] = useState([])
-  const [stateOptions, setStateOptions] = useState([])
-  const [examOptions, setExamOptions] = useState([])
+  const navigation = useNavigate();
+  const [paymentOptions, setpaymentOptions] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [ayncsState, setAyncsState] = useState(true);
+  const [ayncsLga, setAyncsLga] = useState(false);
+  const [ayncsFaculty, setAyncsFaculty] = useState(true);
+  const [ayncsDepartment, setAyncsDepartment] = useState(false);
+  const [ayncsMoreDepartment, setAyncsMoreDepartment] = useState(false);
+  const [ayncsExam, setAyncsExam] = useState(true);
+  const [jambExamId, setJambExamId] = useState();
+  const [localGovtOptions, setLocalGovtOptions] = useState([]);
+  const [facultyOption, setFacultyOption] = useState([]);
+  const [departmentOption, setDepartmentOption] = useState([]);
+  const [moreDepartmentOption, setMoreDepartmentOption] = useState([]);
+  const [stateOptions, setStateOptions] = useState([]);
+  const [examOptions, setExamOptions] = useState([]);
   const [data, setData] = useState({});
   const [activeStep, setActiveStep] = useState(0);
   const [status, setStatus] = React.useState("success");
-  const [message, setMessage] = React.useState("")
+  const [message, setMessage] = React.useState("");
   // BIO
   const [firstname, setFirstname] = React.useState("");
-  const [middlename, setMiddlename] = React.useState("")
-  const [lastname, setLastname] = React.useState("")
-  const [maidenname, setMaidenname] = React.useState("")
+  const [middlename, setMiddlename] = React.useState("");
+  const [lastname, setLastname] = React.useState("");
+  const [maidenname, setMaidenname] = React.useState("");
   const [gender, setGender] = React.useState("");
-  const [dateofbirth, setDateofbirth] = React.useState("")
-  const [birthcertificate, setBirthcertificate] = React.useState("")
+  const [dateofbirth, setDateofbirth] = React.useState("");
+  const [birthcertificate, setBirthcertificate] = React.useState("");
   // // contact address
-  const [phone, setPhone] = React.useState("")
-  const [email, setEmail] = React.useState("")
-  const [nationality, setNationality] = React.useState("")
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [nationality, setNationality] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [stateArea, setStateArea] = React.useState("");
   const [localGovt, setLocalGovt] = React.useState("");
   //primary school
-  const [primaryname, setPrimaryname] = React.useState("")
-  const [primaryresult, setPrimaryresult] = React.useState("")
-  const [primarydate, setPrimarydate] = React.useState("")
+  const [primaryname, setPrimaryname] = React.useState("");
+  const [primaryresult, setPrimaryresult] = React.useState("");
+  const [primarydate, setPrimarydate] = React.useState("");
   // // step 2/secondary school
-  const [schoolname, setSchoolname] = React.useState("")
-  const [schooldate, setSchooldate] = React.useState("")
-  const [examname, setExamname] = React.useState("")
-  const [examdate, setExamdate] = React.useState("")
-  const [examnumber, setExamnumber] = React.useState("")
-  const [examresult, setExamresult] = React.useState("")
+  const [schoolname, setSchoolname] = React.useState("");
+  const [schooldate, setSchooldate] = React.useState("");
+  const [examname, setExamname] = React.useState("");
+  const [examdate, setExamdate] = React.useState("");
+  const [examnumber, setExamnumber] = React.useState("");
+  const [examresult, setExamresult] = React.useState("");
   // // jamb result
-  const [jambnumber, setJambnumber] = React.useState("")
-  const [jambscore, setJambscore] = React.useState("")
-  const [jambresult, setJambresult] = React.useState("")
-  const [jambdate, setJambdate] = React.useState("")
+  const [jambnumber, setJambnumber] = React.useState("");
+  const [jambscore, setJambscore] = React.useState("");
+  const [jambresult, setJambresult] = React.useState("");
+  const [jambdate, setJambdate] = React.useState("");
   // faculties/deparment
 
-  const [faculty, setFaculty] = React.useState("")
-  const [department, setDepartment] = React.useState("")
-  const [morefaculty, setMorefaculty] = React.useState("")
-  const [moredepartment, setMoredepartment] = React.useState("")
+  const [faculty, setFaculty] = React.useState("");
+  const [department, setDepartment] = React.useState("");
+  const [morefaculty, setMorefaculty] = React.useState("");
+  const [moredepartment, setMoredepartment] = React.useState("");
   const [show, setShow] = React.useState(false);
 
-  const [addInputFields, setAddInputFields] = React.useState([{
-    otherexamname: "",
-    otherexamcertificate: "",
-    otherexamdate: "",
-    otherexamnumber: ""
-  }]);
+  const [addInputFields, setAddInputFields] = React.useState([
+    {
+      otherexamname: "",
+      otherexamcertificate: "",
+      otherexamdate: "",
+      otherexamnumber: "",
+    },
+  ]);
 
   const [error, setError] = React.useState({
     firstname: false,
@@ -144,26 +164,25 @@ const StudentEnrollmentPage = () => {
         otherexamcertificate: false,
         otherexamdate: false,
         otherexamnumber: false,
-      }
-    ]
+      },
+    ],
   });
 
   useEffect(() => {
-    bootstrap()
-
-  }, [])
+    bootstrap();
+  }, []);
 
   const bootstrap = () => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token !== null) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
-    examTypeDatas()
-    facultyData()
-    stateData()
-    currentApplicationFee()
-    jambTypeDatas()
-  }
+    examTypeDatas();
+    facultyData();
+    stateData();
+    currentApplicationFee();
+    jambTypeDatas();
+  };
   const contentArea = useRef(null);
 
   const scrollToTop = () => {
@@ -175,328 +194,567 @@ const StudentEnrollmentPage = () => {
   const navigate = useNavigate();
 
   const ApiDatas = async (importer, id = 0) => {
-    let response
+    let response;
     if (id !== 0) {
-      response = await importer(id)
+      response = await importer(id);
     } else {
-      response = await importer()
+      response = await importer();
     }
-    return response
-    console.log("data messagesss", response.data)
-  }
+    return response;
+    console.log("data messagesss", response.data);
+  };
 
   const currentApplicationFee = async () => {
-    let apiData = await ApiDatas(currentApplicationFeeData)
-    setpaymentOptions(apiData.data.data)
-    console.log("are you working", apiData.data.data)
-  }
+    let apiData = await ApiDatas(currentApplicationFeeData);
+    setpaymentOptions(apiData.data.data);
+    console.log("are you working", apiData.data.data);
+  };
   const stateData = async () => {
-    let response = await state()
+    let response = await state();
 
-    let reArrangeData = []
+    let reArrangeData = [];
     response.data.data.map((datas) => {
-      reArrangeData.push({ label: datas.name, value: datas.id })
-    })
-    setStateOptions(reArrangeData)
-    console.log("data message", response.data)
-  }
+      reArrangeData.push({ label: datas.name, value: datas.id });
+    });
+    setStateOptions(reArrangeData);
+    setAyncsState(false);
+    console.log("data message", response.data);
+  };
   const localGovtData = async (id) => {
-    let response = await localGovts(id)
+    let response = await localGovts(id);
 
-    let reArrangeData = []
+    let reArrangeData = [];
     response.data.data.map((datas) => {
-      reArrangeData.push({ label: datas.name, value: datas.id })
-    })
-    setLocalGovtOptions(reArrangeData)
-    console.log("data message", response.data)
-  }
+      reArrangeData.push({ label: datas.name, value: datas.id });
+    });
+    setLocalGovtOptions(reArrangeData);
+    setAyncsLga(false);
+    console.log("data message", response.data);
+  };
   const facultyData = async () => {
-    let apiData = await ApiDatas(fetchFacultyData)
-    let reArrangeData = []
+    let apiData = await ApiDatas(fetchFacultyData);
+    let reArrangeData = [];
     apiData.data.data.map((datas) => {
-      reArrangeData.push({ label: datas.title, value: datas.id })
-    })
-    setFacultyOption(reArrangeData)
-    console.log("see it", reArrangeData)
-  }
+      reArrangeData.push({ label: datas.title, value: datas.id });
+    });
+    setFacultyOption(reArrangeData);
+    setAyncsFaculty(false);
+    console.log("see it", reArrangeData);
+  };
   const departmentData = async (id) => {
-    let apiData = await ApiDatas(fetchDepartmentData, id)
-    let reArrangeData = []
+    let apiData = await ApiDatas(fetchDepartmentData, id);
+    let reArrangeData = [];
     apiData.data.data.map((datas) => {
-      reArrangeData.push({ label: datas.title, value: datas.id })
-    })
-    setDepartmentOption(reArrangeData)
-    console.log("see it", reArrangeData)
-  }
+      reArrangeData.push({ label: datas.title, value: datas.id });
+    });
+    setDepartmentOption(reArrangeData);
+    setAyncsDepartment(false);
+    console.log("see it", reArrangeData);
+  };
   const moreDepartmentData = async (id) => {
-    let apiData = await ApiDatas(fetchDepartmentData, id)
-    let reArrangeData = []
+    let apiData = await ApiDatas(fetchDepartmentData, id);
+    let reArrangeData = [];
     apiData.data.data.map((datas) => {
-      reArrangeData.push({ label: datas.title, value: datas.id })
-    })
-    setMoreDepartmentOption(reArrangeData)
-    
-  }
+      reArrangeData.push({ label: datas.title, value: datas.id });
+    });
+    setAyncsMoreDepartment(false);
+    setMoreDepartmentOption(reArrangeData);
+  };
   const examTypeDatas = async () => {
-    let apiData = await ApiDatas(examTypeData)
-    let reArrangeData = []
+    let apiData = await ApiDatas(examTypeData);
+    let reArrangeData = [];
     apiData.data.data.map((datas) => {
-      reArrangeData.push({ label: datas.title, value: datas.id })
-    })
-    setExamOptions(reArrangeData)
-    console.log("see it", reArrangeData)
-
-  }
+      reArrangeData.push({ label: datas.title, value: datas.id });
+    });
+    setExamOptions(reArrangeData);
+    setAyncsExam(false);
+    console.log("see it", reArrangeData);
+  };
   const jambTypeDatas = async () => {
-    let apiData = await ApiDatas(jambData)
-    setJambExamId(apiData.data.data.id)
-
-  }
+    let apiData = await ApiDatas(jambData);
+    setJambExamId(apiData.data.data.id);
+  };
 
   const handleAddInputOnchange = (index, e) => {
     const updatedFields = [...addInputFields];
-    if (e.target.type === 'file') {
+    if (e.target.type === "file") {
       // For file input, store the file name in otherexamcertificate
-      updatedFields[index].otherexamcertificate = e.target.files[0];
+      setError((prevError) => ({
+        ...prevError,
+        address: false,
+      }));
+      updatedFields[index].otherexamcertificate = e.target.files;
     } else {
       // For other input types, store the value directly
       updatedFields[index][e.target.name] = e.target.value;
     }
     setAddInputFields(updatedFields);
-  }
+  };
+
+  const handleAddInputOnchangeForSelect = (index, e) => {
+    const updatedFields = [...addInputFields];
+    updatedFields[index].otherexamname = e.target.value;
+    setAddInputFields(updatedFields);
+  };
 
   const handleOnChange = (e, inputeName) => {
-
     switch (inputeName) {
       case "firstname":
         // code to be executed when the expression matches value1
-        setFirstname(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          firstname: false,
+        }));
+        setFirstname(e.target.value);
         break;
       case "middlename":
         // code to be executed when the expression matches value1
-        setMiddlename(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          middlename: false,
+        }));
+        setMiddlename(e.target.value);
         break;
       case "lastname":
         // code to be executed when the expression matches value1
-        setLastname(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          lastname: false,
+        }));
+        setLastname(e.target.value);
         break;
       case "maidenname":
         // code to be executed when the expression matches value1
-        setMaidenname(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          maidenname: false,
+        }));
+        setMaidenname(e.target.value);
         break;
 
       case "birthcertificate":
         // code to be executed when the expression matches value1
-        console.log()
-        setBirthcertificate(e.target.file[0])
+
+        setError((prevError) => ({
+          ...prevError,
+          birthcertificate: false,
+        }));
+        setBirthcertificate(e.target.files);
         break;
       case "email":
         // code to be executed when the expression matches value2
-        setEmail(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          email: false,
+        }));
+        setEmail(e.target.value);
         break;
       case "phone":
         // code to be executed when the expression matches value3
-        setPhone(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          phone: false,
+        }));
+        setPhone(e.target.value);
         break;
       case "address":
         // code to be executed when the expression matches value3
-        setAddress(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          address: false,
+        }));
+        setAddress(e.target.value);
         break;
       case "nationality":
         // code to be executed when the expression matches value1
-        setNationality(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          nationality: false,
+        }));
+        setNationality(e.target.value);
         break;
       case "stateArea":
         // code to be executed when the expression matches value1
-        localGovtData(e.target.value)
-        setStateArea(e.target.value)
-        console.log("ehredydy", e)
+        setError((prevError) => ({
+          ...prevError,
+          stateArea: false,
+        }));
+        localGovtData(e.target.value);
+        setAyncsLga(true);
+        setStateArea(e.target.value);
+        console.log("ehredydy", e);
         break;
       case "localGovt":
         // code to be executed when the expression matches value1
-        setLocalGovt(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          localGovt: false,
+        }));
+        setLocalGovt(e.target.value);
         break;
       case "primaryname":
         // code to be executed when the expression matches value1
-
-        setPrimaryname(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          primaryname: false,
+        }));
+        setPrimaryname(e.target.value);
         break;
       case "primaryresult":
         // code to be executed when the expression matches value1
-        setPrimaryresult(e.target.file[0])
+        setError((prevError) => ({
+          ...prevError,
+          primaryresult: false,
+        }));
+        setPrimaryresult(e.target.files);
         break;
       case "schoolname":
         // code to be executed when the expression matches value1
-        setSchoolname(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          schoolname: false,
+        }));
+        setSchoolname(e.target.value);
         break;
       case "examname":
         // code to be executed when the expression matches value1
-        
-        setExamname(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          examname: false,
+        }));
+        setExamname(e.target.value);
         break;
       case "examdate":
         // code to be executed when the expression matches value1
+        setError((prevError) => ({
+          ...prevError,
+          examdate: false,
+        }));
         let formattedDate = moment(e).format("YYYY-MM-DD");
-        setExamdate(formattedDate)
+        setExamdate(formattedDate);
         break;
       case "jambdate":
         // code to be executed when the expression matches value1
+        setError((prevError) => ({
+          ...prevError,
+          jambdate: false,
+        }));
         let formattedJambDate = moment(e).format("YYYY-MM-DD");
-        setJambdate(formattedJambDate)
+        setJambdate(formattedJambDate);
         break;
       case "examnumber":
         // code to be executed when the expression matches value1
-        setExamnumber(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          examnumber: false,
+        }));
+        setExamnumber(e.target.value);
         break;
       case "examresult":
         // code to be executed when the expression matches value1
-        setExamresult(e.target.file[0])
+        setError((prevError) => ({
+          ...prevError,
+          examresult: false,
+        }));
+        setExamresult(e.target.files);
         break;
       case "jambnumber":
         // code to be executed when the expression matches value1
-        setJambnumber(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          jambnumber: false,
+        }));
+        setJambnumber(e.target.value);
         break;
       case "jambscore":
         // code to be executed when the expression matches value1
-        setJambscore(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          jambscore: false,
+        }));
+        setJambscore(e.target.value);
         break;
       case "jambresult":
         // code to be executed when the expression matches value1
-        setJambresult(e.target.file[0])
+        setError((prevError) => ({
+          ...prevError,
+          jambresult: false,
+        }));
+        setJambresult(e.target.files);
         break;
       case "faculty":
         // code to be executed when the expression matches value1
-        departmentData(e.target.value)
-        setFaculty(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          faculty: false,
+        }));
+        departmentData(e.target.value);
+        setAyncsDepartment(true);
+        setFaculty(e.target.value);
         break;
       case "department":
         // code to be executed when the expression matches value1
-        setDepartment(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          department: false,
+        }));
+        setDepartment(e.target.value);
         break;
       case "morefaculty":
         // code to be executed when the expression matches value1
-        moreDepartmentData(e.target.value)
-        setMorefaculty(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          morefaculty: false,
+        }));
+        setAyncsMoreDepartment(true);
+        moreDepartmentData(e.target.value);
+        setMorefaculty(e.target.value);
         break;
       case "moredepartment":
         // code to be executed when the expression matches value1
-        setMoredepartment(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          moredepartment: false,
+        }));
+        setMoredepartment(e.target.value);
         break;
       // more cases...
       default:
         // code to be executed when the expression does not match any of the cases
-        setGender(e.target.value)
+        setError((prevError) => ({
+          ...prevError,
+          gender: false,
+        }));
+        setGender(e.target.value);
     }
   };
 
   const submit = async (e) => {
+    setLoader(true);
     e.preventDefault();
 
     // Create a new FormData object
     const formData = new FormData();
     // Append data from your form fields to the FormData object
-    formData.append('email', email);
-    formData.append('first_name', firstname);
-    formData.append('middle_name', middlename);
-    formData.append('last_name', lastname);
-    formData.append('maiden_name', maidenname);
-    formData.append('gender', gender);
-    formData.append('dob', dateofbirth);
-    formData.append('certificate', birthcertificate);
-    formData.append('phone_number', phone);
-    formData.append('country_id', nationality);
-    formData.append('address', address);
-    formData.append('state_id', stateArea);
-    formData.append('lga_id', localGovt);
+    formData.append("email", email);
+    formData.append("first_name", firstname);
+    formData.append("middle_name", middlename);
+    formData.append("last_name", lastname);
+    formData.append("maiden_name", maidenname);
+    formData.append("gender", gender);
+    formData.append("dob", dateofbirth);
+    formData.append("certificate", birthcertificate[0]);
+    formData.append("phone_number", phone);
+    formData.append("country_id", nationality);
+    formData.append("address", address);
+    formData.append("state_id", stateArea);
+    formData.append("lga_id", localGovt);
 
-    let studentResult = [{
-      exam_type_id: examname,
-      exam_number: examnumber,
-      exam_date: examdate,
-      image: examresult,
-    },
-    {
-      exam_type_id: jambExamId,
-      exam_number: jambnumber,
-      exam_date: jambdate,
-      image: jambresult,
-      exam_score: jambscore,
-    }
+    let studentResult = [
+      {
+        exam_type_id: examname,
+        exam_number: examnumber,
+        exam_date: examdate,
+        image: examresult[0],
+      },
+      {
+        exam_type_id: jambExamId,
+        exam_number: jambnumber,
+        exam_date: jambdate,
+        image: jambresult[0],
+        exam_score: jambscore,
+      },
     ];
+    formData.append("student_results[0][exam_type_id]", examname);
+    formData.append("student_results[0][exam_number]", examnumber);
+    formData.append("student_results[0][exam_date]", examdate);
+    formData.append("student_results[0][image]", examresult[0]);
+
+    formData.append("student_results[1][exam_type_id]", jambExamId);
+    formData.append("student_results[1][exam_number]", jambnumber);
+    formData.append("student_results[1][exam_date]", jambdate);
+    formData.append("student_results[1][image]", jambresult[0]);
+    formData.append("student_results[1][exam_score]", jambscore);
+    console.log(addInputFields[0].exam_number);
 
     addInputFields.forEach((field, index) => {
-
-      let otherExams = {
-        exam_type_id: field.otherexamname,
-        exam_number: field.otherexamnumber,
-        exam_date: field.otherexamdate,
-        image: field.otherexamcertificate,
-      }
-      studentResult.push(otherExams);
-
+      let newIndex = index + 2;
+      formData.append(
+        `student_results[${newIndex}][exam_type_id]`,
+        field.otherexamname
+      );
+      formData.append(
+        `student_results[${newIndex}][exam_number]`,
+        field.otherexamnumber
+      );
+      formData.append(
+        `student_results[${newIndex}][exam_date]`,
+        field.otherexamdate
+      );
+      formData.append(
+        `student_results[${newIndex}][image]`,
+        field.otherexamcertificate[0]
+      );
     });
-    formData.append('student_results', JSON.stringify(studentResult) );
+
+    // if (
+    //   addInputFields.length == 1 &&
+    //   addInputFields[0].exam_number.length !== 0
+    // ) {
+    //   addInputFields.forEach((field, index) => {
+    //     // let otherExams = {
+    //     //   exam_type_id: field.otherexamname,
+    //     //   exam_number: field.otherexamnumber,
+    //     //   exam_date: field.otherexamdate,
+    //     //   image: field.otherexamcertificate[0],
+    //     // };
+    //     // studentResult.push(otherExams);
+
+    //     let newIndex = index + 2;
+    //     formData.append(
+    //       `student_results[${newIndex}][exam_type_id]`,
+    //       field.otherexamname
+    //     );
+    //     formData.append(
+    //       `student_results[${newIndex}][exam_number]`,
+    //       field.otherexamnumber
+    //     );
+    //     formData.append(
+    //       `student_results[${newIndex}][exam_date]`,
+    //       field.otherexamdate
+    //     );
+    //     formData.append(
+    //       `student_results[${newIndex}][image]`,
+    //       field.otherexamcertificate[0]
+    //     );
+    //   });
+    // }
+
+    // if (addInputFields.length > 1) {
+    //   addInputFields.forEach((field, index) => {
+    //     // let otherExams = {
+    //     //   exam_type_id: field.otherexamname,
+    //     //   exam_number: field.otherexamnumber,
+    //     //   exam_date: field.otherexamdate,
+    //     //   image: field.otherexamcertificate[0],
+    //     // };
+    //     // studentResult.push(otherExams);
+
+    //     let newIndex = index + 2;
+    //     formData.append(
+    //       `student_results[${newIndex}][exam_type_id]`,
+    //       field.otherexamname
+    //     );
+    //     formData.append(
+    //       `student_results[${newIndex}][exam_number]`,
+    //       field.otherexamnumber
+    //     );
+    //     formData.append(
+    //       `student_results[${newIndex}][exam_date]`,
+    //       field.otherexamdate
+    //     );
+    //     formData.append(
+    //       `student_results[${newIndex}][image]`,
+    //       field.otherexamcertificate[0]
+    //     );
+    //   });
+    // }
+
+    //formData.append('student_results', jsonBlob );
+    //formData.append('student_results', JSON.stringify(studentResult) );
+    // studentResult.forEach((item, index) => {
+    //   const serializedItem = JSON.stringify(item);
+    //   formData.append(`student_results[${index}]`, serializedItem);
+    // });
     let schoolsAttended = [
       {
         school_name: primaryname,
         graduation_year: primarydate,
-        image: primaryresult
+        image: primaryresult[0],
       },
 
       {
         school_name: schoolname,
         graduation_year: schooldate,
-      }
-    ]
-   
-    formData.append('schools_attended', JSON.stringify(schoolsAttended));
+      },
+    ];
+
+    // schoolsAttended.forEach((item, index) => {
+    //   const serializedItem = JSON.stringify(item);
+    //   formData.append(`schools_attended[${index}]`, serializedItem);
+    // });
+
+    formData.append("schools_attended[0][school_name]", primaryname);
+    formData.append("schools_attended[0][graduation_year]", primarydate);
+    formData.append("schools_attended[0][image]", primaryresult[0]);
+
+    formData.append("schools_attended[1][school_name]", schoolname);
+    formData.append("schools_attended[1][graduation_year]", schooldate);
+    formData.append("schools_attended[1][image]", examresult[0]);
     let choice = [
       {
         faculty_id: faculty,
-        department_id: department
+        department_id: department,
       },
       {
         faculty_id: morefaculty,
-        department_id: moredepartment
-      }
-    ]
-    formData.append('choice', JSON.stringify(choice));
-    
-    // console.log(formData);
-    // return ;
+        department_id: moredepartment,
+      },
+    ];
+    formData.append("choice", JSON.stringify(choice));
 
     try {
       // Make an HTTP POST request to the API endpoint
-      const response = await axios.post(process.env.REACT_APP_API_URL+'/student/application', formData);
+      const response = await axios.post(
+        process.env.REACT_APP_API_URL + "/student/application",
+        formData
+      );
 
       // Handle the API response as needed
-      console.log('API Response:', response.data.data);
+      console.log("API Response:", response.data.data);
+      setLoader(false);
+      setOpenModal(true);
     } catch (error) {
       // Handle errors, such as network issues or API validation errors
-      console.error('API Error:', error);
+      setLoader(false);
+      console.error("API Error:", error);
     }
   };
 
+  const closeAndRedirect = () => {
+    setOpenModal(false);
+    navigation("/");
+  };
 
-  const handleOnChangeDate = e => {
-
+  const handleOnChangeDate = (e) => {
     let formattedDate = moment(e).format("YYYY-MM-DD");
-    console.log("checking date", formattedDate)
+    console.log("checking date", formattedDate);
+    setError((prevError) => ({
+      ...prevError,
+      dateofbirth: false,
+    }));
     setDateofbirth(formattedDate); // Set the formatted date in your state
   };
-  const handleOnChangeDate1 = e => {
+  const handleOnChangeDate1 = (e) => {
     let formattedDate = moment(e).format("YYYY-MM-DD");
-    console.log("checking date", formattedDate)
+    console.log("checking date", formattedDate);
+    setError((prevError) => ({
+      ...prevError,
+      schooldate: false,
+    }));
     setSchooldate(formattedDate); // Set the formatted date in your state
   };
-  const handleOnChangePrimaryDate = e => {
+  const handleOnChangePrimaryDate = (e) => {
     let formattedDate = moment(e).format("YYYY-MM-DD");
-    console.log("checking date", formattedDate)
+    console.log("checking date", formattedDate);
+    setError((prevError) => ({
+      ...prevError,
+      primarydate: false,
+    }));
     setPrimarydate(formattedDate); // Set the formatted date in your state
   };
 
   const handleOnChangeDate2 = (index, e) => {
-
     let formattedDate = moment(e).format("YYYY-MM-DD");
     console.log("checking date", formattedDate);
 
@@ -505,16 +763,54 @@ const StudentEnrollmentPage = () => {
     updatedFields[index].otherexamdate = formattedDate;
 
     // Set the updated array back to state
-    setAddInputFields(updatedFields)
+    setAddInputFields(updatedFields);
   };
+  const checkAddInputFields = () => {
+    let otherexamcertificate = addInputFields[0].otherexamcertificate.length;
+    if (addInputFields[0].otherexamcertificate[0]) {
+      otherexamcertificate = JSON.stringify(
+        addInputFields[0].otherexamcertificate[0]
+      ).length;
+    }
 
-  const checkOtherExamIsGreaterthanOne = (field) => {
+    let otherexamdate = addInputFields[0].otherexamdate.length;
+    let otherexamname = addInputFields[0].otherexamname.length;
+    let otherexamnumber = addInputFields[0].otherexamnumber.length;
 
+    if (
+      otherexamcertificate > 0 &&
+      (otherexamdate == 0 || otherexamname == 0 || otherexamnumber == 0)
+    ) {
+      return true;
+    }
 
-  }
+    if (
+      otherexamdate > 0 &&
+      (otherexamcertificate == 0 || otherexamname == 0 || otherexamnumber == 0)
+    ) {
+      return true;
+    }
+
+    if (
+      otherexamname > 0 &&
+      (otherexamdate == 0 || otherexamcertificate == 0 || otherexamnumber == 0)
+    ) {
+      return true;
+    }
+
+    if (
+      otherexamnumber > 0 &&
+      (otherexamdate == 0 || otherexamname == 0 || otherexamcertificate == 0)
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+  const checkOtherExamIsGreaterthanOne = (field) => {};
   const handleNext = () => {
     let status = false;
-    scrollToTop()
+    scrollToTop();
     if (activeStep === 0) {
       if (
         firstname.trim() === "" ||
@@ -561,51 +857,85 @@ const StudentEnrollmentPage = () => {
       }
     } else if (activeStep === 1) {
       if (addInputFields.length == 1) {
-        if (
-          primaryname.trim() === "" ||
-          primaryresult.trim() === "" ||
-          primarydate === "" ||
-          schoolname.trim() === "" ||
-          schooldate === "" ||
-          examname === "" ||
-          examnumber.trim() === "" ||
-          examdate.trim() === "" ||
-          examresult.trim() === "" ||
-          jambdate.trim() === "" ||
-          jambnumber.trim() === "" ||
-          jambscore.trim() === "" ||
-          jambresult.trim() === ""
-        ) {
-
+        // check here the input has a field which is not empty and request a validation else do the below
+        if (checkAddInputFields()) {
           setError((prevError) => ({
             ...prevError,
             primaryname: primaryname.trim() === "",
-            primaryresult: primaryresult.trim() === "",
+            primaryresult: primaryresult === "",
             primarydate: primarydate === "",
             schoolname: schoolname.trim() === "",
             schooldate: schooldate === "",
-            examname: examname.trim() === "",
+            examname: examname === "",
             examnumber: examnumber.trim() === "",
-            examresult: examresult.trim() === "",
+            examresult: examresult === "",
             jambnumber: jambnumber.trim() === "",
             jambscore: jambscore.trim() === "",
-            jambresult: jambresult.trim() === "",
+            jambresult: jambresult === "",
             jambdate: jambdate.trim() === "",
             examdate: examdate.trim() === "",
-
-
+            addInputFields: addInputFields.map((field) => {
+              return {
+                otherexamname: field.otherexamname === "",
+                otherexamcertificate: field.otherexamcertificate === "",
+                otherexamdate: field.otherexamdate === "",
+                otherexamnumber: field.otherexamnumber === "",
+              };
+            }),
           }));
           status = true;
 
           setStatus("error");
-          setMessage("All fields are required");
+          setMessage("All fields are required a");
           setShow(true);
           setTimeout(() => {
             setShow(false);
           }, 6000);
           return;
         } else {
-          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          if (
+            primaryname.trim() === "" ||
+            primaryresult === "" ||
+            primarydate === "" ||
+            schoolname.trim() === "" ||
+            schooldate === "" ||
+            examname === "" ||
+            examnumber.trim() === "" ||
+            examdate.trim() === "" ||
+            examresult === "" ||
+            jambdate.trim() === "" ||
+            jambnumber.trim() === "" ||
+            jambscore.trim() === "" ||
+            jambresult === ""
+          ) {
+            setError((prevError) => ({
+              ...prevError,
+              primaryname: primaryname.trim() === "",
+              primaryresult: primaryresult === "",
+              primarydate: primarydate === "",
+              schoolname: schoolname.trim() === "",
+              schooldate: schooldate === "",
+              examname: examname === "",
+              examnumber: examnumber.trim() === "",
+              examresult: examresult === "",
+              jambnumber: jambnumber.trim() === "",
+              jambscore: jambscore.trim() === "",
+              jambresult: jambresult === "",
+              jambdate: jambdate.trim() === "",
+              examdate: examdate.trim() === "",
+            }));
+            status = true;
+
+            setStatus("error");
+            setMessage("All fields are required ");
+            setShow(true);
+            setTimeout(() => {
+              setShow(false);
+            }, 6000);
+            return;
+          } else {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          }
         }
       } else {
         if (
@@ -614,20 +944,18 @@ const StudentEnrollmentPage = () => {
           primarydate === "" ||
           schoolname.trim() === "" ||
           schooldate === "" ||
-          examname.trim() === "" ||
+          examname === "" ||
           examnumber.trim() === "" ||
           examdate.trim() === "" ||
-          examresult.trim() === "" ||
+          examresult === "" ||
           jambdate.trim() === "" ||
           jambnumber.trim() === "" ||
           jambscore.trim() === "" ||
-          jambresult.trim() === "" ||
+          jambresult === "" ||
           addInputFields.some((field) =>
-            Object.values(field).some((value) => value.trim() === "")
-
+            Object.values(field).some((value) => value === "")
           )
         ) {
-
           setError((prevError) => ({
             ...prevError,
             primaryname: primaryname.trim() === "",
@@ -635,26 +963,22 @@ const StudentEnrollmentPage = () => {
             primarydate: primarydate === "",
             schoolname: schoolname.trim() === "",
             schooldate: schooldate === "",
-            examname: examname.trim() === "",
+            examname: examname === "",
             examnumber: examnumber.trim() === "",
-            examresult: examresult.trim() === "",
+            examresult: examresult === "",
             jambnumber: jambnumber.trim() === "",
             jambscore: jambscore.trim() === "",
-            jambresult: jambresult.trim() === "",
+            jambresult: jambresult === "",
             jambdate: jambdate.trim() === "",
             examdate: examdate.trim() === "",
             addInputFields: addInputFields.map((field) => {
-              console.log("abc", field.otherexamnumber)
               return {
-
-                otherexamname: field.otherexamname.trim() === "",
+                otherexamname: field.otherexamname === "",
                 otherexamcertificate: field.otherexamcertificate === "",
                 otherexamdate: field.otherexamdate === "",
                 otherexamnumber: field.otherexamnumber === "",
-
-              }
+              };
             }),
-
           }));
           status = true;
 
@@ -669,8 +993,6 @@ const StudentEnrollmentPage = () => {
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
       }
-
-
     } else if (activeStep === 2) {
       if (
         faculty === "" ||
@@ -686,7 +1008,6 @@ const StudentEnrollmentPage = () => {
           moredepartment: moredepartment === "",
         }));
         status = true;
-
 
         setStatus("error");
         setMessage("All fields are required");
@@ -728,17 +1049,17 @@ const StudentEnrollmentPage = () => {
           department: department,
           morefaculty: morefaculty,
           moredepartment: moredepartment,
-          addInputFields: addInputFields
+          addInputFields: addInputFields,
+        };
 
-        }
-        setData(data)
+        setData(data);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     }
   };
 
   const handleBack = () => {
-    scrollToTop()
+    scrollToTop();
     setBirthcertificate("");
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -746,70 +1067,83 @@ const StudentEnrollmentPage = () => {
     const updatedFields = [...addInputFields];
     updatedFields.splice(index, 1);
     setAddInputFields(updatedFields);
-  }
+  };
 
   const handleAddForm = () => {
-    setAddInputFields([...addInputFields, { otherexamname: "", otherexamcertificate: "", otherexamdate: "" }]);
-  }
+    setAddInputFields([
+      ...addInputFields,
+      {
+        otherexamname: "",
+        otherexamcertificate: "",
+        otherexamdate: "",
+        otherexamnumber: "",
+      },
+    ]);
+  };
 
-  const options = [
+  const genderOption = [
     { label: "Male", value: "Male" },
     { label: "Female", value: "Female" },
   ];
-  const option = [
-    { label: "Lagos", value: "Lagos" },
-    { label: "FCT-Abuja", value: "FCT-Abuja" },
-    { label: "Nassarawa", value: "Nassarawa" },
-    { label: "Kogi", value: "Kogi" },
-  ];
-  const option2 = [
-    { label: "ikeja", value: "ikeja" },
-    { label: "Gwagwalada", value: "Gwagwalada" },
-    { label: "Lafia", value: "Lafia" },
-    { label: "Lokoja", value: "Lokoja" },
-  ];
+  const option = [{ label: "Nigeria", value: 1 }];
 
   const renderActionButton = (index) => {
     if (addInputFields.length > 1) {
       return (
         <div className="flex h-[60px] items-center w-[10%]">
           <div className=" ">
-            <CancelIcon onClick={() => handleRemoveForm(index)} className="text-[red] text-2xl cursor-pointer" />
+            <CancelIcon
+              onClick={() => handleRemoveForm(index)}
+              className="text-[red] text-2xl cursor-pointer"
+            />
           </div>
           <div className="">
-            <AddIcon onClick={handleAddForm} className="text-[green] text-2xl cursor-pointer" />
+            <AddIcon
+              onClick={handleAddForm}
+              className="text-[green] text-2xl cursor-pointer"
+            />
           </div>
         </div>
-      )
+      );
     } else {
       return (
         <div className="flex h-[60px] items-center w-[10%] ">
-          <AddIcon onClick={handleAddForm} className="text-[green] cursor-pointer" />
+          <AddIcon
+            onClick={handleAddForm}
+            className="text-[green] cursor-pointer"
+          />
         </div>
-
-      )
+      );
     }
-  }
+  };
 
   return (
-    <>
-
+    <div className="">
       <div className="flex h-[100vh] ">
         <div className="flex w-[30%] bg-blue-600 items-center justify-center  ">
           <div className=" ">
-            <div className="flex justify-center h-[160px]"><img src={Logo} alt="logo" className="rounded-lg" /></div>
-            <div className="flex justify-center text-[15px] text-[white] font-medium mt-[15px]">BAYELSA STATE POLYTECNIC ALEIBIRI</div>
+            <div className="flex justify-center h-[160px]">
+              <img src={Logo} alt="logo" className="rounded-lg" />
+            </div>
+            <div className="flex justify-center text-[15px] text-[white] font-medium mt-[15px]">
+              BAYELSA STATE POLYTECNIC ALEIBIRI
+            </div>
             <div className="w-[410px] flex justify-center text-[16px] mt-[17px] text-slate-400">
               Light, Skill and Self-Reliance
             </div>
           </div>
         </div>
-        <div ref={contentArea} className="h-[100%] flex items-center justify-center  w-[100%] pt-[200px] pb-[20px]    overflow-auto">
+        <div
+          ref={contentArea}
+          className="z-0 h-[100%] flex items-center justify-center  w-[100%] pt-[200px] pb-[20px]    overflow-auto"
+        >
           <SnackbarComponent status={status} show={show} message={message} />
           <Container maxWidth="lg" sx={{ mt: 2 }}>
             <div className="min-screen flex items-center justify-center">
               <div className="text-center mt-[15px]">
-                <h1 className="text-blue-600 mb-6 font-bold text-xl">STUDENT REGISTRATION</h1>
+                <h1 className="text-blue-600 mb-6 font-bold text-xl">
+                  STUDENT REGISTRATION
+                </h1>
               </div>
             </div>
             <Stepper activeStep={activeStep}>
@@ -822,7 +1156,6 @@ const StudentEnrollmentPage = () => {
             <Grid container direction="row" alignItems="center" spacing={2}>
               <Grid item xs={12}>
                 {activeStep === 0 && (
-
                   <div className="mt-8">
                     <BlockSectionComponent title="Applicat Bio">
                       <div className="grid grid-cols-3 gap-4 mt-4 ">
@@ -833,7 +1166,7 @@ const StudentEnrollmentPage = () => {
                           error={error["firstname"]}
                           value={firstname}
                           onChange={(e) => {
-                            handleOnChange(e, "firstname")
+                            handleOnChange(e, "firstname");
                           }}
                         />
                         <TextInput
@@ -842,7 +1175,7 @@ const StudentEnrollmentPage = () => {
                           error={error["middlename"]}
                           value={middlename}
                           onChange={(e) => {
-                            handleOnChange(e, "middlename")
+                            handleOnChange(e, "middlename");
                           }}
                         />
                         <TextInput
@@ -852,7 +1185,7 @@ const StudentEnrollmentPage = () => {
                           error={error["lastname"]}
                           value={lastname}
                           onChange={(e) => {
-                            handleOnChange(e, "lastname")
+                            handleOnChange(e, "lastname");
                           }}
                         />
                       </div>
@@ -864,7 +1197,7 @@ const StudentEnrollmentPage = () => {
                           error={error["maidenname"]}
                           value={maidenname}
                           onChange={(e) => {
-                            handleOnChange(e, "maidenname")
+                            handleOnChange(e, "maidenname");
                           }}
                         />
                         <TextInput
@@ -874,13 +1207,10 @@ const StudentEnrollmentPage = () => {
                           value={gender < 1 ? "" : gender}
                           label={"Gender"}
                           error={error["gender"]}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "gender")
-                            }
-                          }
-                          options={options}
+                          onChange={(e) => {
+                            handleOnChange(e, "gender");
+                          }}
+                          options={genderOption}
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-4 mt-4">
@@ -892,7 +1222,7 @@ const StudentEnrollmentPage = () => {
                           label="Date of Birth"
                           error={error["dateofbirth"]}
                           onChange={(e) => {
-                            handleOnChangeDate(e, "dateofbirth")
+                            handleOnChangeDate(e, "dateofbirth");
                           }}
                         />
                         <TextInput
@@ -901,15 +1231,15 @@ const StudentEnrollmentPage = () => {
                           name="birthcertificate"
                           label="birth certificate"
                           error={error["birthcertificate"]}
+                          isSelect={birthcertificate}
                           onChange={(e) => {
-                            handleOnChange(e, "birthcertificate")
+                            handleOnChange(e, "birthcertificate");
                           }}
                         />
                       </div>
                     </BlockSectionComponent>
 
-                    <BlockSectionComponent title="Contact Address" >
-
+                    <BlockSectionComponent title="Contact Address">
                       <div className="grid grid-cols-2 gap-4 ">
                         <TextInput
                           required
@@ -918,7 +1248,7 @@ const StudentEnrollmentPage = () => {
                           value={phone}
                           error={error["phone"]}
                           onChange={(e) => {
-                            handleOnChange(e, "phone")
+                            handleOnChange(e, "phone");
                           }}
                         />
                         <TextInput
@@ -928,7 +1258,7 @@ const StudentEnrollmentPage = () => {
                           error={error["email"]}
                           value={email}
                           onChange={(e) => {
-                            handleOnChange(e, "email")
+                            handleOnChange(e, "email");
                           }}
                         />
                       </div>
@@ -940,12 +1270,9 @@ const StudentEnrollmentPage = () => {
                           label="Nationality"
                           error={error["nationality"]}
                           value={nationality < 1 ? "" : nationality}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "nationality")
-                            }
-                          }
+                          onChange={(e) => {
+                            handleOnChange(e, "nationality");
+                          }}
                           isSelect={true}
                           options={option}
                         />
@@ -957,7 +1284,7 @@ const StudentEnrollmentPage = () => {
                           value={address}
                           error={error["address"]}
                           onChange={(e) => {
-                            handleOnChange(e, "address")
+                            handleOnChange(e, "address");
                           }}
                         />
                       </div>
@@ -965,16 +1292,14 @@ const StudentEnrollmentPage = () => {
                         <TextInput
                           required
                           type="select"
+                          ayncs={ayncsState}
                           name="stateArea"
                           error={error["stateArea"]}
                           label="Select State"
                           value={stateArea < 1 ? "" : stateArea}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "stateArea")
-                            }
-                          }
+                          onChange={(e) => {
+                            handleOnChange(e, "stateArea");
+                          }}
                           isSelect={true}
                           options={stateOptions}
                         />
@@ -986,26 +1311,20 @@ const StudentEnrollmentPage = () => {
                           error={error["localGovt"]}
                           label="Select Local Government"
                           value={localGovt < 1 ? "" : localGovt}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "localGovt")
-                            }
-                          }
+                          onChange={(e) => {
+                            handleOnChange(e, "localGovt");
+                          }}
+                          ayncs={ayncsLga}
                           isSelect={true}
                           options={localGovtOptions}
                         />
                       </div>
-
                     </BlockSectionComponent>
                   </div>
-
                 )}
                 {activeStep === 1 && (
                   <div>
-
                     <BlockSectionComponent title="Primary School">
-
                       <div className="grid grid-cols-3 gap-8   mt-4">
                         <TextInput
                           className=""
@@ -1015,7 +1334,7 @@ const StudentEnrollmentPage = () => {
                           error={error["primaryname"]}
                           value={primaryname}
                           onChange={(e) => {
-                            handleOnChange(e, "primaryname")
+                            handleOnChange(e, "primaryname");
                           }}
                         />
                         <TextInput
@@ -1024,9 +1343,10 @@ const StudentEnrollmentPage = () => {
                           type="file"
                           name="primaryresult"
                           label="Result"
+                          isSelect={primaryresult}
                           error={error["primaryresult"]}
                           onChange={(e) => {
-                            handleOnChange(e, "primaryresult")
+                            handleOnChange(e, "primaryresult");
                           }}
                         />
                         <TextInput
@@ -1037,11 +1357,10 @@ const StudentEnrollmentPage = () => {
                           label="Date"
                           error={error["primarydate"]}
                           onChange={(e) => {
-                            handleOnChangePrimaryDate(e)
+                            handleOnChangePrimaryDate(e);
                           }}
                         />
                       </div>
-
                     </BlockSectionComponent>
 
                     <BlockSectionComponent title="Secondary School">
@@ -1054,7 +1373,7 @@ const StudentEnrollmentPage = () => {
                           error={error["schoolname"]}
                           value={schoolname}
                           onChange={(e) => {
-                            handleOnChange(e, "schoolname")
+                            handleOnChange(e, "schoolname");
                           }}
                         />
                         <TextInput
@@ -1065,7 +1384,7 @@ const StudentEnrollmentPage = () => {
                           label="Date"
                           error={error["schooldate"]}
                           onChange={(e) => {
-                            handleOnChangeDate1(e, "schooldate")
+                            handleOnChangeDate1(e, "schooldate");
                           }}
                         />
                       </div>
@@ -1078,14 +1397,12 @@ const StudentEnrollmentPage = () => {
                           error={error["examname"]}
                           label="Select Exam Type"
                           value={examname < 1 ? "" : examname}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "examname")
-                            }
-                          }
+                          onChange={(e) => {
+                            handleOnChange(e, "examname");
+                          }}
                           isSelect={true}
                           options={examOptions}
+                          ayncs={ayncsExam}
                         />
                         <TextInput
                           className="h-[70px]"
@@ -1095,7 +1412,7 @@ const StudentEnrollmentPage = () => {
                           error={error["examnumber"]}
                           value={examnumber}
                           onChange={(e) => {
-                            handleOnChange(e, "examnumber")
+                            handleOnChange(e, "examnumber");
                           }}
                         />
                         <TextInput
@@ -1105,9 +1422,9 @@ const StudentEnrollmentPage = () => {
                           name="examresult"
                           label="Result"
                           error={error["examresult"]}
-                          value={examresult}
+                          isSelect={examresult}
                           onChange={(e) => {
-                            handleOnChange(e, "examresult")
+                            handleOnChange(e, "examresult");
                           }}
                         />
                         <TextInput
@@ -1118,7 +1435,7 @@ const StudentEnrollmentPage = () => {
                           label="Exam Date"
                           error={error["examdate"]}
                           onChange={(e) => {
-                            handleOnChange(e, "examdate")
+                            handleOnChange(e, "examdate");
                           }}
                         />
                       </div>
@@ -1134,7 +1451,7 @@ const StudentEnrollmentPage = () => {
                           error={error["jambnumber"]}
                           value={jambnumber}
                           onChange={(e) => {
-                            handleOnChange(e, "jambnumber")
+                            handleOnChange(e, "jambnumber");
                           }}
                         />
                         <TextInput
@@ -1145,7 +1462,7 @@ const StudentEnrollmentPage = () => {
                           error={error["jambscore"]}
                           value={jambscore}
                           onChange={(e) => {
-                            handleOnChange(e, "jambscore")
+                            handleOnChange(e, "jambscore");
                           }}
                         />
                         <TextInput
@@ -1155,9 +1472,9 @@ const StudentEnrollmentPage = () => {
                           name="jambresult"
                           label="Result"
                           error={error["jambresult"]}
-                          value={jambresult}
+                          isSelect={jambresult}
                           onChange={(e) => {
-                            handleOnChange(e, "jambresult")
+                            handleOnChange(e, "jambresult");
                           }}
                         />
                         <TextInput
@@ -1168,32 +1485,39 @@ const StudentEnrollmentPage = () => {
                           label="Jamb Date"
                           error={error["jambdate"]}
                           onChange={(e) => {
-                            handleOnChange(e, "jambdate")
+                            handleOnChange(e, "jambdate");
                           }}
                         />
                       </div>
                     </BlockSectionComponent>
                     <BlockSectionComponent title="Other Exams">
-                      {console.log(addInputFields)}
                       {addInputFields?.map((field, index) => (
-                        <div>
-
-
-                          <div key={index} className="grid grid-cols-11 gap-4 mb-6 mt-4">
-
+                        <div key={index}>
+                          <div
+                            key={index}
+                            className="grid grid-cols-11 gap-4 mb-6 mt-4"
+                          >
                             <div className="col-span-3">
                               <TextInput
-
-
-                                className="h-[70px] w-[100%] mt-6"
+                                className="h-[70px] "
                                 required
+                                type="select"
                                 name="otherexamname"
-                                label="Exam Name"
-                                error={error.addInputFields?.[index]?.otherexamname}
-                                value={field.otherexamname}
+                                error={
+                                  error.addInputFields?.[index]?.otherexamname
+                                }
+                                label="Select Exam Type"
+                                value={
+                                  field.otherexamname < 1
+                                    ? ""
+                                    : field.otherexamname
+                                }
                                 onChange={(e) => {
-                                  handleAddInputOnchange(index, e)
+                                  handleAddInputOnchangeForSelect(index, e);
                                 }}
+                                isSelect={true}
+                                ayncs={ayncsExam}
+                                options={examOptions}
                               />
                             </div>
 
@@ -1203,10 +1527,11 @@ const StudentEnrollmentPage = () => {
                                 required
                                 name="otherexamnumber"
                                 label="Exam Number"
-                                error={error.addInputFields?.[index]?.otherexamnumber}
-
+                                error={
+                                  error.addInputFields?.[index]?.otherexamnumber
+                                }
                                 onChange={(e) => {
-                                  handleAddInputOnchange(index, e)
+                                  handleAddInputOnchange(index, e);
                                 }}
                               />
                             </div>
@@ -1218,11 +1543,14 @@ const StudentEnrollmentPage = () => {
                                 type="file"
                                 name="otherexamcertificate"
                                 label="Exam Certificate"
-                                error={error.addInputFields?.[index]?.otherexamcertificate}
-                                value={field.otherexamcertificate}
+                                error={
+                                  error.addInputFields?.[index]
+                                    ?.otherexamcertificate
+                                }
+                                isSelect={field.otherexamcertificate}
                                 onChange={(e) => {
-                                  console.log("fgf gfgddf")
-                                  handleAddInputOnchange(index, e)
+                                  console.log("fgf gfgddf");
+                                  handleAddInputOnchange(index, e);
                                 }}
                               />
                             </div>
@@ -1233,27 +1561,20 @@ const StudentEnrollmentPage = () => {
                                 required
                                 name="otherexamdate"
                                 label="Exam Year"
-                                error={error.addInputFields?.[index]?.otherexamdate}
+                                error={
+                                  error.addInputFields?.[index]?.otherexamdate
+                                }
                                 onChange={(e) => {
-                                  handleOnChangeDate2(index, e)
+                                  handleOnChangeDate2(index, e);
                                 }}
                               />
                             </div>
 
                             {renderActionButton(index)}
-
-
-
-
-
-
-
                           </div>
                         </div>
-
                       ))}
                     </BlockSectionComponent>
-
                   </div>
                 )}
                 {activeStep === 2 && (
@@ -1267,13 +1588,11 @@ const StudentEnrollmentPage = () => {
                           error={error["faculty"]}
                           label="Select Faculty"
                           value={faculty < 1 ? "" : faculty}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "faculty")
-                            }
-                          }
+                          onChange={(e) => {
+                            handleOnChange(e, "faculty");
+                          }}
                           isSelect={true}
+                          ayncs={ayncsFaculty}
                           options={facultyOption}
                         />
                         <TextInput
@@ -1283,12 +1602,10 @@ const StudentEnrollmentPage = () => {
                           error={error["department"]}
                           label="Select Department"
                           value={department < 1 ? "" : department}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "department")
-                            }
-                          }
+                          onChange={(e) => {
+                            handleOnChange(e, "department");
+                          }}
+                          ayncs={ayncsDepartment}
                           isSelect={true}
                           options={departmentOption}
                         />
@@ -1304,13 +1621,11 @@ const StudentEnrollmentPage = () => {
                           error={error["morefaculty"]}
                           label="Select More Faculty"
                           value={morefaculty < 1 ? "" : morefaculty}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "morefaculty")
-                            }
-                          }
+                          onChange={(e) => {
+                            handleOnChange(e, "morefaculty");
+                          }}
                           isSelect={true}
+                          ayncs={ayncsFaculty}
                           options={facultyOption}
                         />
                         <TextInput
@@ -1320,30 +1635,24 @@ const StudentEnrollmentPage = () => {
                           error={error["moredepartment"]}
                           label="Select More Department"
                           value={moredepartment < 1 ? "" : moredepartment}
-                          onChange={
-                            (e) => {
-
-                              handleOnChange(e, "moredepartment")
-                            }
-                          }
+                          onChange={(e) => {
+                            handleOnChange(e, "moredepartment");
+                          }}
                           isSelect={true}
+                          ayncs={ayncsMoreDepartment}
                           options={moreDepartmentOption}
                         />
                       </div>
                     </BlockSectionComponent>
-
-
                   </>
                 )}
                 {activeStep === 3 && (
                   <>
-                    <StudentEnrollmentDetailsComponent
-                      data={data}
-                    />
+                    <StudentEnrollmentDetailsComponent data={data} />
                   </>
                 )}
               </Grid>
-              <Grid item xs={0} className="w-[100%]"  >
+              <Grid item xs={0} className="w-[100%]">
                 <div className="grid grid-cols-2 gap-4 w-[100%] ">
                   <div>
                     {activeStep > 0 && (
@@ -1352,8 +1661,6 @@ const StudentEnrollmentPage = () => {
                           variant="contained"
                           color="danger"
                           onClick={handleBack}
-
-
                         >
                           Back
                         </Button>
@@ -1363,27 +1670,56 @@ const StudentEnrollmentPage = () => {
                   <div className="flex justify-end">
                     <Button
                       variant="contained"
-                      color={activeStep === steps.length - 1 ? "success" : "primary"}
-                      onClick={activeStep === steps.length - 1 ? submit : handleNext}
-                      disabled={activeStep === steps.length + 1}
-
-
+                      color={
+                        activeStep === steps.length - 1 ? "success" : "primary"
+                      }
+                      onClick={
+                        activeStep === steps.length - 1 ? submit : handleNext
+                      }
+                      disabled={activeStep === steps.length + 1 || loader}
                     >
                       {activeStep === steps.length - 1 ? "Submit" : "Next"}
+                      {loader ? (
+                        <CircularProgress
+                          style={{ width: "20px", height: "20px" }}
+                        />
+                      ) : null}
                     </Button>
                   </div>
                 </div>
-
-
-
               </Grid>
             </Grid>
           </Container>
         </div>
       </div>
-    </>
+      <AppModal modalIsOpen={openModal} dontClose={true}>
+        <div className="w-[100%] h-[618px] flex justify-center items-center ">
+          <div className="w-[50%] h-[50%] ">
+            <div className="mb-[35px]  flex justify-center ">
+              <CheckCircleIcon
+                className="text-[green]"
+                style={{ width: "50px", height: "50px" }}
+              />
+            </div>
+            <h1 className="text-[green] text-[26px]">
+              Registration was successfull, we would send you feedback via your
+              email address
+            </h1>
+
+            <div className="mt-[35px]  flex justify-center ">
+              <Button
+                variant="contained"
+                color="success"
+                onClick={closeAndRedirect}
+              >
+                Go to Website
+              </Button>
+            </div>
+          </div>
+        </div>
+      </AppModal>
+    </div>
   );
 };
 
 export default StudentEnrollmentPage;
-
