@@ -382,7 +382,7 @@ class StudentController extends Controller
             if ($student) {
                 // insert application school history
 
-                $schoolsAttended = json_decode($request->schools_attended);
+                $schoolsAttended = $request->schools_attended;
                 foreach ($schoolsAttended as $schoolAttended) {
                     $applicationSchools = new ApplicationSchoolHistory();
                     $applicationDocument = new ApplicationDocument();
@@ -424,7 +424,7 @@ class StudentController extends Controller
                     $choiceModel->save();
                 }
                 // save exam records with exam documents in document table 
-                $results = json_decode($request->student_results);
+                $results = $request->student_results;
                 foreach ($results as $result) {
                     $resultDocument = new Document();
                     $resultApplicationDocument = new ApplicationDocument();
