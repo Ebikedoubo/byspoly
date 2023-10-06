@@ -113,7 +113,7 @@ function StudentEnrollmentDetailsComponent(props) {
 
 
                             </div>
-                            <div className="grid grid-cols-3 gap-4  ">
+                            <div className="grid grid-cols-4 gap-4  ">
                                 <BlockSectionComponent title="Exam Name">
                                     {data.examname}
                                 </BlockSectionComponent>
@@ -125,11 +125,15 @@ function StudentEnrollmentDetailsComponent(props) {
                                 <BlockSectionComponent title="Exam Result">
                                     {data.examresult}
                                 </BlockSectionComponent>
+
+                                <BlockSectionComponent title="Exam Date">
+                                    {data.examdate}
+                                </BlockSectionComponent>
                             </div>
                         </BlockSectionComponent>
 
                         <BlockSectionComponent title="Jamb Result">
-                            <div className="grid grid-cols-3 gap-4  mb-6 mt-2 ">
+                            <div className="grid grid-cols-4 gap-4  mb-6 mt-2 ">
                                 <BlockSectionComponent title="Jamb Number">
                                     {data.jambnumber}
                                 </BlockSectionComponent>
@@ -140,6 +144,9 @@ function StudentEnrollmentDetailsComponent(props) {
 
                                 <BlockSectionComponent title="Jamb Result">
                                     {data.jambresult}
+                                </BlockSectionComponent>
+                                <BlockSectionComponent title="Jamb Date">
+                                    {data.jambdate}
                                 </BlockSectionComponent>
 
                             </div>
@@ -158,12 +165,18 @@ function StudentEnrollmentDetailsComponent(props) {
 
 
                                         </div>
+                                        <div className="col-span-2">
+                                            <BlockSectionComponent title="Exams Number">
+                                                {field.otherexamnumber}
+                                            </BlockSectionComponent>
+                                        </div>
 
-                                        <div className="col-span-4">
+                                        <div className="col-span-2">
                                             <BlockSectionComponent title="Exams Certificate">
                                                 {field.otherexamcertificate}
                                             </BlockSectionComponent>
                                         </div>
+
 
                                         <div className="col-span-3">
                                             <BlockSectionComponent title="Exams Date">
