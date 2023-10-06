@@ -9,27 +9,12 @@ import InputBase from "@mui/material/InputBase";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { styled } from "@mui/system";
-// const useStyles = makeStyles({
-//   fullWidth: {
-//     width: '100%',
-//     border: '1px solid gray',
-//     borderRadius: '4px',
-//     padding: '8px',
-//   },
-//   datePicker: {
-//     '& .MuiOutlinedInput-notchedOutline': {
-//       borderColor: 'red', // Default border color
-//     },
-//   },
-//   error: {
-//     '& .MuiOutlinedInput-notchedOutline': {
-//       borderColor: 'red', // Error border color
-//     },
-//   },
-// });
+import UploadButton from "./UploadButton";
+import UploadIcon from "../assests/upload.svg";
+import projectUploadIcon from "../assests/projectUploadIcon.svg";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const DatePickers = styled(DatePicker)(({ theme, error }) => ({
-<<<<<<< HEAD
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderColor: error ? "red" : "gray",
@@ -55,37 +40,6 @@ const Selects = styled(Select)(({ theme, error }) => ({
       borderColor: error ? "red" : "gray",
     },
   },
-=======
-
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: error ? 'red' : 'gray',
-    },
-    '&:hover fieldset': {
-      borderColor: error ? 'red' : 'gray',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: error ? 'red' : 'gray',
-    },
-  },
-
-}));
-
-const Selects = styled(Select)(({ theme, error }) => ({
-
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: error ? 'red' : 'gray',
-    },
-    '&:hover fieldset': {
-      borderColor: error ? 'red' : 'gray',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: error ? 'red' : 'gray',
-    },
-  },
-
->>>>>>> 2392b35 (fix-to-admission-design)
 }));
 
 export default function TextInput(props) {
@@ -99,6 +53,7 @@ export default function TextInput(props) {
     options,
     error,
     name,
+    ayncs = false,
   } = props;
   //const classes = useStyles();
   const inputClasses =
@@ -121,27 +76,51 @@ export default function TextInput(props) {
         );
 
       case "select":
-<<<<<<< HEAD
         return (
-          <FormControl fullWidth className="h-[90px] flex justify-center">
-            <InputLabel id="demo-simple-select-label" className="mt-[15px]">
-              {" "}
-              {label}
-            </InputLabel>
-            <Selects
+          <div className="flex w-[100%]">
+            <div className="w-[90%]">
+              <FormControl fullWidth className=" flex ">
+                <InputLabel id="demo-simple-select-label" className="">
+                  {" "}
+                  {label}
+                </InputLabel>
+                <Selects
+                  error={error}
+                  labelId="demo-simple-select-label"
+                  // id="demo-simple-select"
+                  disabled={ayncs}
+                  label={label}
+                  value={value}
+                  className={`${error ? errorClasses : ""}`}
+                  onChange={onChange}
+                >
+                  {options?.map((option) => (
+                    <MenuItem value={option.value}>{option.label}</MenuItem>
+                  ))}
+                </Selects>
+              </FormControl>
+            </div>
+            <div className="w-[10%] grid items-center justify-center  ">
+              {ayncs == true ? (
+                <CircularProgress style={{ width: "20px", height: "20px" }} />
+              ) : null}
+            </div>
+          </div>
+        );
+
+      case "file":
+        return (
+          <div>
+            <UploadButton
+              handleOnChange={onChange}
+              text={label}
+              accept="image/*"
+              leftIcon={projectUploadIcon}
+              rightIcon={UploadIcon}
+              isSelected={isSelect}
               error={error}
-              labelId="demo-simple-select-label"
-              // id="demo-simple-select"
-              label={label}
-              value={value}
-              className={`${error ? errorClasses : ""}`}
-              onChange={onChange}
-            >
-              {options?.map((option) => (
-                <MenuItem value={option.value}>{option.label}</MenuItem>
-              ))}
-            </Selects>
-          </FormControl>
+            />
+          </div>
         );
 
       case "date":
@@ -163,79 +142,19 @@ export default function TextInput(props) {
             />
           </LocalizationProvider>
         );
-=======
-        return (<FormControl fullWidth className=" flex ">
-          <InputLabel id="demo-simple-select-label" className=""> {label}</InputLabel>
-          <Selects
-            error={error}
-            labelId="demo-simple-select-label"
-            // id="demo-simple-select"
-            label={label}
-            value={value}
-            className={`${error ? errorClasses : ''}`}
-            onChange={onChange}
-          >
-            {options?.map((option) => (
-              <MenuItem value={option.value}>{option.label}</MenuItem>
-            ))}
-          </Selects>
-        </FormControl>)
-
-      case "date":
-        return (<LocalizationProvider dateAdapter={AdapterDateFns}>
-
-          <DatePickers
-            error={error}
-            name={name}
-            label={label}
-            value={value}
-            onChange={onChange}
-            className={`h-[70px] w-[100%]  ${error ? errorClasses : ''}`}
-            renderInput={(params) => <TextField className={`  ${error ? errorClasses : ''}`}   {...params}
-
-            />}
-          />
-
-        </LocalizationProvider>)
->>>>>>> 2392b35 (fix-to-admission-design)
 
       default:
-<<<<<<< HEAD
         return (
           <TextField
             {...props}
             autoComplete="none"
             fullWidth
-            sx={{ m: 1, maxWidth: "100%" }}
+            sx={{ maxWidth: "100%" }}
             className={`flex justify-center ${error ? errorClasses : ""}`}
           />
         );
-=======
-        return (<TextField
-          {...props}
-          autoComplete="none"
-          fullWidth
-          sx={{ maxWidth: "100%" }}
-          className={`flex justify-center ${error ? errorClasses : ''}`}
-        />);
->>>>>>> 5a1d91a (student Logins updatedd)
     }
   };
 
-<<<<<<< HEAD
-  return <div className="input_container">{render()}</div>;
-=======
-  }
-
-  return (
-    <div >
-      {render()}
-    </div>
-  );
->>>>>>> 2392b35 (fix-to-admission-design)
+  return <div>{render()}</div>;
 }
-
-
-
-
-

@@ -1,19 +1,23 @@
 import React, { useRef } from "react";
-
+import DoneIcon from '@mui/icons-material/Done';
 export default function UploadButton({
   leftIcon,
   rightIcon,
   handleOnChange,
   text,
+  accept,
+  isSelected,
+  error
 }) {
+  const errorClasses = "border flex rounded-md h-[100%] w-[100%] border-red-500 focus:ring-red-500"
   const fileRef = useRef(null);
   return (
-    <div className=" h-[58px] m-[8px] flex justify-between items-center  w-[100%]">
+    <div className={`h-[58px] flex justify-between items-center  w-[100%]`}>
       <div
         onClick={() => {
           fileRef.current.click();
         }}
-        className="border-2 flex rounded-md h-[100%] w-[100%]"
+        className={`${error ? errorClasses : 'border flex rounded-md h-[100%] w-[100%]'}`}
       >
         <div className="border-r-2 p-2 flex items-center ">
           <img src={leftIcon} alt="house" />
@@ -27,11 +31,14 @@ export default function UploadButton({
               onChange={handleOnChange}
               style={{ display: "none" }}
               ref={fileRef}
+              accept={accept}
             />
             {text}
           </div>
           <div clasName="text-center ">
+            {isSelected.length > 0 ? <DoneIcon className="text-[green]" /> :  
             <img src={rightIcon} alt="upload" />
+      }
           </div>
         </div>
       </div>

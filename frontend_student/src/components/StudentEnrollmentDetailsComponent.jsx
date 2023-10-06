@@ -46,7 +46,7 @@ function StudentEnrollmentDetailsComponent(props) {
                             </div>
                             <div className="grid grid-cols-2 gap-4 mt-4">
                                 <BlockSectionComponent title="Date of Birth" >{data.dateofbirth}</BlockSectionComponent>
-                                <BlockSectionComponent title="Birth Certificate" >{data.dateofbirth}</BlockSectionComponent>
+                                <BlockSectionComponent title="Birth Certificate" >{data.birthcertificate}</BlockSectionComponent>
                             </div>
                         </BlockSectionComponent>
 
