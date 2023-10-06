@@ -1,10 +1,9 @@
-<<<<<<< HEAD
-import React,{ useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 // import Moment from 'react-moment';
 import Logo from "../../assests/bayelsalogo.jpeg";
-import logo1 from "../../assests/bayelsalogo.png"
-import { useNavigate } from 'react-router-dom';
+import logo1 from "../../assests/bayelsalogo.png";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Grid,
@@ -14,15 +13,13 @@ import {
   Stepper,
   Step,
   StepLabel,
-  IconButton
+  IconButton,
 } from "@mui/material";
-import CancelIcon from '@mui/icons-material/Cancel';
+import CancelIcon from "@mui/icons-material/Cancel";
 import TextInput from "../../components/TextInput";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SnackbarComponent from "../../components/SnackbarComponent";
 import StudentEnrollmentDetailsComponent from "../../components/StudentEnrollmentDetailsComponent";
-
-
 
 const steps = ["Personal Details", "Educational Detail", "Faculty", "Summary"];
 
@@ -30,236 +27,237 @@ const theme = createTheme({
   palette: {
     neutral: {
       main: "#64748B",
-      contrastText: "#fff"
+      contrastText: "#fff",
     },
     danger: {
       main: "#DC3545",
-      contrastText: "#fff"
-    }
-  }
+      contrastText: "#fff",
+    },
+  },
 });
 
 const StudentEnrollmentPage = () => {
   const cancelIconStyle = {
-    color: 'red',
-    fontSize: '70px'
+    color: "red",
+    fontSize: "70px",
   };
 
-    const [activeStep, setActiveStep] = useState(0);
-    const [status, setStatus] = React.useState("success");
-    const [message, setMessage] = React.useState("")
-    // BIO
-    const [firstname, setFirstname] = React.useState("");
-    const [middlename, setMiddlename] = React.useState("")
-    const [lastname, setLastname] = React.useState("")
-    const [maidenname, setMaidenname] = React.useState("")
-    const [gender, setGender] = React.useState("");
-    const [dateofbirth, setDateofbirth] = React.useState("")
-    const [birthcertificate, setBirthcertificate] = React.useState("")
-    // // contact address
-    const [phone, setPhone] = React.useState("")
-    const [email, setEmail] = React.useState("")
-    const [nationality, setNationality] = React.useState("")
-    const [address, setAddress] = React.useState("");
-    const [stateArea, setStateArea] = React.useState("");
-    const [localGovt, setLocalGovt] = React.useState("");
-    //primary school
-    const [primaryname, setPrimaryname] = React.useState("")
-    const [primaryresult, setPrimaryresult] = React.useState("")
-    const [primarydate, setPrimarydate] = React.useState("")
-    // // step 2/secondary school
-    const [schoolname, setSchoolname] = React.useState("")
-    const [schooldate, setSchooldate] = React.useState("")
-    const [examname, setExamname] = React.useState("")
-    const [examnumber, setExamnumber] = React.useState("")
-    const [examresult, setExamresult] = React.useState("")
-    // // jamb result
-    const [jambnumber, setJambnumber] = React.useState("")
-    const [jambscore, setJambscore] = React.useState("")
-    const [jambresult, setJambresult] = React.useState("")
-    // faculties/deparment
- 
-    const [faculty, setFaculty] = React.useState("")
-    const [department, setDepartment] = React.useState("")
-    const [morefaculty, setMorefaculty] = React.useState("")
-    const [moredepartment, setMoredepartment] = React.useState("")
-    const [show, setShow] = React.useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const [status, setStatus] = React.useState("success");
+  const [message, setMessage] = React.useState("");
+  // BIO
+  const [firstname, setFirstname] = React.useState("");
+  const [middlename, setMiddlename] = React.useState("");
+  const [lastname, setLastname] = React.useState("");
+  const [maidenname, setMaidenname] = React.useState("");
+  const [gender, setGender] = React.useState("");
+  const [dateofbirth, setDateofbirth] = React.useState("");
+  const [birthcertificate, setBirthcertificate] = React.useState("");
+  // // contact address
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [nationality, setNationality] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [stateArea, setStateArea] = React.useState("");
+  const [localGovt, setLocalGovt] = React.useState("");
+  //primary school
+  const [primaryname, setPrimaryname] = React.useState("");
+  const [primaryresult, setPrimaryresult] = React.useState("");
+  const [primarydate, setPrimarydate] = React.useState("");
+  // // step 2/secondary school
+  const [schoolname, setSchoolname] = React.useState("");
+  const [schooldate, setSchooldate] = React.useState("");
+  const [examname, setExamname] = React.useState("");
+  const [examnumber, setExamnumber] = React.useState("");
+  const [examresult, setExamresult] = React.useState("");
+  // // jamb result
+  const [jambnumber, setJambnumber] = React.useState("");
+  const [jambscore, setJambscore] = React.useState("");
+  const [jambresult, setJambresult] = React.useState("");
+  // faculties/deparment
 
-    const [addInputFields, setAddInputFields] = React.useState([{
-      otherexamname:"",
+  const [faculty, setFaculty] = React.useState("");
+  const [department, setDepartment] = React.useState("");
+  const [morefaculty, setMorefaculty] = React.useState("");
+  const [moredepartment, setMoredepartment] = React.useState("");
+  const [show, setShow] = React.useState(false);
+
+  const [addInputFields, setAddInputFields] = React.useState([
+    {
+      otherexamname: "",
       otherexamcertificate: "",
-      otherexamdate: ""
-  }]);
- 
+      otherexamdate: "",
+    },
+  ]);
+
   const [error, setError] = React.useState({
-        firstname: false,
-        middlename: false,
-        lastname: false,
-        maidenname: false,
-        email: false,
-        address: false,
-        phone: false,
-        gender: false,
-        dateofbirth: false,
-        birthcertificate: false,
-        nationality: false,
-        address: false,
-        stateArea: false,
-        localGovt: false,
-        primaryname: false,
-        primaryresult: false,
-        primarydate: false,
-        schoolname: false,
-        schooldate: false,
-        examname: false,
-        examnumber: false,
-        examresult: false,
-        jambname: false,
-        jambnumber: false,
-        jambscore: false,
-        jambresult: false,
-        faculty: false,
-        department: false,
-        morefaculty: false,
-        moredepartment: false,
-        addInputFields: [
-          {
-            otherexamname: false,
-            otherexamcertificate: false,
-            otherexamdate: false
-          }
-        ]
-    });
+    firstname: false,
+    middlename: false,
+    lastname: false,
+    maidenname: false,
+    email: false,
+    address: false,
+    phone: false,
+    gender: false,
+    dateofbirth: false,
+    birthcertificate: false,
+    nationality: false,
+    address: false,
+    stateArea: false,
+    localGovt: false,
+    primaryname: false,
+    primaryresult: false,
+    primarydate: false,
+    schoolname: false,
+    schooldate: false,
+    examname: false,
+    examnumber: false,
+    examresult: false,
+    jambname: false,
+    jambnumber: false,
+    jambscore: false,
+    jambresult: false,
+    faculty: false,
+    department: false,
+    morefaculty: false,
+    moredepartment: false,
+    addInputFields: [
+      {
+        otherexamname: false,
+        otherexamcertificate: false,
+        otherexamdate: false,
+      },
+    ],
+  });
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-      const token = localStorage.getItem("token")
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-      if (token !== null) {
-          navigate('/dashboard');
-      }
-
-  }, [])
-    const handleAddInputOnchange = (index, e) =>{
-      console.log(e);
-  // Create a copy of the addInputFields array and update the specific field by index
-  const updatedFields = [...addInputFields];
-  updatedFields[index][e.target.name] = e.target.value;
-  // Set the updated array back to state
-  setAddInputFields(updatedFields);
+    if (token !== null) {
+      navigate("/dashboard");
     }
+  }, []);
+  const handleAddInputOnchange = (index, e) => {
+    console.log(e);
+    // Create a copy of the addInputFields array and update the specific field by index
+    const updatedFields = [...addInputFields];
+    updatedFields[index][e.target.name] = e.target.value;
+    // Set the updated array back to state
+    setAddInputFields(updatedFields);
+  };
 
-    const handleOnChange = (e, inputeName) => {
-      switch (inputeName) {
-          case "firstname":
-              // code to be executed when the expression matches value1
-              setFirstname(e.target.value)
-              break;
-          case "middlename":
-                // code to be executed when the expression matches value1
-                setMiddlename(e.target.value)
-                break;
-          case "lastname":
-                  // code to be executed when the expression matches value1
-                setLastname(e.target.value)
-                break;
-          case "maidenname":
-                    // code to be executed when the expression matches value1
-                setMaidenname(e.target.value)
-                break;
-       
-          case "birthcertificate":
-                  // code to be executed when the expression matches value1
-                setBirthcertificate(e.target.value)
-                break;
-          case "email":
-              // code to be executed when the expression matches value2
-              setEmail(e.target.value)
-              break;
-          case "phone":
-              // code to be executed when the expression matches value3
-              setPhone(e.target.value)
-              break;
-          case "address":
-              // code to be executed when the expression matches value3
-              setAddress(e.target.value)
-              break;
-          case "nationality":
-                // code to be executed when the expression matches value1
-              setNationality(e.target.value)
-              break;
-          case "stateArea":
-                // code to be executed when the expression matches value1
-              setStateArea(e.target.value)
-              break;
-          case "localGovt":
-                // code to be executed when the expression matches value1
-              setLocalGovt(e.target.value)
-              break;
-          case "primaryname":
-                // code to be executed when the expression matches value1
-              setPrimaryname(e.target.value)
-              break;
-          case "primaryresult":
-                // code to be executed when the expression matches value1
-              setPrimaryresult(e.target.value)
-              break;
-          case "schoolname":
-                // code to be executed when the expression matches value1
-              setSchoolname(e.target.value)
-              break;
-          case "examname":
-                // code to be executed when the expression matches value1
-              setExamname(e.target.value)
-              break;
-          case "examnumber":
-                // code to be executed when the expression matches value1
-              setExamnumber(e.target.value)
-              break;
-          case "examresult":
-                // code to be executed when the expression matches value1
-              setExamresult(e.target.value)
-              break;
-          case "jambnumber":
-                // code to be executed when the expression matches value1
-              setJambnumber(e.target.value)
-              break;
-          case "jambscore":
-                // code to be executed when the expression matches value1
-              setJambscore(e.target.value)
-              break;
-          case "jambresult":
-                // code to be executed when the expression matches value1
-              setJambresult(e.target.value)
-              break;
-          case "faculty":
-                // code to be executed when the expression matches value1
-              setFaculty(e.target.value)
-              break;
-          case "department":
-                // code to be executed when the expression matches value1
-              setDepartment(e.target.value)
-              break;
-          case "morefaculty":
-                // code to be executed when the expression matches value1
-              setMorefaculty(e.target.value)
-              break;
-          case "moredepartment":
-                // code to be executed when the expression matches value1
-              setMoredepartment(e.target.value)
-              break;
-          // more cases...
-          default:
-              // code to be executed when the expression does not match any of the cases
-              setGender(e.target.value)
-      }
+  const handleOnChange = (e, inputeName) => {
+    switch (inputeName) {
+      case "firstname":
+        // code to be executed when the expression matches value1
+        setFirstname(e.target.value);
+        break;
+      case "middlename":
+        // code to be executed when the expression matches value1
+        setMiddlename(e.target.value);
+        break;
+      case "lastname":
+        // code to be executed when the expression matches value1
+        setLastname(e.target.value);
+        break;
+      case "maidenname":
+        // code to be executed when the expression matches value1
+        setMaidenname(e.target.value);
+        break;
+
+      case "birthcertificate":
+        // code to be executed when the expression matches value1
+        setBirthcertificate(e.target.value);
+        break;
+      case "email":
+        // code to be executed when the expression matches value2
+        setEmail(e.target.value);
+        break;
+      case "phone":
+        // code to be executed when the expression matches value3
+        setPhone(e.target.value);
+        break;
+      case "address":
+        // code to be executed when the expression matches value3
+        setAddress(e.target.value);
+        break;
+      case "nationality":
+        // code to be executed when the expression matches value1
+        setNationality(e.target.value);
+        break;
+      case "stateArea":
+        // code to be executed when the expression matches value1
+        setStateArea(e.target.value);
+        break;
+      case "localGovt":
+        // code to be executed when the expression matches value1
+        setLocalGovt(e.target.value);
+        break;
+      case "primaryname":
+        // code to be executed when the expression matches value1
+        setPrimaryname(e.target.value);
+        break;
+      case "primaryresult":
+        // code to be executed when the expression matches value1
+        setPrimaryresult(e.target.value);
+        break;
+      case "schoolname":
+        // code to be executed when the expression matches value1
+        setSchoolname(e.target.value);
+        break;
+      case "examname":
+        // code to be executed when the expression matches value1
+        setExamname(e.target.value);
+        break;
+      case "examnumber":
+        // code to be executed when the expression matches value1
+        setExamnumber(e.target.value);
+        break;
+      case "examresult":
+        // code to be executed when the expression matches value1
+        setExamresult(e.target.value);
+        break;
+      case "jambnumber":
+        // code to be executed when the expression matches value1
+        setJambnumber(e.target.value);
+        break;
+      case "jambscore":
+        // code to be executed when the expression matches value1
+        setJambscore(e.target.value);
+        break;
+      case "jambresult":
+        // code to be executed when the expression matches value1
+        setJambresult(e.target.value);
+        break;
+      case "faculty":
+        // code to be executed when the expression matches value1
+        setFaculty(e.target.value);
+        break;
+      case "department":
+        // code to be executed when the expression matches value1
+        setDepartment(e.target.value);
+        break;
+      case "morefaculty":
+        // code to be executed when the expression matches value1
+        setMorefaculty(e.target.value);
+        break;
+      case "moredepartment":
+        // code to be executed when the expression matches value1
+        setMoredepartment(e.target.value);
+        break;
+      // more cases...
+      default:
+        // code to be executed when the expression does not match any of the cases
+        setGender(e.target.value);
+    }
   };
 
   const submit = () => {
-    // validate input 
-    setLoading(true)
-    let status = false
+    // validate input
+    setLoading(true);
+    let status = false;
     setError({
       firstname: false,
       middlename: false,
@@ -287,11 +285,11 @@ const StudentEnrollmentPage = () => {
       faculty: false,
       department: false,
       morefaculty: false,
-      moredepartment: false
-    })
+      moredepartment: false,
+    });
     if (firstname.trim() === "") {
-        setError((prevError) => ({ ...prevError, firstname: true }));
-        status = true;
+      setError((prevError) => ({ ...prevError, firstname: true }));
+      status = true;
     }
 
     if (middlename.trim() === "") {
@@ -299,9 +297,9 @@ const StudentEnrollmentPage = () => {
       status = true;
     }
 
-  if (lastname.trim() === "") {
-    setError((prevError) => ({ ...prevError, lastname: true }));
-    status = true;
+    if (lastname.trim() === "") {
+      setError((prevError) => ({ ...prevError, lastname: true }));
+      status = true;
     }
 
     if (maidenname.trim() === "") {
@@ -310,23 +308,23 @@ const StudentEnrollmentPage = () => {
     }
 
     if (email.trim() === "") {
-        setError((prevError) => ({ ...prevError, email: true }));
-        status = true;
+      setError((prevError) => ({ ...prevError, email: true }));
+      status = true;
     }
 
     if (gender.trim() === "") {
-        setError((prevError) => ({ ...prevError, gender: true }));
-        status = true;
+      setError((prevError) => ({ ...prevError, gender: true }));
+      status = true;
     }
 
     if (address.trim() === "") {
-        setError((prevError) => ({ ...prevError, address: true }));
-        status = true;
+      setError((prevError) => ({ ...prevError, address: true }));
+      status = true;
     }
 
     if (phone.trim() === "") {
-        setError((prevError) => ({ ...prevError, phone_number: true }));
-        status = true;
+      setError((prevError) => ({ ...prevError, phone_number: true }));
+      status = true;
     }
     if (dateofbirth.trim() === "") {
       setError((prevError) => ({ ...prevError, dateofbirth: true }));
@@ -459,60 +457,55 @@ const StudentEnrollmentPage = () => {
       faculty: faculty,
       department: department,
       morefaculty: morefaculty,
-      moredepartment: moredepartment
-
-    }
+      moredepartment: moredepartment,
+    };
 
     if (status) {
-        setLoading(false)
-        setStatus("error")
-        setMessage("all fields are required")
-        setShow(true)
-        setTimeout(()=>{
-            setShow(false)
-        },6000)
-        return;
+      setLoading(false);
+      setStatus("error");
+      setMessage("all fields are required");
+      setShow(true);
+      setTimeout(() => {
+        setShow(false);
+      }, 6000);
+      return;
     }
-        create(data)
-    
-    
-    // send to save and use feedback to show toast message.
-};
-       
+    create(data);
 
-        const handleOnChangeDate = e =>{
-            
-            let formattedDate = moment(e).format("YYYY-MM-DD");
-            console.log("checking date", formattedDate)
-            setDateofbirth(formattedDate); // Set the formatted date in your state
-        };
-        const handleOnChangeDate1 = e => {
-          let formattedDate = moment(e).format("YYYY-MM-DD");
-            console.log("checking date", formattedDate)
-            setSchooldate(formattedDate); // Set the formatted date in your state
-        };
-        const handleOnChangePrimaryDate = e => {
-          let formattedDate = moment(e).format("YYYY-MM-DD");
-            console.log("checking date", formattedDate)
-            setPrimarydate(formattedDate); // Set the formatted date in your state
-        };
-      
-        const handleOnChangeDate2 = (index, e) => {
-         
-          let formattedDate = moment(e).format("YYYY-MM-DD");
-          console.log("checking date", formattedDate);
-        
-          // Create a copy of the addInputFields array and update the specific field by index
-          const updatedFields = [...addInputFields];
-          updatedFields[index].otherexamdate = formattedDate;
-        
-          // Set the updated array back to state
-          setAddInputFields(updatedFields)
-      };
-      
+    // send to save and use feedback to show toast message.
+  };
+
+  const handleOnChangeDate = (e) => {
+    let formattedDate = moment(e).format("YYYY-MM-DD");
+    console.log("checking date", formattedDate);
+    setDateofbirth(formattedDate); // Set the formatted date in your state
+  };
+  const handleOnChangeDate1 = (e) => {
+    let formattedDate = moment(e).format("YYYY-MM-DD");
+    console.log("checking date", formattedDate);
+    setSchooldate(formattedDate); // Set the formatted date in your state
+  };
+  const handleOnChangePrimaryDate = (e) => {
+    let formattedDate = moment(e).format("YYYY-MM-DD");
+    console.log("checking date", formattedDate);
+    setPrimarydate(formattedDate); // Set the formatted date in your state
+  };
+
+  const handleOnChangeDate2 = (index, e) => {
+    let formattedDate = moment(e).format("YYYY-MM-DD");
+    console.log("checking date", formattedDate);
+
+    // Create a copy of the addInputFields array and update the specific field by index
+    const updatedFields = [...addInputFields];
+    updatedFields[index].otherexamdate = formattedDate;
+
+    // Set the updated array back to state
+    setAddInputFields(updatedFields);
+  };
+
   const handleNext = () => {
     let status = false;
-  
+
     if (activeStep === 0) {
       if (
         firstname.trim() === "" ||
@@ -544,7 +537,7 @@ const StudentEnrollmentPage = () => {
           localGovt: localGovt === "",
         }));
         status = true;
-  
+
         if (status) {
           setStatus("error");
           setMessage("All fields are required");
@@ -571,8 +564,8 @@ const StudentEnrollmentPage = () => {
         jambscore.trim() === "" ||
         jambresult.trim() === "" ||
         addInputFields.some((field) =>
-        Object.values(field).some((value) => value.trim() === "")
-      )
+          Object.values(field).some((value) => value.trim() === "")
+        )
       ) {
         setError((prevError) => ({
           ...prevError,
@@ -592,10 +585,9 @@ const StudentEnrollmentPage = () => {
             otherexamcertificate: field.otherexamcertificate.trim() === "",
             otherexamdate: field.otherexamdate === "",
           })),
-          
         }));
         status = true;
-  
+
         setStatus("error");
         setMessage("All fields are required");
         setShow(true);
@@ -621,7 +613,7 @@ const StudentEnrollmentPage = () => {
           moredepartment: moredepartment === "",
         }));
         status = true;
-  
+
         setStatus("error");
         setMessage("All fields are required");
         setShow(true);
@@ -634,318 +626,346 @@ const StudentEnrollmentPage = () => {
       }
     }
   };
-  
-    const handleBack = () => {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-    const handleRemoveForm = (index) =>{
-      const updatedFields = [...addInputFields];
-      updatedFields.splice(index, 1);
-      setAddInputFields(updatedFields);
-    }
-  
-    const handleAddForm = () =>{
-      setAddInputFields([...addInputFields, { otherexamname: "", otherexamcertificate: "", otherexamdate: "" }]);
-    }
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+  const handleRemoveForm = (index) => {
+    const updatedFields = [...addInputFields];
+    updatedFields.splice(index, 1);
+    setAddInputFields(updatedFields);
+  };
+
+  const handleAddForm = () => {
+    setAddInputFields([
+      ...addInputFields,
+      { otherexamname: "", otherexamcertificate: "", otherexamdate: "" },
+    ]);
+  };
 
   const options = [
-      { label: "Male", value: "Male" },
-      { label: "Female", value: "Female" },
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
   ];
   const option = [
-      { label: "Lagos", value: "Lagos" },
-      { label: "FCT-Abuja", value: "FCT-Abuja" },
-      { label: "Nassarawa", value: "Nassarawa" },
-      { label: "Kogi", value: "Kogi" },
-    ];
-    const option2 = [
-      { label: "ikeja", value: "ikeja" },
-      { label: "Gwagwalada", value: "Gwagwalada" },
-      { label: "Lafia", value: "Lafia" },
-      { label: "Lokoja", value: "Lokoja" },
-    ];
-  
-    return (
-      <>
+    { label: "Lagos", value: "Lagos" },
+    { label: "FCT-Abuja", value: "FCT-Abuja" },
+    { label: "Nassarawa", value: "Nassarawa" },
+    { label: "Kogi", value: "Kogi" },
+  ];
+  const option2 = [
+    { label: "ikeja", value: "ikeja" },
+    { label: "Gwagwalada", value: "Gwagwalada" },
+    { label: "Lafia", value: "Lafia" },
+    { label: "Lokoja", value: "Lokoja" },
+  ];
+
+  return (
+    <>
       <div className="flex w-screen w-[100%] ">
-      <div className="flex w-[50%] bg-blue-600 items-center justify-center">
-                <div className=" ">
-                    <div className="flex justify-center h-[160px]"><img src={Logo} alt="logo" className="rounded-lg"/></div>
-                    <div className="flex justify-center text-[15px] text-[white] font-medium mt-[15px]">BAYELSA STATE POLYTECNIC ALEIBIRI</div>
-                    <div className="w-[410px] flex justify-center text-[16px] mt-[17px] text-slate-400">
-                       Light, Skill and Self-Reliance
-                    </div>
-                </div>
+        <div className="flex w-[50%] bg-blue-600 items-center justify-center">
+          <div className=" ">
+            <div className="flex justify-center h-[160px]">
+              <img src={Logo} alt="logo" className="rounded-lg" />
             </div>
-            <div className="flex items-center justify-center w-[70%] h-screen">
-      <SnackbarComponent status={status} show={show} message={message} />
-      <Container maxWidth="lg" sx={{ mt: 2 }}>
-      <div className="min-screen flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-blue-600 mb-6 font-bold text-xl">STUDENT REGISTRATION</h1>
+            <div className="flex justify-center text-[15px] text-[white] font-medium mt-[15px]">
+              BAYELSA STATE POLYTECNIC ALEIBIRI
+            </div>
+            <div className="w-[410px] flex justify-center text-[16px] mt-[17px] text-slate-400">
+              Light, Skill and Self-Reliance
+            </div>
+          </div>
         </div>
-        </div>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <Grid container direction="row" alignItems="center" spacing={2}>
-          <Grid item xs={12}>
-            {activeStep === 0 && (
-              <>
-                <Typography variant="h6">Personal Details</Typography>
-                <div className="">
-  
-  <div className="w-full px-4 py-2 rounded-md border-2">
-      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Applicant Bio</span>
-      <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
-          <TextInput
-              required
-              name="firstname"
-              label="First Name"
-              error={error["firstname"]}
-              value={firstname}
-              onChange={(e) => {
-                handleOnChange(e, "firstname")
-              }}
-          />
-          <TextInput
-              name="middlename"
-              label="Middle Name"
-              error={error["middlename"]}
-              value={middlename}
-              onChange={(e) => {
-                handleOnChange(e, "middlename")
-              }}
-          />
-          <TextInput
-              required
-              name="lastname"
-              label="Last Name"
-              error={error["lastname"]}
-              value={lastname}
-              onChange={(e) => {
-                handleOnChange(e, "lastname")
-              }}
-          />
-      </div>
-      <div className="grid grid-cols-2 gap-8  mb-6 mt-4 ml-2">
-          <TextInput
-              required
-              name="maidenname"
-              label="Mother's Maiden Name"
-              error={error["maidenname"]}
-              value={maidenname}
-              onChange={(e) => {
-                handleOnChange(e, "maidenname")
-              }}
-          />
-          <TextInput
-              required
-              type="select"
-              isSelect={true}
-              value={gender< 1 ?"":gender }
-              label={"Gender"}
-              error={error["gender"]}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "gender")
-                  }
-              }
-              options={options}
-          />
-      </div>
-      <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-          <TextInput
-              className=""
-              type="date"
-              required
-              name="dateofbirth"
-              label="Date of Birth"
-              error={error["dateofbirth"]}
-              onChange={(e) => {
-                handleOnChangeDate(e, "dateofbirth")
-              }}
-          />
-           <TextInput
-              type="file"
-              required
-              name="birthcertificate"
-              label="Upload Birth Certificate"
-              error={error["birthcertificate"]}
-              value={birthcertificate}
-              onChange={(e) => {
-                handleOnChange(e, "birthcertificate")
-              }}
-          />
-      </div>
-  </div>
-  <div className="w-full px-4 py-2 mt-12 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-  <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Contact Address</span>
-  
-      <div className="grid grid-cols-2 gap-4  mb-4 mt-4 ml-2">
-      <TextInput
-              required
-              name="phone"
-              label="Phone Number"
-              value={phone}
-              error={error["phone"]}
-              onChange={(e) => {
-                handleOnChange(e, "phone")
-              }}
-          />
-          <TextInput
-              required
-              name="email"
-              label="email"
-              error={error["email"]}
-              value={email}
-              onChange={(e) => {
-                handleOnChange(e, "email")
-              }}
-          />
-      </div>
-      <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-      <TextInput
-              required
-              type="select"
-              name="nationality"
-              label="Nationality"
-              error={error["nationality"]}
-              value= {nationality < 1 ? "" : nationality}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "nationality")
-                  }
-              }
-              isSelect={true}
-              options={option}
-            />
-  
-          <TextInput
-              required
-              name="address"
-              label="Residence"
-              value={address}
-              error={error["address"]}
-              onChange={(e) => {
-                handleOnChange(e, "address")
-              }}
-          />
-      </div>
-      <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-      <TextInput
-              required
-              type="select"
-              name="stateArea"
-              error={error["stateArea"]}
-              label="Select State"
-              value= {stateArea < 1 ? "" : stateArea}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "stateArea")
-                  }
-              }
-              isSelect={true}
-              options={option}
-            />
-  
-  <TextInput
-              required
-              type="select"
-              name="localGovt"
-              error={error["localGovt"]}
-              label="Select Local Government"
-              value= {localGovt < 1 ? "": localGovt}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "localGovt")
-                  }
-              }
-              isSelect={true}
-              options={option2}
-            />
-      </div>
-  </div>
-  </div>
-              </>
-            )}
-            {activeStep === 1 && (
-              <>
-                <Typography variant="h6">Educational Details</Typography>
-                <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Primary School</span>
-      <div className="grid grid-cols-3 gap-4  mb-6 mt-2 ml-2">
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              name="primaryname"
-              label="Primary School Name"
-              error={error["primaryname"]}
-              value={primaryname}
-              onChange={(e) => {
-                handleOnChange(e, "primaryname")
-              }}
-          />
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              type="file"
-              name="primaryresult"
-              label="Upload Primary School Result"
-              error={error["primaryresult"]}
-              value={primaryresult}
-              onChange={(e) => {
-                handleOnChange(e, "primaryresult")
-              }}
-          />
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              type="date"
-              name="primarydate"
-              label="Date of Graduation"
-              error={error["primarydate"]}
-              onChange={(e) => {
-                handleOnChangePrimaryDate(e, "primarydate")
-              }}
-          />
-      </div>
-      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2">
-      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Secondary School</span>
-      <div className="grid grid-cols-2 gap-8  mb-6 mt-4 ml-2">
-          <TextInput
-              className=""
-              required
-              name="schoolname"
-              label="School Name"
-              error={error["schoolname"]}
-              value={schoolname}
-              onChange={(e) => {
-                handleOnChange(e, "schoolname")
-              }}
-          />
-         <TextInput
-              className=""
-              type="date"
-              required
-              name="schooldate"
-              label="Date"
-              error={error["schooldate"]}
-              onChange={(e) => {
-                handleOnChangeDate1(e, "schooldate")
-              }}
-          />
-      </div>
-      <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
-          {/* <TextInput
+        <div className="flex items-center justify-center w-[70%] h-screen">
+          <SnackbarComponent status={status} show={show} message={message} />
+          <Container maxWidth="lg" sx={{ mt: 2 }}>
+            <div className="min-screen flex items-center justify-center">
+              <div className="text-center">
+                <h1 className="text-blue-600 mb-6 font-bold text-xl">
+                  STUDENT REGISTRATION
+                </h1>
+              </div>
+            </div>
+            <Stepper activeStep={activeStep}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <Grid container direction="row" alignItems="center" spacing={2}>
+              <Grid item xs={12}>
+                {activeStep === 0 && (
+                  <>
+                    <Typography variant="h6">Personal Details</Typography>
+                    <div className="">
+                      <div className="w-full px-4 py-2 rounded-md border-2">
+                        <span
+                          style={{
+                            position: "relative",
+                            left: "-452px",
+                            bottom: "23px",
+                          }}
+                        >
+                          Applicant Bio
+                        </span>
+                        <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
+                          <TextInput
+                            required
+                            name="firstname"
+                            label="First Name"
+                            error={error["firstname"]}
+                            value={firstname}
+                            onChange={(e) => {
+                              handleOnChange(e, "firstname");
+                            }}
+                          />
+                          <TextInput
+                            name="middlename"
+                            label="Middle Name"
+                            error={error["middlename"]}
+                            value={middlename}
+                            onChange={(e) => {
+                              handleOnChange(e, "middlename");
+                            }}
+                          />
+                          <TextInput
+                            required
+                            name="lastname"
+                            label="Last Name"
+                            error={error["lastname"]}
+                            value={lastname}
+                            onChange={(e) => {
+                              handleOnChange(e, "lastname");
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-8  mb-6 mt-4 ml-2">
+                          <TextInput
+                            required
+                            name="maidenname"
+                            label="Mother's Maiden Name"
+                            error={error["maidenname"]}
+                            value={maidenname}
+                            onChange={(e) => {
+                              handleOnChange(e, "maidenname");
+                            }}
+                          />
+                          <TextInput
+                            required
+                            type="select"
+                            isSelect={true}
+                            value={gender < 1 ? "" : gender}
+                            label={"Gender"}
+                            error={error["gender"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "gender");
+                            }}
+                            options={options}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+                          <TextInput
+                            className=""
+                            type="date"
+                            required
+                            name="dateofbirth"
+                            label="Date of Birth"
+                            error={error["dateofbirth"]}
+                            onChange={(e) => {
+                              handleOnChangeDate(e, "dateofbirth");
+                            }}
+                          />
+                          <TextInput
+                            type="file"
+                            required
+                            name="birthcertificate"
+                            label="Upload Birth Certificate"
+                            error={error["birthcertificate"]}
+                            value={birthcertificate}
+                            onChange={(e) => {
+                              handleOnChange(e, "birthcertificate");
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full px-4 py-2 mt-12 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <span
+                          style={{
+                            position: "relative",
+                            left: "-452px",
+                            bottom: "23px",
+                          }}
+                        >
+                          Contact Address
+                        </span>
+
+                        <div className="grid grid-cols-2 gap-4  mb-4 mt-4 ml-2">
+                          <TextInput
+                            required
+                            name="phone"
+                            label="Phone Number"
+                            value={phone}
+                            error={error["phone"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "phone");
+                            }}
+                          />
+                          <TextInput
+                            required
+                            name="email"
+                            label="email"
+                            error={error["email"]}
+                            value={email}
+                            onChange={(e) => {
+                              handleOnChange(e, "email");
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+                          <TextInput
+                            required
+                            type="select"
+                            name="nationality"
+                            label="Nationality"
+                            error={error["nationality"]}
+                            value={nationality < 1 ? "" : nationality}
+                            onChange={(e) => {
+                              handleOnChange(e, "nationality");
+                            }}
+                            isSelect={true}
+                            options={option}
+                          />
+
+                          <TextInput
+                            required
+                            name="address"
+                            label="Residence"
+                            value={address}
+                            error={error["address"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "address");
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+                          <TextInput
+                            required
+                            type="select"
+                            name="stateArea"
+                            error={error["stateArea"]}
+                            label="Select State"
+                            value={stateArea < 1 ? "" : stateArea}
+                            onChange={(e) => {
+                              handleOnChange(e, "stateArea");
+                            }}
+                            isSelect={true}
+                            options={option}
+                          />
+
+                          <TextInput
+                            required
+                            type="select"
+                            name="localGovt"
+                            error={error["localGovt"]}
+                            label="Select Local Government"
+                            value={localGovt < 1 ? "" : localGovt}
+                            onChange={(e) => {
+                              handleOnChange(e, "localGovt");
+                            }}
+                            isSelect={true}
+                            options={option2}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+                {activeStep === 1 && (
+                  <>
+                    <Typography variant="h6">Educational Details</Typography>
+                    <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <span
+                        style={{
+                          position: "relative",
+                          left: "-452px",
+                          bottom: "23px",
+                        }}
+                      >
+                        Primary School
+                      </span>
+                      <div className="grid grid-cols-3 gap-4  mb-6 mt-2 ml-2">
+                        <TextInput
+                          className="h-[70px] mt-6"
+                          required
+                          name="primaryname"
+                          label="Primary School Name"
+                          error={error["primaryname"]}
+                          value={primaryname}
+                          onChange={(e) => {
+                            handleOnChange(e, "primaryname");
+                          }}
+                        />
+                        <TextInput
+                          className="h-[70px] mt-6"
+                          required
+                          type="file"
+                          name="primaryresult"
+                          label="Upload Primary School Result"
+                          error={error["primaryresult"]}
+                          value={primaryresult}
+                          onChange={(e) => {
+                            handleOnChange(e, "primaryresult");
+                          }}
+                        />
+                        <TextInput
+                          className="h-[70px] mt-6"
+                          required
+                          type="date"
+                          name="primarydate"
+                          label="Date of Graduation"
+                          error={error["primarydate"]}
+                          onChange={(e) => {
+                            handleOnChangePrimaryDate(e, "primarydate");
+                          }}
+                        />
+                      </div>
+                      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2">
+                        <span
+                          style={{
+                            position: "relative",
+                            left: "-452px",
+                            bottom: "23px",
+                          }}
+                        >
+                          Secondary School
+                        </span>
+                        <div className="grid grid-cols-2 gap-8  mb-6 mt-4 ml-2">
+                          <TextInput
+                            className=""
+                            required
+                            name="schoolname"
+                            label="School Name"
+                            error={error["schoolname"]}
+                            value={schoolname}
+                            onChange={(e) => {
+                              handleOnChange(e, "schoolname");
+                            }}
+                          />
+                          <TextInput
+                            className=""
+                            type="date"
+                            required
+                            name="schooldate"
+                            label="Date"
+                            error={error["schooldate"]}
+                            onChange={(e) => {
+                              handleOnChangeDate1(e, "schooldate");
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
+                          {/* <TextInput
               className="h-[70px] mt-6"
               required
               name="examname"
@@ -956,474 +976,331 @@ const StudentEnrollmentPage = () => {
                 handleOnChange(e, "examname")
               }}
           /> */}
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              type="select"
-              name="examname"
-              error={error["examname"]}
-              label="Select Exam Type"
-              value= {examname < 1 ? "" : examname}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "examname")
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            type="select"
+                            name="examname"
+                            error={error["examname"]}
+                            label="Select Exam Type"
+                            value={examname < 1 ? "" : examname}
+                            onChange={(e) => {
+                              handleOnChange(e, "examname");
+                            }}
+                            isSelect={true}
+                            options={option}
+                          />
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            name="examnumber"
+                            label="Exam Number"
+                            error={error["examnumber"]}
+                            value={examnumber}
+                            onChange={(e) => {
+                              handleOnChange(e, "examnumber");
+                            }}
+                          />
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            type="file"
+                            name="examresult"
+                            label="Result"
+                            error={error["examresult"]}
+                            value={examresult}
+                            onChange={(e) => {
+                              handleOnChange(e, "examresult");
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2 mt-4">
+                        <span
+                          style={{
+                            position: "relative",
+                            left: "-452px",
+                            bottom: "23px",
+                          }}
+                        >
+                          Jamb Result
+                        </span>
+                        <div className="grid grid-cols-3 gap-4  mb-6 mt-2 ml-2">
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            name="jambnumber"
+                            label="Jamb Number"
+                            error={error["jambnumber"]}
+                            value={jambnumber}
+                            onChange={(e) => {
+                              handleOnChange(e, "jambnumber");
+                            }}
+                          />
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            name="jambscore"
+                            label="Jamb Score"
+                            error={error["jambscore"]}
+                            value={jambscore}
+                            onChange={(e) => {
+                              handleOnChange(e, "jambscore");
+                            }}
+                          />
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            type="file"
+                            name="jambresult"
+                            label="Result"
+                            error={error["jambresult"]}
+                            value={jambresult}
+                            onChange={(e) => {
+                              handleOnChange(e, "jambresult");
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-2">
+                        <span
+                          style={{
+                            position: "relative",
+                            left: "-300px",
+                            bottom: "24px",
+                          }}
+                        >
+                          Other Exam Certificate
+                        </span>
+                        {addInputFields?.map((field, index) => (
+                          <div
+                            key={index}
+                            className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2"
+                          >
+                            <TextInput
+                              className="h-[70px] mt-6"
+                              required
+                              name="otherexamname"
+                              label="Exam Name"
+                              error={
+                                error.addInputFields?.[index]?.otherexamname
+                              }
+                              value={field.otherexamname}
+                              onChange={(e) => {
+                                handleAddInputOnchange(index, e);
+                              }}
+                            />
+                            <TextInput
+                              className="h-[70px] mt-6"
+                              required
+                              type="file"
+                              name="otherexamcertificate"
+                              label="Exam Certificate"
+                              error={
+                                error.addInputFields?.[index]
+                                  ?.otherexamcertificate
+                              }
+                              value={field.otherexamcertificate}
+                              onChange={(e) => {
+                                handleAddInputOnchange(index, e);
+                              }}
+                            />
+                            <TextInput
+                              type="date"
+                              required
+                              name="otherexamdate"
+                              label="Exam Year"
+                              error={
+                                error.addInputFields?.[index]?.otherexamdate
+                              }
+                              onChange={(e) => {
+                                handleOnChangeDate2(index, e);
+                              }}
+                            />
+                            <IconButton
+                              style={cancelIconStyle}
+                              variant="contained"
+                              aria-label="Cancel"
+                              onClick={() => handleRemoveForm(index)}
+                              sx={{ marginLeft: 120 }}
+                            >
+                              <CancelIcon />
+                            </IconButton>
+                          </div>
+                        ))}
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={handleAddForm}
+                          sx={{ marginLeft: 8 }}
+                        >
+                          Add other Certificate
+                        </Button>
+                      </div>
+                    </div>
+                  </>
+                )}
+                {activeStep === 2 && (
+                  <>
+                    <Typography variant="h6">Faculties/Departments</Typography>
+                    <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <span
+                        style={{
+                          position: "relative",
+                          left: "-452px",
+                          bottom: "23px",
+                        }}
+                      >
+                        Select Course to Study
+                      </span>
+                      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <span
+                          style={{
+                            position: "relative",
+                            left: "-452px",
+                            bottom: "23px",
+                          }}
+                        >
+                          First Choice
+                        </span>
+                        <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+                          <TextInput
+                            required
+                            type="select"
+                            name="faculty"
+                            error={error["faculty"]}
+                            label="Select Faculty"
+                            value={faculty < 1 ? "" : faculty}
+                            onChange={(e) => {
+                              handleOnChange(e, "faculty");
+                            }}
+                            isSelect={true}
+                            options={option}
+                          />
+                          <TextInput
+                            required
+                            type="select"
+                            name="department"
+                            error={error["department"]}
+                            label="Select Department"
+                            value={department < 1 ? "" : department}
+                            onChange={(e) => {
+                              handleOnChange(e, "department");
+                            }}
+                            isSelect={true}
+                            options={option}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6">
+                        <span
+                          style={{
+                            position: "relative",
+                            left: "-452px",
+                            bottom: "23px",
+                          }}
+                        >
+                          Second Choice
+                        </span>
+                        <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+                          <TextInput
+                            required
+                            type="select"
+                            name="morefaculty"
+                            error={error["morefaculty"]}
+                            label="Select More Faculty"
+                            value={morefaculty < 1 ? "" : morefaculty}
+                            onChange={(e) => {
+                              handleOnChange(e, "morefaculty");
+                            }}
+                            isSelect={true}
+                            options={option}
+                          />
+                          <TextInput
+                            required
+                            type="select"
+                            name="moredepartment"
+                            error={error["moredepartment"]}
+                            label="Select More Department"
+                            value={moredepartment < 1 ? "" : moredepartment}
+                            onChange={(e) => {
+                              handleOnChange(e, "moredepartment");
+                            }}
+                            isSelect={true}
+                            options={option}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+                {activeStep === 3 && (
+                  <>
+                    <StudentEnrollmentDetailsComponent
+                      firstname={firstname}
+                      middlename={middlename}
+                      lastname={lastname}
+                      maidenname={maidenname}
+                      gender={gender}
+                      phone={phone}
+                      email={email}
+                      dateofbirth={dateofbirth}
+                      birthcertificate={birthcertificate}
+                      nationality={nationality}
+                      address={address}
+                      stateArea={stateArea}
+                      localGovt={localGovt}
+                      primaryname={primaryname}
+                      primaryresult={primaryresult}
+                      primarydate={primarydate}
+                      schoolname={schoolname}
+                      schooldate={schooldate}
+                      examname={examname}
+                      examnumber={examnumber}
+                      examresult={examresult}
+                      jambnumber={jambnumber}
+                      jambscore={jambscore}
+                      jambresult={jambresult}
+                      faculty={faculty}
+                      department={department}
+                      morefaculty={morefaculty}
+                      moredepartment={moredepartment}
+                      addInputFields={addInputFields}
+                    />
+                  </>
+                )}
+              </Grid>
+              <Grid item xs={0}>
+                {activeStep > 0 && (
+                  <ThemeProvider theme={theme}>
+                    <Button
+                      variant="contained"
+                      color="danger"
+                      onClick={handleBack}
+                      sx={{ marginLeft: 8 }}
+                    >
+                      Back
+                    </Button>
+                  </ThemeProvider>
+                )}
+                <Button
+                  variant="contained"
+                  color={
+                    activeStep === steps.length - 1 ? "success" : "primary"
                   }
-              }
-              isSelect={true}
-              options={option}
-            />
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              name="examnumber"
-              label="Exam Number"
-              error={error["examnumber"]}
-              value={examnumber}
-              onChange={(e) => {
-                handleOnChange(e, "examnumber")
-              }}
-          />
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              type="file"
-              name="examresult"
-              label="Result"
-              error={error["examresult"]}
-              value={examresult}
-              onChange={(e) => {
-                handleOnChange(e, "examresult")
-              }}
-          />
-          </div>
+                  onClick={handleNext}
+                  disabled={activeStep === steps.length + 1}
+                  sx={{ marginLeft: 2 }}
+                >
+                  {activeStep === steps.length - 1 ? "Submit" : "Next"}
+                </Button>
+              </Grid>
+            </Grid>
+          </Container>
+        </div>
       </div>
-      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2 mt-4">
-      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Jamb Result</span>
-      <div className="grid grid-cols-3 gap-4  mb-6 mt-2 ml-2">
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              name="jambnumber"
-              label="Jamb Number"
-              error={error["jambnumber"]}
-              value={jambnumber}
-              onChange={(e) => {
-                handleOnChange(e, "jambnumber")
-              }}
-          />
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              name="jambscore"
-              label="Jamb Score"
-              error={error["jambscore"]}
-              value={jambscore}
-              onChange={(e) => {
-                handleOnChange(e, "jambscore")
-              }}
-          />
-          <TextInput
-              className="h-[70px] mt-6"
-              required
-              type="file"
-              name="jambresult"
-              label="Result"
-              error={error["jambresult"]}
-              value={jambresult}
-              onChange={(e) => {
-                handleOnChange(e, "jambresult")
-              }}
-          />
-      </div>
-      </div>
-      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-2">
-      <span style={{position:"relative", left:"-300px", bottom:"24px"}}>Other Exam Certificate</span>
-      {addInputFields?.map((field, index) => (
-        <div key={index} className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
-        <TextInput
-
-
-        className="h-[70px] mt-6"
-        required
-        name="otherexamname"
-        label="Exam Name"
-        error={error.addInputFields?.[index]?.otherexamname}
-        value={field.otherexamname}
-        onChange={(e) =>{
-          handleAddInputOnchange(index, e)
-        }}
-    />
-    <TextInput
-        className="h-[70px] mt-6"
-        required
-        type="file"
-        name="otherexamcertificate"
-        label="Exam Certificate"
-        error={error.addInputFields?.[index]?.otherexamcertificate}
-        value={field.otherexamcertificate}
-        onChange={(e) =>{
-          handleAddInputOnchange(index, e)
-        }}
-    />
-       <TextInput
-        type="date"
-        required
-        name="otherexamdate"
-        label="Exam Year"
-        error={error.addInputFields?.[index]?.otherexamdate}
-        onChange={(e) =>{ 
-          handleOnChangeDate2(index, e)
-        }}
-    />
-     <IconButton
-                style={cancelIconStyle}
-                variant="contained"
-                aria-label="Cancel"
-                onClick={() => handleRemoveForm(index)}
-                sx={{ marginLeft: 120 }}
-              >
-                 <CancelIcon />
-              </IconButton>
-
-    </div>
-                    ))}
-      <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddForm}
-                sx={{ marginLeft: 8 }}
-              >
-                Add other Certificate
-              </Button>
-      </div>
-  </div>
-              </>
-            )}
-            {activeStep === 2 && (
-              <>
-                <Typography variant="h6">Faculties/Departments</Typography>
-                <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Select Course to Study</span>
-      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>First Choice</span>
-                <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-                <TextInput
-              required
-              type="select"
-              name="faculty"
-              error={error["faculty"]}
-              label="Select Faculty"
-              value= {faculty < 1 ? "" : faculty}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "faculty")
-                  }
-              }
-              isSelect={true}
-              options={option}
-            />
-           <TextInput
-              required
-              type="select"
-              name="department"
-              error={error["department"]}
-              label="Select Department"
-              value= {department < 1 ? "" : department}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "department")
-                  }
-              }
-              isSelect={true}
-              options={option}
-            />
-            </div>
-      </div>
-      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6">
-      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Second Choice</span>
-                <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-                <TextInput
-              required
-              type="select"
-              name="morefaculty"
-              error={error["morefaculty"]}
-              label="Select More Faculty"
-              value= {morefaculty < 1 ? "" : morefaculty}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "morefaculty")
-                  }
-              }
-              isSelect={true}
-              options={option}
-            />
-           <TextInput
-              required
-              type="select"
-              name="moredepartment"
-              error={error["moredepartment"]}
-              label="Select More Department"
-              value= {moredepartment < 1 ? "" : moredepartment}
-              onChange={
-                  (e) => {
-  
-                    handleOnChange(e, "moredepartment")
-                  }
-              }
-              isSelect={true}
-              options={option}
-            />
-            </div>
-      </div>
-      </div>
-              </>
-            )}
-             {activeStep === 3 && (
-              <>
-            <StudentEnrollmentDetailsComponent
-                firstname={firstname}
-                middlename={middlename}
-                lastname={lastname}
-                maidenname ={maidenname}
-                gender ={gender}
-                phone = {phone}
-                email = {email}
-                dateofbirth ={dateofbirth}
-                birthcertificate = {birthcertificate}
-                nationality = {nationality}
-                address = {address}
-                stateArea = {stateArea}
-                localGovt = {localGovt}
-                primaryname = {primaryname}
-                primaryresult = {primaryresult}
-                primarydate = {primarydate}
-                schoolname ={schoolname}
-                schooldate = {schooldate}
-                examname = {examname}
-                examnumber = {examnumber}
-                examresult= {examresult}
-                jambnumber = {jambnumber}
-                jambscore = {jambscore}
-                jambresult = {jambresult}
-                faculty = {faculty}
-                department = {department}
-                morefaculty = {morefaculty}
-                moredepartment = {moredepartment}
-                addInputFields = {addInputFields}
-            />
-              </>
-            )}
-          </Grid>
-          <Grid item xs={0}>
-          {activeStep > 0 && (
-             <ThemeProvider theme={theme}>
-              <Button
-                variant="contained"
-                color="danger"
-                onClick={handleBack}
-                sx={{ marginLeft: 8 }}
-              >
-                Back
-              </Button>
-              </ThemeProvider>
-            )}
-            <Button
-              variant="contained"
-              color={activeStep === steps.length - 1 ? "success" : "primary"}
-              onClick={handleNext}
-              disabled={activeStep === steps.length + 1}
-              sx={{ marginLeft: 2 }}
-            >
-              {activeStep === steps.length - 1 ? "Submit" : "Next"}
-            </Button>
-           
-          </Grid>
-        </Grid>
-      </Container>
-      </div>
-      </div>
-      </>
-    );
-  };
-  
-  export default StudentEnrollmentPage;
-  
-=======
-// import React from 'react';
-// import Accordion from '@mui/material/Accordion';
-// import AccordionSummary from '@mui/material/AccordionSummary';
-// import AccordionDetails from '@mui/material/AccordionDetails';
-// import Typography from '@mui/material/Typography';
-import * as React from 'react';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-function FormDataDisplay({ 
-    firstname, 
-    middlename, 
-    lastname,
-    maidenname,
-    gender,
-    phone,
-    email,
-    dateofbirth,
-    birthcertificate,
-    nationality,
-    address,
-    stateArea,
-    localGovt,
-    schoolname,
-    schooldate,
-    examname,
-    examnumber,
-    examresult,
-    jambnumber,
-    jambscore,
-    jambresult,
-    faculty,
-    department,
-    morefaculty,
-    moredepartment,
-    addInputFields
-}) {
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleChange =
-      (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-      };
-  return (
-    // <Accordion>
-    //   <AccordionSummary>
-    //     <Typography>Data Summary</Typography>
-    //   </AccordionSummary>
-    //   <AccordionDetails>
-    //     {/* Render the data here */}
-    //     <div>
-    //       <p>First Name: {firstname}</p>
-    //       <p>Middle Name: {middlename}</p>
-    //       <p>Last Name: {lastname}</p>
-    //     </div>
-    //   </AccordionDetails>
-    //   <AccordionDetails>
-    //     {/* Render the data here */}
-    //     <div>
-    //       <p>First Name: {firstname}</p>
-    //       <p>Middle Name: {middlename}</p>
-    //       <p>Last Name: {lastname}</p>
-    //     </div>
-    //   </AccordionDetails>
-    //   <AccordionDetails>
-    //     {/* Render the data here */}
-    //     <div>
-    //       <p>First Name: {firstname}</p>
-    //       <p>Middle Name: {middlename}</p>
-    //       <p>Last Name: {lastname}</p>
-    //     </div>
-    //   </AccordionDetails>
-    // </Accordion>
-
-    <div>
-    <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1bh-content"
-        id="panel1bh-header"
-      >
-        <Typography sx={{ color: 'text.secondary' }}>PERSONAL DETAILS</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>
-            <p>First Name: {firstname}</p>
-            <p>Middle Name: {middlename}</p>
-            <p>Last Name: {lastname}</p>
-            <p>maidenname: {maidenname}</p>
-            <p>gender: {gender}</p>
-            <p>phone: {phone}</p>
-            <p>email: {email}</p>
-            <p>dateofbirth: {dateofbirth}</p>
-            <img src={birthcertificate} alt="birthcertificate" />
-            <p>nationality: {nationality}</p>
-            <p>address: {address}</p>
-            <p>stateArea: {stateArea}</p>
-            <p>localGovt: {localGovt}</p>
-        </Typography>
-      </AccordionDetails>
-    </Accordion>
-    <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel2bh-content"
-        id="panel2bh-header"
-      >
-        <Typography sx={{ color: 'text.secondary' }}>
-           EDUCATIONAL DETAILS
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>
-            <p>School Name: {schoolname}</p>
-            <p>Date: {schooldate}</p>
-            <p>Exam Name: {examname}</p>
-            <p>Exam Number: {examnumber}</p>
-            <img src={examresult} alt="exam result" />
-            <p>Jamb Number: {jambnumber}</p>
-            <p>Jame Score: {jambscore}</p>
-            <img src={jambresult} alt="Jamb Result" />
-           {addInputFields.map((data, index)=>(
-            <div key={index}>
-            <p>Other Exam: {data.otherexamname}</p>
-            <p>Other Exam Result: {data.otherexamcertificate}</p>
-            <p>Other Exam Date: {data.otherexamdate}</p>
-            
-            </div>
-           ))}
-        </Typography>
-      </AccordionDetails>
-    </Accordion>
-    <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel3bh-content"
-        id="panel3bh-header"
-      >
-        <Typography sx={{ color: 'text.secondary' }}>
-            FACULTY
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>
-            <p>Faculty: {faculty}</p>
-            <p>Department: {department}</p>
-            <p>More Faculty: {morefaculty}</p>
-            <p>More Department: {moredepartment}</p>
-        </Typography>
-      </AccordionDetails>
-    </Accordion>
-    <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel4bh-content"
-        id="panel4bh-header"
-      >
-        <Typography sx={{ width: '33%', flexShrink: 0 }}></Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>
-          <p>PAYMENT</p>
-        </Typography>
-      </AccordionDetails>
-    </Accordion>
-  </div>
+    </>
   );
-}
+};
 
-export default FormDataDisplay;
->>>>>>> c408204 (student Logins updated)
+export default StudentEnrollmentPage;
