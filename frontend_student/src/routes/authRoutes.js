@@ -8,7 +8,11 @@ export const authRoutes = [
     exact: true,
   },
   {
+<<<<<<< HEAD
     path: "/studentenrollment",
+=======
+    path: '/studentenrollment',
+>>>>>>> df02a1f (wip)
     component: StudentEnrollmentPage,
     exact: true,
   },

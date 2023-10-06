@@ -537,7 +537,6 @@ const StudentEnrollmentPage = () => {
           localGovt: localGovt === "",
         }));
         status = true;
-
         if (status) {
           setStatus("error");
           setMessage("All fields are required");
@@ -613,7 +612,6 @@ const StudentEnrollmentPage = () => {
           moredepartment: moredepartment === "",
         }));
         status = true;
-
         setStatus("error");
         setMessage("All fields are required");
         setShow(true);
