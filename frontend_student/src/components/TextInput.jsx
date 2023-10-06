@@ -132,6 +132,7 @@ export default function TextInput(props) {
         );
 
       default:
+<<<<<<< HEAD
         return (
           <TextField
             {...props}
@@ -141,8 +142,22 @@ export default function TextInput(props) {
             className={`flex justify-center ${error ? errorClasses : ""}`}
           />
         );
+=======
+        return (<TextField
+          {...props}
+           autoComplete="none"
+          fullWidth
+          sx={{ m: 1, maxWidth: "100%" }}
+          className={`flex justify-center ${error ? errorClasses : ''}`}
+        />);
+>>>>>>> 5a1d91a (student Logins updatedd)
     }
   };
 
   return <div className="input_container">{render()}</div>;
 }
+
+
+
+
+

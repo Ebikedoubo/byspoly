@@ -52,7 +52,7 @@ const StudentEnrollment = () => {
     const [lastname, setLastname] = React.useState("")
     const [maidenname, setMaidenname] = React.useState("")
     const [gender, setGender] = React.useState("");
-    const [dateofbirth, setDateofbirth] = React.useState(null)
+    const [dateofbirth, setDateofbirth] = React.useState("")
     const [birthcertificate, setBirthcertificate] = React.useState("")
     // // contact address
     const [phone, setPhone] = React.useState("")
@@ -61,9 +61,13 @@ const StudentEnrollment = () => {
     const [address, setAddress] = React.useState("");
     const [stateArea, setStateArea] = React.useState("");
     const [localGovt, setLocalGovt] = React.useState("");
+    //primary school
+    const [primaryname, setPrimaryname] = React.useState("")
+    const [primaryresult, setPrimaryresult] = React.useState("")
+    const [primarydate, setPrimarydate] = React.useState("")
     // // step 2/secondary school
     const [schoolname, setSchoolname] = React.useState("")
-    const [schooldate, setSchooldate] = React.useState(null)
+    const [schooldate, setSchooldate] = React.useState("")
     const [examname, setExamname] = React.useState("")
     const [examnumber, setExamnumber] = React.useState("")
     const [examresult, setExamresult] = React.useState("")
@@ -77,8 +81,6 @@ const StudentEnrollment = () => {
     const [department, setDepartment] = React.useState("")
     const [morefaculty, setMorefaculty] = React.useState("")
     const [moredepartment, setMoredepartment] = React.useState("")
- 
-    const [dateValue, setDateValue] = React.useState("")
     const [show, setShow] = React.useState(false);
 
     const [addInputFields, setAddInputFields] = React.useState([{
@@ -102,6 +104,9 @@ const StudentEnrollment = () => {
         address: false,
         stateArea: false,
         localGovt: false,
+        primaryname: false,
+        primaryresult: false,
+        primarydate: false,
         schoolname: false,
         schooldate: false,
         examname: false,
@@ -115,15 +120,20 @@ const StudentEnrollment = () => {
         department: false,
         morefaculty: false,
         moredepartment: false,
+        addInputFields: [
+          {
+            otherexamname: false,
+            otherexamcertificate: false,
+            otherexamdate: false
+          }
+        ]
     });
 
     const handleAddInputOnchange = (index, e) =>{
       console.log(e);
-
   // Create a copy of the addInputFields array and update the specific field by index
   const updatedFields = [...addInputFields];
   updatedFields[index][e.target.name] = e.target.value;
-
   // Set the updated array back to state
   setAddInputFields(updatedFields);
     }
@@ -133,7 +143,6 @@ const StudentEnrollment = () => {
           case "firstname":
               // code to be executed when the expression matches value1
               setFirstname(e.target.value)
-              
               break;
           case "middlename":
                 // code to be executed when the expression matches value1
@@ -175,6 +184,14 @@ const StudentEnrollment = () => {
           case "localGovt":
                 // code to be executed when the expression matches value1
               setLocalGovt(e.target.value)
+              break;
+          case "primaryname":
+                // code to be executed when the expression matches value1
+              setPrimaryname(e.target.value)
+              break;
+          case "primaryresult":
+                // code to be executed when the expression matches value1
+              setPrimaryresult(e.target.value)
               break;
           case "schoolname":
                 // code to be executed when the expression matches value1
@@ -450,53 +467,45 @@ const StudentEnrollment = () => {
     // send to save and use feedback to show toast message.
 };
        
-// const handleOnChangeDate = (newDate)=> {
-//   console.log(newDate)
-//   setDateofbirth(newDate);
-// };
 
-        const handleOnChangeDate = e => {
-          console.log(e)
-          if (e && e.target) {
-            const selectedDate = e.target.value; // Extract the selected date from the event
-        
-            // Use moment to format the date
-            const formattedDate = moment(selectedDate).format('MM/DD/YYYY');
-        
+        const handleOnChangeDate = e =>{
+            
+            let formattedDate = moment(e).format("YYYY-MM-DD");
+            console.log("checking date", formattedDate)
             setDateofbirth(formattedDate); // Set the formatted date in your state
-          } 
         };
         const handleOnChangeDate1 = e => {
-          console.log(e)
-          if (e && e.target) {
-            const selectedDate = e.target.value; // Extract the selected date from the event
-        
-            // Use moment to format the date
-            const formattedDate = moment(selectedDate).format('MM/DD/YYYY');
-        
+          let formattedDate = moment(e).format("YYYY-MM-DD");
+            console.log("checking date", formattedDate)
             setSchooldate(formattedDate); // Set the formatted date in your state
-          } 
         };
-        const handleOnChangeDate2 = e => {
-          console.log(e)
-          if (e && e.target) {
-            const selectedDate = e.target.value; // Extract the selected date from the event
-        
-            // Use moment to format the date
-            const formattedDate = moment(selectedDate).format('MM/DD/YYYY');
-        
-            setDateofbirth(formattedDate); // Set the formatted date in your state
-          } 
+        const handleOnChangePrimaryDate = e => {
+          let formattedDate = moment(e).format("YYYY-MM-DD");
+            console.log("checking date", formattedDate)
+            setPrimarydate(formattedDate); // Set the formatted date in your state
         };
-
+      
+        const handleOnChangeDate2 = (index, e) => {
+         
+          let formattedDate = moment(e).format("YYYY-MM-DD");
+          console.log("checking date", formattedDate);
+        
+          // Create a copy of the addInputFields array and update the specific field by index
+          const updatedFields = [...addInputFields];
+          updatedFields[index].otherexamdate = formattedDate;
+        
+          // Set the updated array back to state
+          setAddInputFields(updatedFields)
+      };
+      
   const handleNext = () => {
     let status = false;
   
     if (activeStep === 0) {
       if (
         firstname.trim() === "" ||
-        middlename.trim() === "" ||
         lastname.trim() === "" ||
+        maidenname.trim() === "" ||
         gender.trim() === "" ||
         dateofbirth === "" ||
         birthcertificate.trim() === "" ||
@@ -507,18 +516,21 @@ const StudentEnrollment = () => {
         stateArea === "" ||
         localGovt === ""
       ) {
-        setError((prevError) => ({ ...prevError, firstname: true }));
-        setError((prevError) => ({ ...prevError, middlename: true }));
-        setError((prevError) => ({ ...prevError, lastname: true }));
-        setError((prevError) => ({ ...prevError, dateofbirth: true }));
-        setError((prevError) => ({ ...prevError, gender: true }));
-        setError((prevError) => ({ ...prevError, birthcertificate: true }));
-        setError((prevError) => ({ ...prevError, phone: true }));
-        setError((prevError) => ({ ...prevError, email: true }));
-        setError((prevError) => ({ ...prevError, nationality: true }));
-        setError((prevError) => ({ ...prevError, address: true }));
-        setError((prevError) => ({ ...prevError, stateArea: true }));
-        setError((prevError) => ({ ...prevError, localGovt: true }));
+        setError((prevError) => ({
+          ...prevError,
+          firstname: firstname.trim() === "",
+          maidenname: maidenname.trim() === "",
+          lastname: lastname.trim() === "",
+          dateofbirth: dateofbirth === "",
+          gender: gender.trim() === "",
+          birthcertificate: birthcertificate.trim() === "",
+          phone: phone.trim() === "",
+          email: email.trim() === "",
+          nationality: nationality === "",
+          address: address.trim() === "",
+          stateArea: stateArea === "",
+          localGovt: localGovt === "",
+        }));
         status = true;
   
         if (status) {
@@ -535,6 +547,9 @@ const StudentEnrollment = () => {
       }
     } else if (activeStep === 1) {
       if (
+        primaryname.trim() === "" ||
+        primaryresult.trim() === "" ||
+        primarydate === "" ||
         schoolname.trim() === "" ||
         schooldate === "" ||
         examname.trim() === "" ||
@@ -542,18 +557,33 @@ const StudentEnrollment = () => {
         examresult.trim() === "" ||
         jambnumber.trim() === "" ||
         jambscore.trim() === "" ||
-        jambresult.trim() === "" 
+        jambresult.trim() === "" ||
+        addInputFields.some((field) =>
+        Object.values(field).some((value) => value.trim() === "")
+      )
       ) {
-        setError((prevError) => ({ ...prevError, schoolname: true }));
-        setError((prevError) => ({ ...prevError, schooldate: true }));
-        setError((prevError) => ({ ...prevError, examname: true }));
-        setError((prevError) => ({ ...prevError, examnumber: true }));
-        setError((prevError) => ({ ...prevError, examresult: true }));
-        setError((prevError) => ({ ...prevError, jambnumber: true }));
-        setError((prevError) => ({ ...prevError, jambscore: true }));
-        setError((prevError) => ({ ...prevError, jambresult: true }));
+        setError((prevError) => ({
+          ...prevError,
+          primaryname: primaryname.trim() === "",
+          primaryresult: primaryresult.trim() === "",
+          primarydate: primarydate === "",
+          schoolname: schoolname.trim() === "",
+          schooldate: schooldate === "",
+          examname: examname.trim() === "",
+          examnumber: examnumber.trim() === "",
+          examresult: examresult.trim() === "",
+          jambnumber: jambnumber.trim() === "",
+          jambscore: jambscore.trim() === "",
+          jambresult: jambresult.trim() === "",
+          addInputFields: addInputFields.map((field) => ({
+            otherexamname: field.otherexamname.trim() === "",
+            otherexamcertificate: field.otherexamcertificate.trim() === "",
+            otherexamdate: field.otherexamdate === "",
+          })),
+          
+        }));
         status = true;
-
+  
         setStatus("error");
         setMessage("All fields are required");
         setShow(true);
@@ -564,19 +594,22 @@ const StudentEnrollment = () => {
       } else {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
-    }else if (activeStep === 2) {
+    } else if (activeStep === 2) {
       if (
         faculty === "" ||
         department === "" ||
         morefaculty === "" ||
         moredepartment === ""
       ) {
-        setError((prevError) => ({ ...prevError, faculty: true }));
-        setError((prevError) => ({ ...prevError, department: true }));
-        setError((prevError) => ({ ...prevError, morefaculty: true }));
-        setError((prevError) => ({ ...prevError, moredepartment: true }));
+        setError((prevError) => ({
+          ...prevError,
+          faculty: faculty === "",
+          department: department === "",
+          morefaculty: morefaculty === "",
+          moredepartment: moredepartment === "",
+        }));
         status = true;
-
+  
         setStatus("error");
         setMessage("All fields are required");
         setShow(true);
@@ -637,7 +670,7 @@ const StudentEnrollment = () => {
       <Container maxWidth="lg" sx={{ mt: 2 }}>
       <div className="min-screen flex items-center justify-center">
       <div className="text-center">
-        <img src={logo1} alt="schoollogo" className="w-[150px]"/>
+        <h1 className="text-blue-600 mb-6 font-bold text-xl">STUDENT REGISTRATION</h1>
         </div>
         </div>
         <Stepper activeStep={activeStep}>
@@ -654,11 +687,10 @@ const StudentEnrollment = () => {
                 <Typography variant="h6">Personal Details</Typography>
                 <div className="">
   
-  <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+  <div className="w-full px-4 py-2 rounded-md border-2">
       <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Applicant Bio</span>
       <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
           <TextInput
-              className="h-[70px] mt-6"
               required
               name="firstname"
               label="First Name"
@@ -669,8 +701,6 @@ const StudentEnrollment = () => {
               }}
           />
           <TextInput
-              className="h-[70px] mt-6"
-              required
               name="middlename"
               label="Middle Name"
               error={error["middlename"]}
@@ -680,7 +710,6 @@ const StudentEnrollment = () => {
               }}
           />
           <TextInput
-              className="h-[70px] mt-6"
               required
               name="lastname"
               label="Last Name"
@@ -693,7 +722,6 @@ const StudentEnrollment = () => {
       </div>
       <div className="grid grid-cols-2 gap-8  mb-6 mt-4 ml-2">
           <TextInput
-              className=""
               required
               name="maidenname"
               label="Mother's Maiden Name"
@@ -727,7 +755,6 @@ const StudentEnrollment = () => {
               name="dateofbirth"
               label="Date of Birth"
               error={error["dateofbirth"]}
-              value={dateofbirth}
               onChange={(e) => {
                 handleOnChangeDate(e, "dateofbirth")
               }}
@@ -750,7 +777,6 @@ const StudentEnrollment = () => {
   
       <div className="grid grid-cols-2 gap-4  mb-4 mt-4 ml-2">
       <TextInput
-              className="h-[70px] mt-6"
               required
               name="phone"
               label="Phone Number"
@@ -761,7 +787,6 @@ const StudentEnrollment = () => {
               }}
           />
           <TextInput
-              className="h-[70px] mt-6"
               required
               name="email"
               label="email"
@@ -791,7 +816,6 @@ const StudentEnrollment = () => {
             />
   
           <TextInput
-              className="h-[70px] mt-6"
               required
               name="address"
               label="Residence"
@@ -845,6 +869,44 @@ const StudentEnrollment = () => {
               <>
                 <Typography variant="h6">Educational Details</Typography>
                 <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Primary School</span>
+      <div className="grid grid-cols-3 gap-4  mb-6 mt-2 ml-2">
+          <TextInput
+              className="h-[70px] mt-6"
+              required
+              name="primaryname"
+              label="Primary School Name"
+              error={error["primaryname"]}
+              value={primaryname}
+              onChange={(e) => {
+                handleOnChange(e, "primaryname")
+              }}
+          />
+          <TextInput
+              className="h-[70px] mt-6"
+              required
+              type="file"
+              name="primaryresult"
+              label="Upload Primary School Result"
+              error={error["primaryresult"]}
+              value={primaryresult}
+              onChange={(e) => {
+                handleOnChange(e, "primaryresult")
+              }}
+          />
+          <TextInput
+              className="h-[70px] mt-6"
+              required
+              type="date"
+              name="primarydate"
+              label="Date of Graduation"
+              error={error["primarydate"]}
+              onChange={(e) => {
+                handleOnChangePrimaryDate(e, "primarydate")
+              }}
+          />
+      </div>
+      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2">
       <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Secondary School</span>
       <div className="grid grid-cols-2 gap-8  mb-6 mt-4 ml-2">
           <TextInput
@@ -865,9 +927,8 @@ const StudentEnrollment = () => {
               name="schooldate"
               label="Date"
               error={error["schooldate"]}
-              value={schooldate}
               onChange={(e) => {
-                handleOnChangeDate1(e, "dateofbirth")
+                handleOnChangeDate1(e, "schooldate")
               }}
           />
       </div>
@@ -886,7 +947,7 @@ const StudentEnrollment = () => {
           <TextInput
               className="h-[70px] mt-6"
               required
-              id="examnumber"
+              name="examnumber"
               label="Exam Number"
               error={error["examnumber"]}
               value={examnumber}
@@ -898,7 +959,7 @@ const StudentEnrollment = () => {
               className="h-[70px] mt-6"
               required
               type="file"
-              id="examresult"
+              name="examresult"
               label="Result"
               error={error["examresult"]}
               value={examresult}
@@ -906,14 +967,15 @@ const StudentEnrollment = () => {
                 handleOnChange(e, "examresult")
               }}
           />
+          </div>
       </div>
-      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2">
+      <div className="w-full px-4 py-2 rounded-md border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2 mt-4">
       <span style={{position:"relative", left:"-452px", bottom:"23px"}}>Jamb Result</span>
-      <div className="grid grid-cols-3 gap-4  mb-6 mt-4 ml-2">
+      <div className="grid grid-cols-3 gap-4  mb-6 mt-2 ml-2">
           <TextInput
               className="h-[70px] mt-6"
               required
-              id="jambnumber"
+              name="jambnumber"
               label="Jamb Number"
               error={error["jambnumber"]}
               value={jambnumber}
@@ -924,7 +986,7 @@ const StudentEnrollment = () => {
           <TextInput
               className="h-[70px] mt-6"
               required
-              id="jambscore"
+              name="jambscore"
               label="Jamb Score"
               error={error["jambscore"]}
               value={jambscore}
@@ -936,7 +998,7 @@ const StudentEnrollment = () => {
               className="h-[70px] mt-6"
               required
               type="file"
-              id="jambresult"
+              name="jambresult"
               label="Result"
               error={error["jambresult"]}
               value={jambresult}
@@ -957,7 +1019,7 @@ const StudentEnrollment = () => {
         required
         name="otherexamname"
         label="Exam Name"
-        error={error["addInputFields"]}
+        error={error.addInputFields[index].otherexamname}
         value={field.otherexamname}
         onChange={(e) =>{
           handleAddInputOnchange(index, e)
@@ -969,7 +1031,7 @@ const StudentEnrollment = () => {
         type="file"
         name="otherexamcertificate"
         label="Exam Certificate"
-        error={error["addInputFields"]}
+        error={error.addInputFields[index].otherexamcertificate}
         value={field.otherexamcertificate}
         onChange={(e) =>{
           handleAddInputOnchange(index, e)
@@ -979,9 +1041,8 @@ const StudentEnrollment = () => {
         type="date"
         required
         name="otherexamdate"
-        label="End Year"
-        error={error["addInputFields"]}
-        value={field.otherexamdate}
+        label="Exam Year"
+        error={error.addInputFields[index].otherexamdate}
         onChange={(e) =>{ 
           handleOnChangeDate2(index, e)
         }}
