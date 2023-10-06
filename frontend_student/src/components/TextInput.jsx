@@ -115,7 +115,6 @@ export default function TextInput(props) {
         return (
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePickers
-              id={id}
               error={error}
               name={name}
               label={label}
