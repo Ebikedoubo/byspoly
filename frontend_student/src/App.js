@@ -19,7 +19,6 @@ function App() {
         element={
           <PrivateAdminRoute path={path} key={path} exact={exact} title={title}>
             <Component title={title} />
-            <StudentEnrollment />
             <Sidebar SideBarLinks={SideBarLinks} />
           </PrivateAdminRoute>
         }
@@ -40,13 +39,16 @@ function App() {
           {authRoutes}
           {privateRoutes}
         </Routes>
-        {/* <StudentEnrollment /> */}
       </BrowserRouter>
+<<<<<<< HEAD
 <<<<<<< HEAD
       {/* <StudentEnrollment /> */}
 =======
       
 >>>>>>> 9acb4bc (student enrollment)
+=======
+      {/* <StudentEnrollment /> */}
+>>>>>>> 137c1ce (student Loginss)
     </div>
   );
 }

@@ -3,12 +3,12 @@ import StudentEnrollmentPage from "../pages/studentEnrollmentPage/StudentEnrollm
 
 export const authRoutes = [
   {
-    path: '/',
+    path: "/",
     component: Login,
     exact: true,
   },
   {
-    path: '/studentenrollment',
+    path: "/studentenrollment",
     component: StudentEnrollmentPage,
     exact: true,
   },
