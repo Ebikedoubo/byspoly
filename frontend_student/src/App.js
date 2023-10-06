@@ -19,6 +19,7 @@ function App() {
         element={
           <PrivateAdminRoute path={path} key={path} exact={exact} title={title}>
             <Component title={title} />
+            <StudentEnrollment />
             <Sidebar SideBarLinks={SideBarLinks} />
           </PrivateAdminRoute>
         }
@@ -39,8 +40,13 @@ function App() {
           {authRoutes}
           {privateRoutes}
         </Routes>
+        {/* <StudentEnrollment /> */}
       </BrowserRouter>
+<<<<<<< HEAD
       {/* <StudentEnrollment /> */}
+=======
+      
+>>>>>>> 9acb4bc (student enrollment)
     </div>
   );
 }
