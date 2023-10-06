@@ -29,6 +29,7 @@ import { styled } from "@mui/system";
 // });
 
 const DatePickers = styled(DatePicker)(({ theme, error }) => ({
+<<<<<<< HEAD
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderColor: error ? "red" : "gray",
@@ -54,6 +55,37 @@ const Selects = styled(Select)(({ theme, error }) => ({
       borderColor: error ? "red" : "gray",
     },
   },
+=======
+
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: error ? 'red' : 'gray',
+    },
+    '&:hover fieldset': {
+      borderColor: error ? 'red' : 'gray',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: error ? 'red' : 'gray',
+    },
+  },
+
+}));
+
+const Selects = styled(Select)(({ theme, error }) => ({
+
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: error ? 'red' : 'gray',
+    },
+    '&:hover fieldset': {
+      borderColor: error ? 'red' : 'gray',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: error ? 'red' : 'gray',
+    },
+  },
+
+>>>>>>> 2392b35 (fix-to-admission-design)
 }));
 
 export default function TextInput(props) {
@@ -89,6 +121,7 @@ export default function TextInput(props) {
         );
 
       case "select":
+<<<<<<< HEAD
         return (
           <FormControl fullWidth className="h-[90px] flex justify-center">
             <InputLabel id="demo-simple-select-label" className="mt-[15px]">
@@ -130,6 +163,41 @@ export default function TextInput(props) {
             />
           </LocalizationProvider>
         );
+=======
+        return (<FormControl fullWidth className=" flex ">
+          <InputLabel id="demo-simple-select-label" className=""> {label}</InputLabel>
+          <Selects
+            error={error}
+            labelId="demo-simple-select-label"
+            // id="demo-simple-select"
+            label={label}
+            value={value}
+            className={`${error ? errorClasses : ''}`}
+            onChange={onChange}
+          >
+            {options?.map((option) => (
+              <MenuItem value={option.value}>{option.label}</MenuItem>
+            ))}
+          </Selects>
+        </FormControl>)
+
+      case "date":
+        return (<LocalizationProvider dateAdapter={AdapterDateFns}>
+
+          <DatePickers
+            error={error}
+            name={name}
+            label={label}
+            value={value}
+            onChange={onChange}
+            className={`h-[70px] w-[100%]  ${error ? errorClasses : ''}`}
+            renderInput={(params) => <TextField className={`  ${error ? errorClasses : ''}`}   {...params}
+
+            />}
+          />
+
+        </LocalizationProvider>)
+>>>>>>> 2392b35 (fix-to-admission-design)
 
       default:
 <<<<<<< HEAD
@@ -145,16 +213,26 @@ export default function TextInput(props) {
 =======
         return (<TextField
           {...props}
-           autoComplete="none"
+          autoComplete="none"
           fullWidth
-          sx={{ m: 1, maxWidth: "100%" }}
+          sx={{ maxWidth: "100%" }}
           className={`flex justify-center ${error ? errorClasses : ''}`}
         />);
 >>>>>>> 5a1d91a (student Logins updatedd)
     }
   };
 
+<<<<<<< HEAD
   return <div className="input_container">{render()}</div>;
+=======
+  }
+
+  return (
+    <div >
+      {render()}
+    </div>
+  );
+>>>>>>> 2392b35 (fix-to-admission-design)
 }
 
 
