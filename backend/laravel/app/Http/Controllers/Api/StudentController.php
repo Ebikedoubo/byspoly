@@ -150,7 +150,8 @@ class StudentController extends Controller
      *             @OA\Property(property="exam_date", type="date"),
      *             @OA\Property(property="exam_score", type="string"),
      *             @OA\Property(property="image", type="string", format="binary"),
-     * required={"exam_type_id","exam_number","exam_date","image"}
+     *             @OA\Property(property="title", type="string" ,example="Waec result",description="this is used to identify document in the document table relationship"),
+     *             required={"exam_type_id","exam_number","exam_date","image","title"}
      *         ),),
      * 
      *             @OA\Property(property="schools_attended", type="array",
@@ -161,6 +162,8 @@ class StudentController extends Controller
      *             @OA\Property(property="graduation_year", type="date"),
      *             
      *             @OA\Property(property="image", type="string", format="binary"),
+     *             @OA\Property(property="title", type="string" ,example="First leaving school certificate",description="this is used to identify document in the document table relationship"),
+     *              required={"school_name","graduation_year","image","title"}
      * 
      *         ),),
      * 
@@ -387,7 +390,7 @@ class StudentController extends Controller
             if ($student) {
                 // insert application school history
 
-                $schoolsAttended = json_decode($request->schools_attended);
+                $schoolsAttended = $request->schools_attended;
                 foreach ($schoolsAttended as $schoolAttended) {
                     $applicationSchools = new ApplicationSchoolHistory();
                     $applicationDocument = new ApplicationDocument();
@@ -396,17 +399,22 @@ class StudentController extends Controller
                     $applicationSchools->school_name = $schoolAttended["school_name"];
                     $applicationSchools->graduation_year = $schoolAttended["graduation_year"];
                     // make document upload here 
-                    $image = $schoolAttended['image'];
-                    $imageName = time() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('images/application'), $imageName);
-                    $document->file_path = '/images/project/' . $imageName;
-                    $document->status = 1;
-                    // save school details and uploaded documents
-                    if ($applicationSchools->save() && $document->save()) {
-                        $applicationDocument->student_id = $student->id;
-                        $applicationDocument->document_id = $document->id;
-                        $applicationDocument->status = 1;
-                        $applicationDocument->save();
+                    if (!empty($schoolAttended['image'])) {
+                        $image = $schoolAttended['image'];
+                        $imageName = time() . '.' . $image->getClientOriginalExtension();
+                        $image->move(public_path('images/application'), $imageName);
+                        $document->file_path = '/images/project/' . $imageName;
+                        $document->status = 1;
+                        // save school details and uploaded documents
+                        if ($applicationSchools->save() && $document->save()) {
+                            $applicationDocument->student_id = $student->id;
+                            $applicationDocument->document_id = $document->id;
+                            $applicationDocument->title = $schoolAttended["title"];
+                            $applicationDocument->status = 1;
+                            $applicationDocument->save();
+                        }
+                    } else {
+                        $applicationSchools->save();
                     }
                 }
 
@@ -424,7 +432,7 @@ class StudentController extends Controller
                     $choiceModel->save();
                 }
                 // save exam records with exam documents in document table 
-                $results = json_decode($request->student_results);
+                $results = $request->student_results;
                 foreach ($results as $result) {
                     $resultDocument = new Document();
                     $resultApplicationDocument = new ApplicationDocument();
@@ -446,6 +454,7 @@ class StudentController extends Controller
                         // add result application document relationship 
                         $resultApplicationDocument->student_id = $student->id;
                         $resultApplicationDocument->document_id = $resultDocument->id;
+                        $resultApplicationDocument->title = $result["title"];
                         $resultApplicationDocument->status = 1;
                         $examResult->save();
                         $resultApplicationDocument->save();

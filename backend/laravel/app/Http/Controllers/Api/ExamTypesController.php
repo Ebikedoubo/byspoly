@@ -282,6 +282,10 @@ class ExamTypesController extends Controller
         return response()->json(["status" => "error", "message" => "sorry something went wrong"], 400);
     }
 
+    private function model()
+    {
+        return new ExamsType();
+    }
 
     /**
      * @OA\Get(
@@ -319,11 +323,5 @@ class ExamTypesController extends Controller
     {
         $model = ExamsType::where(["title" => "jamb"])->first();
         return response()->json(["status" => "success", "data" => $model], 200);
-    }
-
-
-    private function model()
-    {
-        return new ExamsType();
     }
 }

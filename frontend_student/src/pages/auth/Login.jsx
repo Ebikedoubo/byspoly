@@ -12,7 +12,7 @@ export default function Login() {
     const [passworderror, setPassworderror] = useState(true);
     const [loader, setLoader] = useState(false);
     const [wrongdetails, setWrongdetails] = useState(false);
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
 
     // make use of useeffect hook here to check if there is a value in local storage 
@@ -21,7 +21,7 @@ export default function Login() {
         const token = localStorage.getItem("token")
 
         if (token !== null) {
-            // navigate('/dashboard');
+            navigate('/dashboard');
         }
 
     }, [])
@@ -51,6 +51,9 @@ export default function Login() {
 
         const response = await axios.post(url, data);
         return response.data;
+    }
+    const register = () => {
+        navigate("/studentenrollment")
     }
 
     const login = async () => {
@@ -93,7 +96,7 @@ export default function Login() {
                     <div className="flex justify-center h-[120px]"><img src={Logo} alt="logo" /></div>
                     <div className="flex justify-center text-[15px] font-medium mt-[15px]">BAYELSA STATE POLYTECNIC ALEIBIRI</div>
                     <div className="w-[410px] flex justify-center text-[10px] mt-[17px] text-slate-400">
-                       Light, Skill and Self Reliance
+                        Light, Skill and Self Reliance
                     </div>
                 </div>
             </div>
@@ -114,7 +117,7 @@ export default function Login() {
                             onChange={(e) => handleInput(e, "email")}
                         />
                     </div>
-                    <div className="mt-[50px]">
+                    <div className="mt-[20px]">
                         {!passworderror ?
                             <h3 className="text-red-600"> u need an password</h3>
                             : null}
@@ -126,15 +129,17 @@ export default function Login() {
                         />
                     </div>
 
-                    <button onClick={() => login()} className="flex mt-[50px] justify-center items-center bg-yellow-600 w-[300px] h-[40px] rounded-md text-[14px] font-semibold text-[white]">
+                    <button onClick={() => login()} className="flex mt-[20px] justify-center items-center bg-blue-600 w-[300px] h-[40px] rounded-md text-[14px] font-semibold text-[white]">
                         {loader ? "Loading ........" : "Login"}
                     </button>
                     <div className="flex justify-between text-[white]">
-                        <p className="text-[12px]">Sign Up</p>
+
                         <p onClick={navigateToForgetPassword} className="text-[12px] cursor-pointer">Forgot Password</p>
                     </div>
-
-
+                    <p className="text-[12px] items-center text-white text-bold">OR</p>
+                    <button onClick={() => register()} className="flex mt-[20px] justify-center items-center bg-red-600 w-[300px] h-[40px] rounded-md text-[14px] font-semibold text-[white]">
+                        Apply Now
+                    </button>
                 </div>
             </div>
         </div>
