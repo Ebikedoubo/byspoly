@@ -49,7 +49,7 @@ class ExamTypesController extends Controller
 
     public function index()
     {
-        $model = $this->model()->get();
+        $model = $this->model()->where(["title", "!=", "jamb"])->get();
         if ($model) {
             return response()->json(["status" => "success", "data" => $model], 200);
         }
