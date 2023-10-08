@@ -150,8 +150,7 @@ class StudentController extends Controller
      *             @OA\Property(property="exam_date", type="date"),
      *             @OA\Property(property="exam_score", type="string"),
      *             @OA\Property(property="image", type="string", format="binary"),
-     *             @OA\Property(property="title", type="string" ,example="Waec result",description="this is used to identify document in the document table relationship"),
-     *             required={"exam_type_id","exam_number","exam_date","image","title"}
+     * required={"exam_type_id","exam_number","exam_date","image"}
      *         ),),
      * 
      *             @OA\Property(property="schools_attended", type="array",
@@ -162,8 +161,6 @@ class StudentController extends Controller
      *             @OA\Property(property="graduation_year", type="date"),
      *             
      *             @OA\Property(property="image", type="string", format="binary"),
-     *             @OA\Property(property="title", type="string" ,example="First leaving school certificate",description="this is used to identify document in the document table relationship"),
-     *              required={"school_name","graduation_year","image","title"}
      * 
      *         ),),
      * 
@@ -399,22 +396,17 @@ class StudentController extends Controller
                     $applicationSchools->school_name = $schoolAttended["school_name"];
                     $applicationSchools->graduation_year = $schoolAttended["graduation_year"];
                     // make document upload here 
-                    if (!empty($schoolAttended['image'])) {
-                        $image = $schoolAttended['image'];
-                        $imageName = time() . '.' . $image->getClientOriginalExtension();
-                        $image->move(public_path('images/application'), $imageName);
-                        $document->file_path = '/images/project/' . $imageName;
-                        $document->status = 1;
-                        // save school details and uploaded documents
-                        if ($applicationSchools->save() && $document->save()) {
-                            $applicationDocument->student_id = $student->id;
-                            $applicationDocument->document_id = $document->id;
-                            $applicationDocument->title = $schoolAttended["title"];
-                            $applicationDocument->status = 1;
-                            $applicationDocument->save();
-                        }
-                    } else {
-                        $applicationSchools->save();
+                    $image = $schoolAttended['image'];
+                    $imageName = time() . '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path('images/application'), $imageName);
+                    $document->file_path = '/images/project/' . $imageName;
+                    $document->status = 1;
+                    // save school details and uploaded documents
+                    if ($applicationSchools->save() && $document->save()) {
+                        $applicationDocument->student_id = $student->id;
+                        $applicationDocument->document_id = $document->id;
+                        $applicationDocument->status = 1;
+                        $applicationDocument->save();
                     }
                 }
 
@@ -454,7 +446,6 @@ class StudentController extends Controller
                         // add result application document relationship 
                         $resultApplicationDocument->student_id = $student->id;
                         $resultApplicationDocument->document_id = $resultDocument->id;
-                        $resultApplicationDocument->title = $result["title"];
                         $resultApplicationDocument->status = 1;
                         $examResult->save();
                         $resultApplicationDocument->save();

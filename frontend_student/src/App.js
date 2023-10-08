@@ -16,7 +16,6 @@ function App() {
         element={
           <PrivateAdminRoute path={path} key={path} exact={exact} title={title}>
             <Component title={title} />
-            <StudentEnrollment />
             <Sidebar SideBarLinks={SideBarLinks} />
           </PrivateAdminRoute>
         }
@@ -37,8 +36,8 @@ function App() {
           {authRoutes}
           {privateRoutes}
         </Routes>
-        {/* <StudentEnrollment /> */}
       </BrowserRouter>
+      {/* <StudentEnrollment /> */}
     </div>
   );
 }

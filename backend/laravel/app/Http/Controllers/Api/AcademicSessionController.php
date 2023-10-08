@@ -370,7 +370,7 @@ class AcademicSessionController extends Controller
         return response()->json(["status" => "error", "message" => "sorry something went wrong"], 400);
     }
 
-     /**
+    /**
      * @OA\Get(
      *     path="/api/accademic-session/mark-as-current-session/{id}",
      *     summary="Make a perticular accademic session current",
@@ -411,7 +411,7 @@ class AcademicSessionController extends Controller
     {
         $model = $id;
         $current = $this->model()->where(["status" => $this->currentSession]);
-        if($model->id == $current->first()->id){
+        if ($model->id == $current->first()->id) {
             return response()->json(["status" => "error", "message" => "The selected session is already the current session"], 400);
         }
         if ($current->update(["status" => 0])) {
@@ -421,7 +421,6 @@ class AcademicSessionController extends Controller
             }
             return response()->json(["status" => "error", "message" => "Something went wrong, please try again later "], 400);
         }
-        
     }
 
     private function model()
