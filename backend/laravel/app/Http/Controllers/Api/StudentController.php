@@ -411,7 +411,7 @@ class StudentController extends Controller
                 }
 
                 //manage student choice 
-                $choices = json_decode($request->choice);
+                $choices = json_decode($request->choice, true);
                 $rank = 1;
                 foreach ($choices as $choice) {
                     $choiceModel = new Choice();
