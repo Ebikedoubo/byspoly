@@ -1157,7 +1157,7 @@ const StudentEnrollmentPage = () => {
               <Grid item xs={12}>
                 {activeStep === 0 && (
                   <div className="mt-8">
-                    <BlockSectionComponent title="Applicat Bio">
+                    <BlockSectionComponent title="Applicant Bio">
                       <div className="grid grid-cols-3 gap-4 mt-4 ">
                         <TextInput
                           required

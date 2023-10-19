@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BlockSectionComponent from "./BlockSectionComponent";
+import AppModal from "./AppModal";
 
 function StudentEnrollmentDetailsComponent(props) {
   const { data } = props;
   const [expanded, setExpanded] = React.useState(false);
+
+   console.log("Data:", data);
+  console.log("Birth Certificate:", data.birthcertificate);
+
+  const [imageModalIsOpen, setImageModalIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  // Function to open the image modal
+  const openImageModal = (imageUrl) => {
+    if (imageUrl) {
+      // Use FileReader to read the image file as a data URL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setSelectedImage(e.target.result); // Set the data URL as the selected image
+      };
+      reader.readAsDataURL(imageUrl);
+    }
+  };
+
+  // Function to close the image modal
+  const closeImageModal = () => {
+    setSelectedImage("");
+  };
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -62,7 +86,21 @@ function StudentEnrollmentDetailsComponent(props) {
                   {data.dateofbirth}
                 </BlockSectionComponent>
                 <BlockSectionComponent title="Birth Certificate">
-                  {data.birthcertificate[0].name}
+                  {/* {data.birthcertificate[0].name} */}
+                  <button onClick={() => openImageModal(data.birthcertificate[0])}>
+                View Certificate
+              </button>
+              <AppModal
+        modalIsOpen={selectedImage !== ""}
+        setIsOpen={closeImageModal}
+        title="View Image"
+      >
+        {selectedImage ? (
+          <img src={selectedImage} alt="Certificate" style={{ width: "100%", height: "auto" }} />
+        ) : (
+          <p>No image selected</p>
+        )}
+      </AppModal>
                 </BlockSectionComponent>
               </div>
             </BlockSectionComponent>
@@ -117,7 +155,21 @@ function StudentEnrollmentDetailsComponent(props) {
                   {data.primaryname}
                 </BlockSectionComponent>
                 <BlockSectionComponent title="First Leaving school Certificate">
-                  {data.primaryresult[0].name}
+                  {/* {data.primaryresult[0].name} */}
+                  <button onClick={() => openImageModal(data.primaryresult[0])}>
+                View Primary Result
+              </button>
+                  <AppModal
+        modalIsOpen={selectedImage !== ""}
+        setIsOpen={closeImageModal}
+        title="View Image"
+      >
+        {selectedImage ? (
+          <img src={selectedImage} alt="Certificate" style={{ width: "100%", height: "auto" }} />
+        ) : (
+          <p>No image selected</p>
+        )}
+      </AppModal>
                 </BlockSectionComponent>
                 <BlockSectionComponent title="Date of Graduation">
                   {data.primarydate}
@@ -144,7 +196,21 @@ function StudentEnrollmentDetailsComponent(props) {
                 </BlockSectionComponent>
 
                 <BlockSectionComponent title="Exam Result">
-                  {data.examresult[0].name}
+                  {/* {data.examresult[0].name} */}
+                  <button onClick={() => openImageModal(data.examresult[0])}>
+                View Exam Result
+              </button>
+              <AppModal
+        modalIsOpen={selectedImage !== ""}
+        setIsOpen={closeImageModal}
+        title="View Image"
+      >
+        {selectedImage ? (
+          <img src={selectedImage} alt="Certificate" style={{ width: "100%", height: "auto" }} />
+        ) : (
+          <p>No image selected</p>
+        )}
+      </AppModal>
                 </BlockSectionComponent>
 
                 <BlockSectionComponent title="Exam Date">
@@ -164,7 +230,21 @@ function StudentEnrollmentDetailsComponent(props) {
                 </BlockSectionComponent>
 
                 <BlockSectionComponent title="Jamb Result">
-                  {data.jambresult[0].name}
+                  {/* {data.jambresult[0].name} */}
+                  <button onClick={() => openImageModal(data.jambresult[0])}>
+                View Jamb Result
+              </button>
+                  <AppModal
+        modalIsOpen={selectedImage !== ""}
+        setIsOpen={closeImageModal}
+        title="View Image"
+      >
+        {selectedImage ? (
+          <img src={selectedImage} alt="Certificate" style={{ width: "100%", height: "auto" }} />
+        ) : (
+          <p>No image selected</p>
+        )}
+      </AppModal>
                 </BlockSectionComponent>
                 <BlockSectionComponent title="Jamb Date">
                   {data.jambdate}
@@ -172,9 +252,11 @@ function StudentEnrollmentDetailsComponent(props) {
               </div>
             </BlockSectionComponent>
             <BlockSectionComponent title="Other Exams">
-              {data.addInputFields.length == 1 &&
-              data.addInputFields[0].otherexamname.length > 0
-                ? data.addInputFields?.map((field, index) => (
+              {
+              // data.addInputFields.length == 1 &&
+              // data.addInputFields[0].otherexamname.length > 0
+              //   ? 
+                data.addInputFields?.map((field, index) => (
                     <div>
                       <div
                         key={index}
@@ -193,7 +275,10 @@ function StudentEnrollmentDetailsComponent(props) {
 
                         <div className="col-span-2">
                           <BlockSectionComponent title="Exams Certificate">
-                            {field?.otherexamcertificate[0]?.name}
+                            {/* {field?.otherexamcertificate[0]?.name} */}
+                            <button onClick={() => openImageModal(field.otherexamcertificate[0])}>
+                View Other Exam Certificate
+              </button>
                           </BlockSectionComponent>
                         </div>
 
@@ -205,7 +290,19 @@ function StudentEnrollmentDetailsComponent(props) {
                       </div>
                     </div>
                   ))
-                : null}
+                // : null
+                }
+                 <AppModal
+        modalIsOpen={selectedImage !== ""}
+        setIsOpen={closeImageModal}
+        title="View Image"
+      >
+        {selectedImage ? (
+          <img src={selectedImage} alt="Certificate" style={{ width: "100%", height: "auto" }} />
+        ) : (
+          <p>No image selected</p>
+        )}
+      </AppModal>
             </BlockSectionComponent>
           </div>
         </AccordionDetails>
