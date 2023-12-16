@@ -13,6 +13,7 @@ import { jambData } from "../../services/Jamb.module";
 import Logo from "../../assests/bayelsalogo.jpeg";
 import logo1 from "../../assests/bayelsalogo.png";
 import { useNavigate } from "react-router-dom";
+import FBNChecheckout from "payment-checkout";
 import {
   Container,
   Grid,
@@ -183,6 +184,49 @@ const StudentEnrollmentPage = () => {
     currentApplicationFee();
     jambTypeDatas();
   };
+
+  const generate12DigitTimestamp = () => {
+    var currentTimestamp = Date.now();
+
+    if (currentTimestamp.toString().length > 12) {
+      return currentTimestamp.toString().slice(0, 12);
+    }
+    if (currentTimestamp.toString().length < 12) {
+      // Convert to a string and pad with zeros to ensure it has 12 digits
+      const timestampString = currentTimestamp.toString().padStart(12, "0");
+
+      return timestampString;
+    }
+    return currentTimestamp;
+  };
+  const initiatePayment = () => {
+    const txn = {
+      live: false,
+      ref: generate12DigitTimestamp(), // Unique translation reference compulsory
+      amount: parseInt(paymentOptions.amount), // transaction amount compulsory
+      customer: {
+        firstname: firstname,
+        lastname: lastname,
+        email: email, // Customer email compulsory
+        id: generate12DigitTimestamp(),
+      },
+      fees: [
+        {
+          amount: parseInt(paymentOptions.amount),
+          label: "Application Fee",
+        },
+      ],
+      meta: {},
+      publicKey: "sb-pk-qip2Wpdio1utTdVAIvyVOh4qVvfxrt4g", // Merchant public key from your dashboard compulsory
+      description: "Application Fee",
+      currency: "NGN",
+      callback: (res) => submit(res), // Your callback function
+      onClose: () => console.log("onclose"), // Your onclose function
+      options: ["QR", "CARD", "WALLET", "PAYATTITUE"],
+    };
+
+    FBNChecheckout.initiateTransaction(txn); // initiates the payment
+  };
   const contentArea = useRef(null);
 
   const scrollToTop = () => {
@@ -201,14 +245,13 @@ const StudentEnrollmentPage = () => {
       response = await importer();
     }
     return response;
-    console.log("data messagesss", response.data);
   };
 
   const currentApplicationFee = async () => {
     let apiData = await ApiDatas(currentApplicationFeeData);
     setpaymentOptions(apiData.data.data);
-    console.log("are you working", apiData.data.data);
   };
+
   const stateData = async () => {
     let response = await state();
 
@@ -218,8 +261,8 @@ const StudentEnrollmentPage = () => {
     });
     setStateOptions(reArrangeData);
     setAyncsState(false);
-    console.log("data message", response.data);
   };
+
   const localGovtData = async (id) => {
     let response = await localGovts(id);
 
@@ -229,8 +272,8 @@ const StudentEnrollmentPage = () => {
     });
     setLocalGovtOptions(reArrangeData);
     setAyncsLga(false);
-    console.log("data message", response.data);
   };
+
   const facultyData = async () => {
     let apiData = await ApiDatas(fetchFacultyData);
     let reArrangeData = [];
@@ -239,8 +282,8 @@ const StudentEnrollmentPage = () => {
     });
     setFacultyOption(reArrangeData);
     setAyncsFaculty(false);
-    console.log("see it", reArrangeData);
   };
+
   const departmentData = async (id) => {
     let apiData = await ApiDatas(fetchDepartmentData, id);
     let reArrangeData = [];
@@ -249,8 +292,8 @@ const StudentEnrollmentPage = () => {
     });
     setDepartmentOption(reArrangeData);
     setAyncsDepartment(false);
-    console.log("see it", reArrangeData);
   };
+
   const moreDepartmentData = async (id) => {
     let apiData = await ApiDatas(fetchDepartmentData, id);
     let reArrangeData = [];
@@ -260,6 +303,7 @@ const StudentEnrollmentPage = () => {
     setAyncsMoreDepartment(false);
     setMoreDepartmentOption(reArrangeData);
   };
+
   const examTypeDatas = async () => {
     let apiData = await ApiDatas(examTypeData);
     let reArrangeData = [];
@@ -268,8 +312,8 @@ const StudentEnrollmentPage = () => {
     });
     setExamOptions(reArrangeData);
     setAyncsExam(false);
-    console.log("see it", reArrangeData);
   };
+
   const jambTypeDatas = async () => {
     let apiData = await ApiDatas(jambData);
     setJambExamId(apiData.data.data.id);
@@ -382,7 +426,7 @@ const StudentEnrollmentPage = () => {
         localGovtData(e.target.value);
         setAyncsLga(true);
         setStateArea(e.target.value);
-        console.log("ehredydy", e);
+
         break;
       case "localGovt":
         // code to be executed when the expression matches value1
@@ -529,195 +573,197 @@ const StudentEnrollmentPage = () => {
     }
   };
 
-  const submit = async (e) => {
-    setLoader(true);
-    e.preventDefault();
+  const submit = async (payment) => {
+    if (payment.data.status == "SUCCESS") {
+      setLoader(true);
+      //e.preventDefault();
 
-    // Create a new FormData object
-    const formData = new FormData();
-    // Append data from your form fields to the FormData object
-    formData.append("email", email);
-    formData.append("first_name", firstname);
-    formData.append("middle_name", middlename);
-    formData.append("last_name", lastname);
-    formData.append("maiden_name", maidenname);
-    formData.append("gender", gender);
-    formData.append("dob", dateofbirth);
-    formData.append("certificate", birthcertificate[0]);
-    formData.append("phone_number", phone);
-    formData.append("country_id", nationality);
-    formData.append("address", address);
-    formData.append("state_id", stateArea);
-    formData.append("lga_id", localGovt);
+      // Create a new FormData object
+      const formData = new FormData();
+      // Append data from your form fields to the FormData object
+      formData.append("email", email);
+      formData.append("payment_reff", payment.data.transactionReference);
+      formData.append("amount", payment.amount);
+      formData.append("first_name", firstname);
+      formData.append("middle_name", middlename);
+      formData.append("last_name", lastname);
+      formData.append("maiden_name", maidenname);
+      formData.append("gender", gender);
+      formData.append("dob", dateofbirth);
+      formData.append("certificate", birthcertificate[0]);
+      formData.append("phone_number", phone);
+      formData.append("country_id", nationality);
+      formData.append("address", address);
+      formData.append("state_id", stateArea);
+      formData.append("lga_id", localGovt);
 
-    let studentResult = [
-      {
-        exam_type_id: examname,
-        exam_number: examnumber,
-        exam_date: examdate,
-        image: examresult[0],
-      },
-      {
-        exam_type_id: jambExamId,
-        exam_number: jambnumber,
-        exam_date: jambdate,
-        image: jambresult[0],
-        exam_score: jambscore,
-      },
-    ];
-    formData.append("student_results[0][exam_type_id]", examname);
-    formData.append("student_results[0][exam_number]", examnumber);
-    formData.append("student_results[0][exam_date]", examdate);
-    formData.append("student_results[0][image]", examresult[0]);
+      let studentResult = [
+        {
+          exam_type_id: examname,
+          exam_number: examnumber,
+          exam_date: examdate,
+          image: examresult[0],
+        },
+        {
+          exam_type_id: jambExamId,
+          exam_number: jambnumber,
+          exam_date: jambdate,
+          image: jambresult[0],
+          exam_score: jambscore,
+        },
+      ];
+      formData.append("student_results[0][exam_type_id]", examname);
+      formData.append("student_results[0][exam_number]", examnumber);
+      formData.append("student_results[0][exam_date]", examdate);
+      formData.append("student_results[0][image]", examresult[0]);
 
-    formData.append("student_results[1][exam_type_id]", jambExamId);
-    formData.append("student_results[1][exam_number]", jambnumber);
-    formData.append("student_results[1][exam_date]", jambdate);
-    formData.append("student_results[1][image]", jambresult[0]);
-    formData.append("student_results[1][exam_score]", jambscore);
-    console.log(addInputFields[0].exam_number);
+      formData.append("student_results[1][exam_type_id]", jambExamId);
+      formData.append("student_results[1][exam_number]", jambnumber);
+      formData.append("student_results[1][exam_date]", jambdate);
+      formData.append("student_results[1][image]", jambresult[0]);
+      formData.append("student_results[1][exam_score]", jambscore);
 
-    addInputFields.forEach((field, index) => {
-      let newIndex = index + 2;
-      formData.append(
-        `student_results[${newIndex}][exam_type_id]`,
-        field.otherexamname
-      );
-      formData.append(
-        `student_results[${newIndex}][exam_number]`,
-        field.otherexamnumber
-      );
-      formData.append(
-        `student_results[${newIndex}][exam_date]`,
-        field.otherexamdate
-      );
-      formData.append(
-        `student_results[${newIndex}][image]`,
-        field.otherexamcertificate[0]
-      );
-    });
+      addInputFields.forEach((field, index) => {
+        let newIndex = index + 2;
+        formData.append(
+          `student_results[${newIndex}][exam_type_id]`,
+          field.otherexamname
+        );
+        formData.append(
+          `student_results[${newIndex}][exam_number]`,
+          field.otherexamnumber
+        );
+        formData.append(
+          `student_results[${newIndex}][exam_date]`,
+          field.otherexamdate
+        );
+        formData.append(
+          `student_results[${newIndex}][image]`,
+          field.otherexamcertificate[0]
+        );
+      });
 
-    // if (
-    //   addInputFields.length == 1 &&
-    //   addInputFields[0].exam_number.length !== 0
-    // ) {
-    //   addInputFields.forEach((field, index) => {
-    //     // let otherExams = {
-    //     //   exam_type_id: field.otherexamname,
-    //     //   exam_number: field.otherexamnumber,
-    //     //   exam_date: field.otherexamdate,
-    //     //   image: field.otherexamcertificate[0],
-    //     // };
-    //     // studentResult.push(otherExams);
+      // if (
+      //   addInputFields.length == 1 &&
+      //   addInputFields[0].exam_number.length !== 0
+      // ) {
+      //   addInputFields.forEach((field, index) => {
+      //     // let otherExams = {
+      //     //   exam_type_id: field.otherexamname,
+      //     //   exam_number: field.otherexamnumber,
+      //     //   exam_date: field.otherexamdate,
+      //     //   image: field.otherexamcertificate[0],
+      //     // };
+      //     // studentResult.push(otherExams);
 
-    //     let newIndex = index + 2;
-    //     formData.append(
-    //       `student_results[${newIndex}][exam_type_id]`,
-    //       field.otherexamname
-    //     );
-    //     formData.append(
-    //       `student_results[${newIndex}][exam_number]`,
-    //       field.otherexamnumber
-    //     );
-    //     formData.append(
-    //       `student_results[${newIndex}][exam_date]`,
-    //       field.otherexamdate
-    //     );
-    //     formData.append(
-    //       `student_results[${newIndex}][image]`,
-    //       field.otherexamcertificate[0]
-    //     );
-    //   });
-    // }
+      //     let newIndex = index + 2;
+      //     formData.append(
+      //       `student_results[${newIndex}][exam_type_id]`,
+      //       field.otherexamname
+      //     );
+      //     formData.append(
+      //       `student_results[${newIndex}][exam_number]`,
+      //       field.otherexamnumber
+      //     );
+      //     formData.append(
+      //       `student_results[${newIndex}][exam_date]`,
+      //       field.otherexamdate
+      //     );
+      //     formData.append(
+      //       `student_results[${newIndex}][image]`,
+      //       field.otherexamcertificate[0]
+      //     );
+      //   });
+      // }
 
-    // if (addInputFields.length > 1) {
-    //   addInputFields.forEach((field, index) => {
-    //     // let otherExams = {
-    //     //   exam_type_id: field.otherexamname,
-    //     //   exam_number: field.otherexamnumber,
-    //     //   exam_date: field.otherexamdate,
-    //     //   image: field.otherexamcertificate[0],
-    //     // };
-    //     // studentResult.push(otherExams);
+      // if (addInputFields.length > 1) {
+      //   addInputFields.forEach((field, index) => {
+      //     // let otherExams = {
+      //     //   exam_type_id: field.otherexamname,
+      //     //   exam_number: field.otherexamnumber,
+      //     //   exam_date: field.otherexamdate,
+      //     //   image: field.otherexamcertificate[0],
+      //     // };
+      //     // studentResult.push(otherExams);
 
-    //     let newIndex = index + 2;
-    //     formData.append(
-    //       `student_results[${newIndex}][exam_type_id]`,
-    //       field.otherexamname
-    //     );
-    //     formData.append(
-    //       `student_results[${newIndex}][exam_number]`,
-    //       field.otherexamnumber
-    //     );
-    //     formData.append(
-    //       `student_results[${newIndex}][exam_date]`,
-    //       field.otherexamdate
-    //     );
-    //     formData.append(
-    //       `student_results[${newIndex}][image]`,
-    //       field.otherexamcertificate[0]
-    //     );
-    //   });
-    // }
+      //     let newIndex = index + 2;
+      //     formData.append(
+      //       `student_results[${newIndex}][exam_type_id]`,
+      //       field.otherexamname
+      //     );
+      //     formData.append(
+      //       `student_results[${newIndex}][exam_number]`,
+      //       field.otherexamnumber
+      //     );
+      //     formData.append(
+      //       `student_results[${newIndex}][exam_date]`,
+      //       field.otherexamdate
+      //     );
+      //     formData.append(
+      //       `student_results[${newIndex}][image]`,
+      //       field.otherexamcertificate[0]
+      //     );
+      //   });
+      // }
 
-    //formData.append('student_results', jsonBlob );
-    //formData.append('student_results', JSON.stringify(studentResult) );
-    // studentResult.forEach((item, index) => {
-    //   const serializedItem = JSON.stringify(item);
-    //   formData.append(`student_results[${index}]`, serializedItem);
-    // });
-    let schoolsAttended = [
-      {
-        school_name: primaryname,
-        graduation_year: primarydate,
-        image: primaryresult[0],
-      },
+      //formData.append('student_results', jsonBlob );
+      //formData.append('student_results', JSON.stringify(studentResult) );
+      // studentResult.forEach((item, index) => {
+      //   const serializedItem = JSON.stringify(item);
+      //   formData.append(`student_results[${index}]`, serializedItem);
+      // });
+      let schoolsAttended = [
+        {
+          school_name: primaryname,
+          graduation_year: primarydate,
+          image: primaryresult[0],
+        },
 
-      {
-        school_name: schoolname,
-        graduation_year: schooldate,
-      },
-    ];
+        {
+          school_name: schoolname,
+          graduation_year: schooldate,
+        },
+      ];
 
-    // schoolsAttended.forEach((item, index) => {
-    //   const serializedItem = JSON.stringify(item);
-    //   formData.append(`schools_attended[${index}]`, serializedItem);
-    // });
+      // schoolsAttended.forEach((item, index) => {
+      //   const serializedItem = JSON.stringify(item);
+      //   formData.append(`schools_attended[${index}]`, serializedItem);
+      // });
 
-    formData.append("schools_attended[0][school_name]", primaryname);
-    formData.append("schools_attended[0][graduation_year]", primarydate);
-    formData.append("schools_attended[0][image]", primaryresult[0]);
+      formData.append("schools_attended[0][school_name]", primaryname);
+      formData.append("schools_attended[0][graduation_year]", primarydate);
+      formData.append("schools_attended[0][image]", primaryresult[0]);
 
-    formData.append("schools_attended[1][school_name]", schoolname);
-    formData.append("schools_attended[1][graduation_year]", schooldate);
-    formData.append("schools_attended[1][image]", examresult[0]);
-    let choice = [
-      {
-        faculty_id: faculty,
-        department_id: department,
-      },
-      {
-        faculty_id: morefaculty,
-        department_id: moredepartment,
-      },
-    ];
-    formData.append("choice", JSON.stringify(choice));
+      formData.append("schools_attended[1][school_name]", schoolname);
+      formData.append("schools_attended[1][graduation_year]", schooldate);
+      formData.append("schools_attended[1][image]", examresult[0]);
+      let choice = [
+        {
+          faculty_id: faculty,
+          department_id: department,
+        },
+        {
+          faculty_id: morefaculty,
+          department_id: moredepartment,
+        },
+      ];
+      formData.append("choice", JSON.stringify(choice));
 
-    try {
-      // Make an HTTP POST request to the API endpoint
-      const response = await axios.post(
-        process.env.REACT_APP_API_URL + "/student/application",
-        formData
-      );
+      try {
+        // Make an HTTP POST request to the API endpoint
+        const response = await axios.post(
+          process.env.REACT_APP_API_URL + "/student/application",
+          formData
+        );
 
-      // Handle the API response as needed
-      console.log("API Response:", response.data.data);
-      setLoader(false);
-      setOpenModal(true);
-    } catch (error) {
-      // Handle errors, such as network issues or API validation errors
-      setLoader(false);
-      console.error("API Error:", error);
+        // Handle the API response as needed
+
+        setLoader(false);
+        setOpenModal(true);
+      } catch (error) {
+        // Handle errors, such as network issues or API validation errors
+        setLoader(false);
+      }
     }
   };
 
@@ -728,25 +774,25 @@ const StudentEnrollmentPage = () => {
 
   const handleOnChangeDate = (e) => {
     let formattedDate = moment(e).format("YYYY-MM-DD");
-    console.log("checking date", formattedDate);
     setError((prevError) => ({
       ...prevError,
       dateofbirth: false,
     }));
     setDateofbirth(formattedDate); // Set the formatted date in your state
   };
+
   const handleOnChangeDate1 = (e) => {
     let formattedDate = moment(e).format("YYYY-MM-DD");
-    console.log("checking date", formattedDate);
     setError((prevError) => ({
       ...prevError,
       schooldate: false,
     }));
     setSchooldate(formattedDate); // Set the formatted date in your state
   };
+
   const handleOnChangePrimaryDate = (e) => {
     let formattedDate = moment(e).format("YYYY-MM-DD");
-    console.log("checking date", formattedDate);
+
     setError((prevError) => ({
       ...prevError,
       primarydate: false,
@@ -756,7 +802,6 @@ const StudentEnrollmentPage = () => {
 
   const handleOnChangeDate2 = (index, e) => {
     let formattedDate = moment(e).format("YYYY-MM-DD");
-    console.log("checking date", formattedDate);
 
     // Create a copy of the addInputFields array and update the specific field by index
     const updatedFields = [...addInputFields];
@@ -807,6 +852,7 @@ const StudentEnrollmentPage = () => {
 
     return false;
   };
+
   const checkOtherExamIsGreaterthanOne = (field) => {};
   const handleNext = () => {
     let status = false;
@@ -1063,6 +1109,7 @@ const StudentEnrollmentPage = () => {
     setBirthcertificate("");
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
   const handleRemoveForm = (index) => {
     const updatedFields = [...addInputFields];
     updatedFields.splice(index, 1);
@@ -1549,7 +1596,6 @@ const StudentEnrollmentPage = () => {
                                 }
                                 isSelect={field.otherexamcertificate}
                                 onChange={(e) => {
-                                  console.log("fgf gfgddf");
                                   handleAddInputOnchange(index, e);
                                 }}
                               />
@@ -1674,7 +1720,9 @@ const StudentEnrollmentPage = () => {
                         activeStep === steps.length - 1 ? "success" : "primary"
                       }
                       onClick={
-                        activeStep === steps.length - 1 ? submit : handleNext
+                        activeStep === steps.length - 1
+                          ? initiatePayment
+                          : handleNext
                       }
                       disabled={activeStep === steps.length + 1 || loader}
                     >
