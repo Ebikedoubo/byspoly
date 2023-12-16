@@ -454,10 +454,11 @@ class StudentController extends Controller
                 // register payment
                 $paymentModel = new Payment();
                 $paymentModel->student_id = $student->id;
-                $paymentModel->payment_for = $request->input(" amount");
-                $paymentModel->amount_recievable = $request->input(" amount");
-                $paymentModel->fbn_ref = $request->input(" amount");
-
+                $paymentModel->payment_for = 1;
+                $paymentModel->amount = $request->input("amount");
+                $paymentModel->amount_recievable = $request->input("amount");
+                $paymentModel->fbn_ref = $request->input("payment_ref");
+                // save the payment
                 $paymentModel->save();
 
             }
