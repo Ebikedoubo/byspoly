@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\AcademicSession;
 use App\Models\ApplicationDocument;
 use App\Models\ApplicationSchoolHistory;
 use App\Models\Choice;
 use App\Models\Document;
 use App\Models\ExamsResult;
+use App\Models\Payment;
 use App\Models\Student;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -32,12 +33,12 @@ class StudentController extends Controller
      *             @OA\Property(property="password", type="string", format="password", example="secret")
      *         )
      *     ),
-     * 
+     *
      * @OA\Parameter(
      *      name="email",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="string"
      *      )
@@ -46,7 +47,7 @@ class StudentController extends Controller
      *      name="password",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="string"
      *      )
@@ -73,8 +74,8 @@ class StudentController extends Controller
      *                 @OA\Property(property="token", type="string"),
      *                 @OA\Property(property="email", type="string"),
      *                 @OA\Property(property="status", type="integer", example="1"),
-     *            
-     *                 
+     *
+     *
      *             )
      *         )
      *     ),
@@ -98,14 +99,14 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return  response()->json(["status" => "error", "data" => $validator->errors()], 400);
+            return response()->json(["status" => "error", "data" => $validator->errors()], 400);
         }
         $user = Student::where('email', $request->email)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             $user['token'] = $user->createToken('MyAuthApp')->plainTextToken;
             return response()->json(['status' => 'success', 'message' => 'user logged in', "data" => $user], 200);
         } else {
-            return  response()->json(["status" => "error", "message" => "Wrong Email or Password"], 400);
+            return response()->json(["status" => "error", "message" => "Wrong Email or Password"], 400);
         }
     }
 
@@ -120,7 +121,7 @@ class StudentController extends Controller
      *         description="Student Application Data",
      *         @OA\JsonContent(
      *             required={
-     *                      "email", 
+     *                      "email",
      *                      "first_name",
      *                      "last_name",
      *                      "maiden_name",
@@ -151,114 +152,114 @@ class StudentController extends Controller
      *             @OA\Property(property="image", type="string", format="binary"),
      * required={"exam_type_id","exam_number","exam_date","image"}
      *         ),),
-     * 
+     *
      *             @OA\Property(property="schools_attended", type="array",
      *             @OA\Items(
      *             type="object",
      *             @OA\Property(property="school_name", type="string"),
-     *             
+     *
      *             @OA\Property(property="graduation_year", type="date"),
-     *             
+     *
      *             @OA\Property(property="image", type="string", format="binary"),
-     * 
+     *
      *         ),),
-     * 
+     *
      *             @OA\Property(property="choice", type="array",
      *             @OA\Items(
      *             type="object",
      *             @OA\Property(property="faculty_id", type="integer"),
-     *             
+     *
      *             @OA\Property(property="department_id", type="integer"),
-     *             
-     * 
+     *
+     *
      *         ),),
-     * 
-     * 
-     *              
-     *             
+     *
+     *
+     *
+     *
      *         )
      *     ),
-     * 
+     *
      * @OA\Parameter(
      *      name="email",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="string"
      *      )
      *   ),
-     * 
+     *
      * @OA\Parameter(
      *      name="middle_name",
      *      in="query",
      *      required=false,
-     * 
+     *
      *      @OA\Schema(
      *           type="string"
      *      )
      *   ),
-     * 
+     *
      * @OA\Parameter(
      *      name="first_name",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="string"
      *      )
      *   ),
-     * 
+     *
      * @OA\Parameter(
      *      name="maiden_name",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="string"
      *      )
      *   ),
-     * 
+     *
      * @OA\Parameter(
      *      name="dob",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="date"
      *      )
      *   ),
-     * 
+     *
      * @OA\Parameter(
      *      name="country_id",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="integer"
      *      )
      *   ),
-     * 
+     *
      * @OA\Parameter(
      *      name="state_id",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="integer"
      *      )
      *   ),
-     * 
+     *
      * @OA\Parameter(
      *      name="lga_id",
      *      in="query",
      *      required=true,
-     * 
+     *
      *      @OA\Schema(
      *           type="integer"
      *      )
      *   ),
-     * 
+     *
      * @OA\Parameter(
      *     name="student_results",
      *     in="query",
@@ -275,10 +276,10 @@ class StudentController extends Controller
      *              required={"exam_type_id","exam_number","exam_date","image"}
      *         ),
      *     ),
-     *     
+     *
      *     description="JSON array containing multiple student result objects with properties like exam_type_id ,exam_number, exam_date ,image"
      * ),
-     * 
+     *
      * @OA\Parameter(
      *     name="choice",
      *     in="query",
@@ -291,10 +292,10 @@ class StudentController extends Controller
      *            @OA\Property(property="department_id", type="integer"),
      *         ),
      *     ),
-     *     
+     *
      *     description="JSON array containing multiple student course choice objects with properties like faculty_id,department_id"
      * ),
-     * 
+     *
      * @OA\Parameter(
      *     name="schools_attended",
      *     in="query",
@@ -308,10 +309,10 @@ class StudentController extends Controller
      *             @OA\Property(property="image", type="string", format="binary"),
      *         ),
      *     ),
-     *     
+     *
      *     description="JSON array containing multiple student school attended  objects with properties like school_name , graduation_year, image"
      * ),
-     *  
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Student Application successfully",
@@ -324,18 +325,18 @@ class StudentController extends Controller
      *                 @OA\Property(property="middle_name", type="string"),
      *                 @OA\Property(property="last_name", type="string"),
      *                 @OA\Property(property="maiden_name", type="string"),
-     *                 
+     *
      *                 @OA\Property(property="dob", type="date"),
-     *                 
-     *                 
+     *
+     *
      *                 @OA\Property(property="country_id", type="integer"),
      *                 @OA\Property(property="state_id", type="integer"),
      *                 @OA\Property(property="lga_id", type="integer"),
-     *   
+     *
      *                 @OA\Property(property="email", type="string"),
-     *                 
-     *            
-     *                 
+     *
+     *
+     *
      *             )
      *         )
      *     ),
@@ -353,9 +354,9 @@ class StudentController extends Controller
     public function studentApplicationRegistraton(Request $request): JsonResponse
     {
         $studentModel = new Student();
-        
+
         //$studentModel = new ApplicationSchoolHistory();
-        // validate request entry 
+        // validate request entry
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
@@ -370,16 +371,23 @@ class StudentController extends Controller
             'choice' => 'required',
         ]);
         if ($validator->fails()) {
-            return  response()->json(["status" => "error", "data" => $validator->errors()], 400);
+            return response()->json(["status" => "error", "data" => $validator->errors()], 400);
+        }
+
+        $getCurrentAcademicSession = AcademicSession::where(["status" => 1])->first();
+        if (!$getCurrentAcademicSession) {
+            return response()->json(["status" => "error", "message" => "session id is required please ."], 400);
         }
         DB::beginTransaction();
         try {
-            // create a new student 
-            $student = $studentModel->create($request->all());
+            // create a new student
+            $studentDetails = $request->all();
+            array_push($studentDetails, ["session_id" => $getCurrentAcademicSession->id]);
+            $student = $studentModel->create($studentDetails);
             if ($student) {
                 // insert application school history
 
-                $schoolsAttended = json_decode($request->schools_attended);
+                $schoolsAttended = $request->schools_attended;
                 foreach ($schoolsAttended as $schoolAttended) {
                     $applicationSchools = new ApplicationSchoolHistory();
                     $applicationDocument = new ApplicationDocument();
@@ -387,7 +395,7 @@ class StudentController extends Controller
                     $applicationSchools->student_id = $student->id;
                     $applicationSchools->school_name = $schoolAttended["school_name"];
                     $applicationSchools->graduation_year = $schoolAttended["graduation_year"];
-                    // make document upload here 
+                    // make document upload here
                     $image = $schoolAttended['image'];
                     $imageName = time() . '.' . $image->getClientOriginalExtension();
                     $image->move(public_path('images/application'), $imageName);
@@ -402,8 +410,8 @@ class StudentController extends Controller
                     }
                 }
 
-                //manage student choice 
-                $choices = json_decode($request->choice);
+                //manage student choice
+                $choices = json_decode($request->choice, true);
                 $rank = 1;
                 foreach ($choices as $choice) {
                     $choiceModel = new Choice();
@@ -415,15 +423,15 @@ class StudentController extends Controller
                     $rank++;
                     $choiceModel->save();
                 }
-                // save exam records with exam documents in document table 
-                $results = json_decode($request->student_results);
+                // save exam records with exam documents in document table
+                $results = $request->student_results;
                 foreach ($results as $result) {
                     $resultDocument = new Document();
                     $resultApplicationDocument = new ApplicationDocument();
                     $resultFile = $result['image'];
                     $resultImageName = time() . '.' . $resultFile->getClientOriginalExtension();
                     $resultFile->move(public_path('images/application'), $resultImageName);
-                    $resultDocument->file_path = '/images/project/' . $resultImageName;
+                    $resultDocument->file_path = '/images/application/' . $resultImageName;
                     $resultDocument->status = 1;
                     if ($resultDocument->save()) {
                         $examResult = new ExamsResult();
@@ -435,7 +443,7 @@ class StudentController extends Controller
                         if (!empty($result["exam_score"])) {
                             $examResult->exam_score = $result["exam_score"];
                         }
-                        // add result application document relationship 
+                        // add result application document relationship
                         $resultApplicationDocument->student_id = $student->id;
                         $resultApplicationDocument->document_id = $resultDocument->id;
                         $resultApplicationDocument->status = 1;
@@ -443,20 +451,25 @@ class StudentController extends Controller
                         $resultApplicationDocument->save();
                     }
                 }
+                // register payment
+                $paymentModel = new Payment();
+                $paymentModel->student_id = $student->id;
+                $paymentModel->payment_for = 1;
+                $paymentModel->amount = $request->input("amount");
+                $paymentModel->amount_recievable = $request->input("amount");
+                $paymentModel->fbn_ref = $request->input("payment_ref");
+                // save the payment
+                $paymentModel->save();
+
             }
-            // remeber to send email to dtudent to confirm that their application was a success and the schould would reach out to them via their email
+            // remeber to send email to student to confirm that their application was a success and the schould would reach out to them via their email
             DB::commit();
-            return response()->json(['status' => "success",'message' => "Application was a success",'data' => $student], 200);
+            return response()->json(['status' => "success", 'message' => "Application was a success", 'data' => $student], 200);
         } catch (\Exception $e) {
 
             DB::rollBack();
             return response()->json(["status" => "error", "message" => "Something whent wrong, Please try again later", "data" => $e], 400);
         }
-
-
-
-
-
 
         return response()->json();
     }

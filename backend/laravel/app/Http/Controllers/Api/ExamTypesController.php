@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 class ExamTypesController extends Controller
 {
     private $active = 1;
-     /**
+    /**
      * @OA\Get(
      *     path="/api/exam-type",
      *     summary="list of all types of exams",
@@ -47,16 +47,16 @@ class ExamTypesController extends Controller
      * )
      */
 
-    public function index(){
-        $model = $this->model()->get();
-        if($model){
-            return response()->json(["status"=>"success", "data" => $model],200);
+    public function index()
+    {
+        $model = $this->model()->where("title", "!=", "jamb")->get();
+        if ($model) {
+            return response()->json(["status" => "success", "data" => $model], 200);
         }
-        return response()->json(["status"=>"error","message"=>"Sorry there are no records available at the moment"],400);
-        
-     }
+        return response()->json(["status" => "error", "message" => "Sorry there are no records available at the moment"], 400);
+    }
 
-     /**
+    /**
      * @OA\Post(
      *     path="/api/exam-type/create",
      *     summary="Create new exam type",
@@ -102,9 +102,10 @@ class ExamTypesController extends Controller
      *     ),
      * )
      */
-     public function create(Request $request){
+    public function create(Request $request)
+    {
         $model = $this->model();
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             "title" => "required",
         ]);
 
@@ -116,14 +117,13 @@ class ExamTypesController extends Controller
         $model->status = $this->active;
         $model->log_user_id = auth()->guard('sanctum')->user()->id;
 
-        if($model->save()){
+        if ($model->save()) {
             return  response()->json(["status" => "success"], 200);
         }
-        return  response()->json(["status" => "error","message" => "Something went wrong, please try again later."], 400);
+        return  response()->json(["status" => "error", "message" => "Something went wrong, please try again later."], 400);
+    }
 
-     }
-
-      /**
+    /**
      * @OA\Get(
      *     path="/api/exam-type/view/{id}",
      *     summary="view a perticular exam type",
@@ -155,11 +155,12 @@ class ExamTypesController extends Controller
      *     ),
      * )
      */
-     public function view(ExamsType $id){
-        return response()->json(["status"=>"success","data"=>$id],200);
-     }
+    public function view(ExamsType $id)
+    {
+        return response()->json(["status" => "success", "data" => $id], 200);
+    }
 
-     /**
+    /**
      * @OA\Put(
      *     path="/api/exam-type/update/{id}",
      *     summary="Update exam type",
@@ -215,28 +216,27 @@ class ExamTypesController extends Controller
      * )
      */
 
-     public function update(Request $request,ExamsType $id){
+    public function update(Request $request, ExamsType $id)
+    {
         $model = $id;
 
-        if(!empty($request->title)){
+        if (!empty($request->title)) {
             $model->title = $request->title;
         }
 
-        
-        if(empty($request->title) ){
-            return response()->json(["error" => "All field can not be empty."],400);
+
+        if (empty($request->title)) {
+            return response()->json(["error" => "All field can not be empty."], 400);
         }
 
-        if($model->save()){
-            return response()->json(["status"=>"success", "message"=>"Updated successfully"],200);
+        if ($model->save()) {
+            return response()->json(["status" => "success", "message" => "Updated successfully"], 200);
         }
 
-        return response()->json(["status"=>"error", "message"=>"Something went wrong , please try again"],400);
+        return response()->json(["status" => "error", "message" => "Something went wrong , please try again"], 400);
+    }
 
-
-     }
-
-      /**
+    /**
      * @OA\Delete(
      *     path="/api/exam-type/delete/{id}",
      *     summary="Delete a perticular exam type",
@@ -274,15 +274,54 @@ class ExamTypesController extends Controller
      *     ),
      * )
      */
-     public function delete(ExamsType $id){
-        if($id->delete()){
-            return response()->json(["status" => "success","message"=>"Record has been removed"],200);
+    public function delete(ExamsType $id)
+    {
+        if ($id->delete()) {
+            return response()->json(["status" => "success", "message" => "Record has been removed"], 200);
         }
-        return response()->json(["status" => "error","message"=>"sorry something went wrong"],400);
-     }
+        return response()->json(["status" => "error", "message" => "sorry something went wrong"], 400);
+    }
 
-     private function model()
+    private function model()
     {
         return new ExamsType();
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/exam-type/get-jamb",
+     *     summary="view a perticular exam type",
+     *     description = "This endpoint would fetch details of an exam type",
+     *     tags={"Exam Type"},
+     *
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Exam TYpe fetched",
+     *         @OA\JsonContent(
+     *               @OA\Property(property="status", type="string",example="success"),
+     *             @OA\Property(property="data", type="object",
+     *             
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="log_user_id", type="integer"),
+
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *
+     *         )
+     *     ),
+     * )
+     */
+    public function getJamb()
+    {
+        $model = ExamsType::where(["title" => "jamb"])->first();
+        return response()->json(["status" => "success", "data" => $model], 200);
     }
 }

@@ -3,14 +3,10 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { routes, PrivateAdminRoute } from "./routes";
 import Sidebar from "./components/SideBar/SideBar";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { SideBarLinks } from "./sideBarLinks";
-import StudentEnrollment from "./components/StudentEnrollment";
-// import Login from "./pages/auth/Login";
-
 
 function App() {
-  
   const privateRoutes = routes.privateRoutes.map(
     ({ path, title, component: Component, exact }) => (
       <Route

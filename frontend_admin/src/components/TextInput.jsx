@@ -31,35 +31,35 @@ import { styled } from '@mui/system';
 
 
 const DatePickers = styled(DatePicker)(({ theme, error }) => ({
-  
+
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: error ? 'red' :'gray',
+      borderColor: error ? 'red' : 'gray',
     },
     '&:hover fieldset': {
-      borderColor: error ? 'red' :  'gray',
+      borderColor: error ? 'red' : 'gray',
     },
     '&.Mui-focused fieldset': {
-      borderColor: error ? 'red' :  'gray',
+      borderColor: error ? 'red' : 'gray',
     },
   },
-  
+
 }));
 
 const Selects = styled(Select)(({ theme, error }) => ({
-  
+
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: error ? 'red' :'gray',
+      borderColor: error ? 'red' : 'gray',
     },
     '&:hover fieldset': {
-      borderColor: error ? 'red' :  'gray',
+      borderColor: error ? 'red' : 'gray',
     },
     '&.Mui-focused fieldset': {
-      borderColor: error ? 'red' :  'gray',
+      borderColor: error ? 'red' : 'gray',
     },
   },
-  
+
 }));
 
 export default function TextInput(props) {
@@ -102,26 +102,26 @@ export default function TextInput(props) {
 
       case "date":
         return (<LocalizationProvider dateAdapter={AdapterDateFns}>
-          
-            <DatePickers
-              error={error}
-              label={label}
-              value={value}
-              onChange={onChange}
-              className={`h-[70px] w-[100%]  ${error ? errorClasses : ''}`}
-              renderInput={(params) => <TextField className={`  ${error ? errorClasses : ''}`}   {...params}
-              
-              />}
-            />
-          
+
+          <DatePickers
+            error={error}
+            label={label}
+            value={value}
+            onChange={onChange}
+            className={`h-[70px] w-[100%]  ${error ? errorClasses : ''}`}
+            renderInput={(params) => <TextField className={`  ${error ? errorClasses : ''}`}   {...params}
+
+            />}
+          />
+
         </LocalizationProvider>)
 
       default:
         return (<TextField
           {...props}
-           autoComplete="none"
+          autoComplete="none"
           fullWidth
-          sx={{ m: 1, maxWidth: "100%" }}
+          sx={{ maxWidth: "100%" }}
           className={`flex justify-center ${error ? errorClasses : ''}`}
           required
         />);
