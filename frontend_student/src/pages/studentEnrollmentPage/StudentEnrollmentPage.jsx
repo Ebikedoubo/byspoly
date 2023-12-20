@@ -582,7 +582,7 @@ const StudentEnrollmentPage = () => {
       const formData = new FormData();
       // Append data from your form fields to the FormData object
       formData.append("email", email);
-      formData.append("payment_reff", payment.data.transactionReference);
+      formData.append("payment_ref", payment.data.transactionReference);
       formData.append("amount", payment.amount);
       formData.append("first_name", firstname);
       formData.append("middle_name", middlename);
@@ -1166,8 +1166,8 @@ const StudentEnrollmentPage = () => {
 
   return (
     <div className="">
-      <div className="flex h-[100vh] ">
-        <div className="flex w-[30%] bg-blue-600 items-center justify-center  ">
+      <div className="flex  ">
+        <div className="flex w-[30%] bg-blue-600 items-center justify-center h-[100vh]  ">
           <div className=" ">
             <div className="flex justify-center h-[160px]">
               <img src={Logo} alt="logo" className="rounded-lg" />
@@ -1182,562 +1182,570 @@ const StudentEnrollmentPage = () => {
         </div>
         <div
           ref={contentArea}
-          className="z-0 h-[100%] flex items-center justify-center  w-[100%] pt-[200px] pb-[20px]    overflow-auto"
+          className="z-0 h-[100%] flex items-center justify-center  w-[100%]  overflow-auto"
         >
           <SnackbarComponent status={status} show={show} message={message} />
-          <Container maxWidth="lg" sx={{ mt: 2 }}>
-            <div className="min-screen flex items-center justify-center">
-              <div className="text-center mt-[15px]">
-                <h1 className="text-blue-600 mb-6 font-bold text-xl">
-                  STUDENT REGISTRATION
-                </h1>
-              </div>
-            </div>
-            <Stepper activeStep={activeStep}>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            <Grid container direction="row" alignItems="center" spacing={2}>
-              <Grid item xs={12}>
-                {activeStep === 0 && (
-                  <div className="mt-8">
-                    <BlockSectionComponent title="Applicat Bio">
-                      <div className="grid grid-cols-3 gap-4 mt-4 ">
-                        <TextInput
-                          required
-                          name="firstname"
-                          label="First Name"
-                          error={error["firstname"]}
-                          value={firstname}
-                          onChange={(e) => {
-                            handleOnChange(e, "firstname");
-                          }}
-                        />
-                        <TextInput
-                          name="middlename"
-                          label="Middle Name"
-                          error={error["middlename"]}
-                          value={middlename}
-                          onChange={(e) => {
-                            handleOnChange(e, "middlename");
-                          }}
-                        />
-                        <TextInput
-                          required
-                          name="lastname"
-                          label="Last Name"
-                          error={error["lastname"]}
-                          value={lastname}
-                          onChange={(e) => {
-                            handleOnChange(e, "lastname");
-                          }}
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 mt-4 ">
-                        <TextInput
-                          required
-                          name="maidenname"
-                          label="Mother's Maiden Name"
-                          error={error["maidenname"]}
-                          value={maidenname}
-                          onChange={(e) => {
-                            handleOnChange(e, "maidenname");
-                          }}
-                        />
-                        <TextInput
-                          required
-                          type="select"
-                          isSelect={true}
-                          value={gender < 1 ? "" : gender}
-                          label={"Gender"}
-                          error={error["gender"]}
-                          onChange={(e) => {
-                            handleOnChange(e, "gender");
-                          }}
-                          options={genderOption}
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 mt-4">
-                        <TextInput
-                          className=""
-                          type="date"
-                          required
-                          name="dateofbirth"
-                          label="Date of Birth"
-                          error={error["dateofbirth"]}
-                          onChange={(e) => {
-                            handleOnChangeDate(e, "dateofbirth");
-                          }}
-                        />
-                        <TextInput
-                          type="file"
-                          required
-                          name="birthcertificate"
-                          label="birth certificate"
-                          error={error["birthcertificate"]}
-                          isSelect={birthcertificate}
-                          onChange={(e) => {
-                            handleOnChange(e, "birthcertificate");
-                          }}
-                        />
-                      </div>
-                    </BlockSectionComponent>
-
-                    <BlockSectionComponent title="Contact Address">
-                      <div className="grid grid-cols-2 gap-4 ">
-                        <TextInput
-                          required
-                          name="phone"
-                          label="Phone Number"
-                          value={phone}
-                          error={error["phone"]}
-                          onChange={(e) => {
-                            handleOnChange(e, "phone");
-                          }}
-                        />
-                        <TextInput
-                          required
-                          name="email"
-                          label="email"
-                          error={error["email"]}
-                          value={email}
-                          onChange={(e) => {
-                            handleOnChange(e, "email");
-                          }}
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4  mt-4">
-                        <TextInput
-                          required
-                          type="select"
-                          name="nationality"
-                          label="Nationality"
-                          error={error["nationality"]}
-                          value={nationality < 1 ? "" : nationality}
-                          onChange={(e) => {
-                            handleOnChange(e, "nationality");
-                          }}
-                          isSelect={true}
-                          options={option}
-                        />
-
-                        <TextInput
-                          required
-                          name="address"
-                          label="Residence"
-                          value={address}
-                          error={error["address"]}
-                          onChange={(e) => {
-                            handleOnChange(e, "address");
-                          }}
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 mt-4 ">
-                        <TextInput
-                          required
-                          type="select"
-                          ayncs={ayncsState}
-                          name="stateArea"
-                          error={error["stateArea"]}
-                          label="Select State"
-                          value={stateArea < 1 ? "" : stateArea}
-                          onChange={(e) => {
-                            handleOnChange(e, "stateArea");
-                          }}
-                          isSelect={true}
-                          options={stateOptions}
-                        />
-
-                        <TextInput
-                          required
-                          type="select"
-                          name="localGovt"
-                          error={error["localGovt"]}
-                          label="Select Local Government"
-                          value={localGovt < 1 ? "" : localGovt}
-                          onChange={(e) => {
-                            handleOnChange(e, "localGovt");
-                          }}
-                          ayncs={ayncsLga}
-                          isSelect={true}
-                          options={localGovtOptions}
-                        />
-                      </div>
-                    </BlockSectionComponent>
-                  </div>
-                )}
-                {activeStep === 1 && (
-                  <div>
-                    <BlockSectionComponent title="Primary School">
-                      <div className="grid grid-cols-3 gap-8   mt-4">
-                        <TextInput
-                          className=""
-                          required
-                          name="primaryname"
-                          label="Primary School"
-                          error={error["primaryname"]}
-                          value={primaryname}
-                          onChange={(e) => {
-                            handleOnChange(e, "primaryname");
-                          }}
-                        />
-                        <TextInput
-                          className="h-[70px] mt-6"
-                          required
-                          type="file"
-                          name="primaryresult"
-                          label="Result"
-                          isSelect={primaryresult}
-                          error={error["primaryresult"]}
-                          onChange={(e) => {
-                            handleOnChange(e, "primaryresult");
-                          }}
-                        />
-                        <TextInput
-                          className=""
-                          type="date"
-                          required
-                          name="primarydate"
-                          label="Date"
-                          error={error["primarydate"]}
-                          onChange={(e) => {
-                            handleOnChangePrimaryDate(e);
-                          }}
-                        />
-                      </div>
-                    </BlockSectionComponent>
-
-                    <BlockSectionComponent title="Secondary School">
-                      <div className="grid grid-cols-2 gap-8   mt-4">
-                        <TextInput
-                          className=""
-                          required
-                          name="schoolname"
-                          label="School Name"
-                          error={error["schoolname"]}
-                          value={schoolname}
-                          onChange={(e) => {
-                            handleOnChange(e, "schoolname");
-                          }}
-                        />
-                        <TextInput
-                          className=""
-                          type="date"
-                          required
-                          name="schooldate"
-                          label="Date"
-                          error={error["schooldate"]}
-                          onChange={(e) => {
-                            handleOnChangeDate1(e, "schooldate");
-                          }}
-                        />
-                      </div>
-                      <div className="grid grid-cols-4 gap-4  ">
-                        <TextInput
-                          className="h-[70px] "
-                          required
-                          type="select"
-                          name="examname"
-                          error={error["examname"]}
-                          label="Select Exam Type"
-                          value={examname < 1 ? "" : examname}
-                          onChange={(e) => {
-                            handleOnChange(e, "examname");
-                          }}
-                          isSelect={true}
-                          options={examOptions}
-                          ayncs={ayncsExam}
-                        />
-                        <TextInput
-                          className="h-[70px]"
-                          required
-                          name="examnumber"
-                          label="Exam Number"
-                          error={error["examnumber"]}
-                          value={examnumber}
-                          onChange={(e) => {
-                            handleOnChange(e, "examnumber");
-                          }}
-                        />
-                        <TextInput
-                          className="h-[70px]"
-                          required
-                          type="file"
-                          name="examresult"
-                          label="Result"
-                          error={error["examresult"]}
-                          isSelect={examresult}
-                          onChange={(e) => {
-                            handleOnChange(e, "examresult");
-                          }}
-                        />
-                        <TextInput
-                          className=""
-                          type="date"
-                          required
-                          name="examdate"
-                          label="Exam Date"
-                          error={error["examdate"]}
-                          onChange={(e) => {
-                            handleOnChange(e, "examdate");
-                          }}
-                        />
-                      </div>
-                    </BlockSectionComponent>
-
-                    <BlockSectionComponent title="Jamb Result">
-                      <div className="grid grid-cols-4 gap-4  mb-6 mt-2 ">
-                        <TextInput
-                          className="h-[70px] mt-6"
-                          required
-                          name="jambnumber"
-                          label="Jamb Number"
-                          error={error["jambnumber"]}
-                          value={jambnumber}
-                          onChange={(e) => {
-                            handleOnChange(e, "jambnumber");
-                          }}
-                        />
-                        <TextInput
-                          className="h-[70px] mt-6"
-                          required
-                          name="jambscore"
-                          label="Jamb Score"
-                          error={error["jambscore"]}
-                          value={jambscore}
-                          onChange={(e) => {
-                            handleOnChange(e, "jambscore");
-                          }}
-                        />
-                        <TextInput
-                          className="h-[70px] mt-6"
-                          required
-                          type="file"
-                          name="jambresult"
-                          label="Result"
-                          error={error["jambresult"]}
-                          isSelect={jambresult}
-                          onChange={(e) => {
-                            handleOnChange(e, "jambresult");
-                          }}
-                        />
-                        <TextInput
-                          className=""
-                          type="date"
-                          required
-                          name="jambdate"
-                          label="Jamb Date"
-                          error={error["jambdate"]}
-                          onChange={(e) => {
-                            handleOnChange(e, "jambdate");
-                          }}
-                        />
-                      </div>
-                    </BlockSectionComponent>
-                    <BlockSectionComponent title="Other Exams">
-                      {addInputFields?.map((field, index) => (
-                        <div key={index}>
-                          <div
-                            key={index}
-                            className="grid grid-cols-11 gap-4 mb-6 mt-4"
-                          >
-                            <div className="col-span-3">
-                              <TextInput
-                                className="h-[70px] "
-                                required
-                                type="select"
-                                name="otherexamname"
-                                error={
-                                  error.addInputFields?.[index]?.otherexamname
-                                }
-                                label="Select Exam Type"
-                                value={
-                                  field.otherexamname < 1
-                                    ? ""
-                                    : field.otherexamname
-                                }
-                                onChange={(e) => {
-                                  handleAddInputOnchangeForSelect(index, e);
-                                }}
-                                isSelect={true}
-                                ayncs={ayncsExam}
-                                options={examOptions}
-                              />
-                            </div>
-
-                            <div className="col-span-2">
-                              <TextInput
-                                className="h-[70px] mt-6"
-                                required
-                                name="otherexamnumber"
-                                label="Exam Number"
-                                error={
-                                  error.addInputFields?.[index]?.otherexamnumber
-                                }
-                                onChange={(e) => {
-                                  handleAddInputOnchange(index, e);
-                                }}
-                              />
-                            </div>
-
-                            <div className="col-span-2">
-                              <TextInput
-                                className="h-[70px] mt-6"
-                                required
-                                type="file"
-                                name="otherexamcertificate"
-                                label="Exam Certificate"
-                                error={
-                                  error.addInputFields?.[index]
-                                    ?.otherexamcertificate
-                                }
-                                isSelect={field.otherexamcertificate}
-                                onChange={(e) => {
-                                  handleAddInputOnchange(index, e);
-                                }}
-                              />
-                            </div>
-
-                            <div className="col-span-3">
-                              <TextInput
-                                type="date"
-                                required
-                                name="otherexamdate"
-                                label="Exam Year"
-                                error={
-                                  error.addInputFields?.[index]?.otherexamdate
-                                }
-                                onChange={(e) => {
-                                  handleOnChangeDate2(index, e);
-                                }}
-                              />
-                            </div>
-
-                            {renderActionButton(index)}
-                          </div>
-                        </div>
-                      ))}
-                    </BlockSectionComponent>
-                  </div>
-                )}
-                {activeStep === 2 && (
-                  <>
-                    <BlockSectionComponent title="First Choice">
-                      <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-                        <TextInput
-                          required
-                          type="select"
-                          name="faculty"
-                          error={error["faculty"]}
-                          label="Select Faculty"
-                          value={faculty < 1 ? "" : faculty}
-                          onChange={(e) => {
-                            handleOnChange(e, "faculty");
-                          }}
-                          isSelect={true}
-                          ayncs={ayncsFaculty}
-                          options={facultyOption}
-                        />
-                        <TextInput
-                          required
-                          type="select"
-                          name="department"
-                          error={error["department"]}
-                          label="Select Department"
-                          value={department < 1 ? "" : department}
-                          onChange={(e) => {
-                            handleOnChange(e, "department");
-                          }}
-                          ayncs={ayncsDepartment}
-                          isSelect={true}
-                          options={departmentOption}
-                        />
-                      </div>
-                    </BlockSectionComponent>
-
-                    <BlockSectionComponent title="Second Choice">
-                      <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
-                        <TextInput
-                          required
-                          type="select"
-                          name="morefaculty"
-                          error={error["morefaculty"]}
-                          label="Select More Faculty"
-                          value={morefaculty < 1 ? "" : morefaculty}
-                          onChange={(e) => {
-                            handleOnChange(e, "morefaculty");
-                          }}
-                          isSelect={true}
-                          ayncs={ayncsFaculty}
-                          options={facultyOption}
-                        />
-                        <TextInput
-                          required
-                          type="select"
-                          name="moredepartment"
-                          error={error["moredepartment"]}
-                          label="Select More Department"
-                          value={moredepartment < 1 ? "" : moredepartment}
-                          onChange={(e) => {
-                            handleOnChange(e, "moredepartment");
-                          }}
-                          isSelect={true}
-                          ayncs={ayncsMoreDepartment}
-                          options={moreDepartmentOption}
-                        />
-                      </div>
-                    </BlockSectionComponent>
-                  </>
-                )}
-                {activeStep === 3 && (
-                  <>
-                    <StudentEnrollmentDetailsComponent data={data} />
-                  </>
-                )}
-              </Grid>
-              <Grid item xs={0} className="w-[100%]">
-                <div className="grid grid-cols-2 gap-4 w-[100%] ">
-                  <div>
-                    {activeStep > 0 && (
-                      <ThemeProvider theme={theme}>
-                        <Button
-                          variant="contained"
-                          color="danger"
-                          onClick={handleBack}
-                        >
-                          Back
-                        </Button>
-                      </ThemeProvider>
-                    )}
-                  </div>
-                  <div className="flex justify-end">
-                    <Button
-                      variant="contained"
-                      color={
-                        activeStep === steps.length - 1 ? "success" : "primary"
-                      }
-                      onClick={
-                        activeStep === steps.length - 1
-                          ? initiatePayment
-                          : handleNext
-                      }
-                      disabled={activeStep === steps.length + 1 || loader}
-                    >
-                      {activeStep === steps.length - 1 ? "Submit" : "Next"}
-                      {loader ? (
-                        <CircularProgress
-                          style={{ width: "20px", height: "20px" }}
-                        />
-                      ) : null}
-                    </Button>
-                  </div>
+          <div className="h-[100vh] w-[100%]">
+            <Container sx={{ mt: 2 }}>
+              <div className="min-screen flex items-center justify-center">
+                <div className="text-center mt-[15px]">
+                  <h1 className="text-blue-600 mb-6 font-bold text-xl">
+                    STUDENT REGISTRATION
+                  </h1>
                 </div>
+              </div>
+              <Stepper activeStep={activeStep}>
+                {steps.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+              <Grid container direction="row" alignItems="center" spacing={2}>
+                <Grid item xs={12}>
+                  {activeStep === 0 && (
+                    <div>
+                      <BlockSectionComponent
+                        title="Applicant Bio"
+                        className="w-[100%]"
+                      >
+                        <div className="grid grid-cols-3 gap-8   mt-4  ">
+                          <TextInput
+                            required
+                            name="firstname"
+                            label="First Name"
+                            error={error["firstname"]}
+                            value={firstname}
+                            onChange={(e) => {
+                              handleOnChange(e, "firstname");
+                            }}
+                          />
+                          <TextInput
+                            name="middlename"
+                            label="Middle Name"
+                            error={error["middlename"]}
+                            value={middlename}
+                            onChange={(e) => {
+                              handleOnChange(e, "middlename");
+                            }}
+                          />
+                          <TextInput
+                            required
+                            name="lastname"
+                            label="Last Name"
+                            error={error["lastname"]}
+                            value={lastname}
+                            onChange={(e) => {
+                              handleOnChange(e, "lastname");
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mt-4 ">
+                          <TextInput
+                            required
+                            name="maidenname"
+                            label="Mother's Maiden Name"
+                            error={error["maidenname"]}
+                            value={maidenname}
+                            onChange={(e) => {
+                              handleOnChange(e, "maidenname");
+                            }}
+                          />
+                          <TextInput
+                            required
+                            type="select"
+                            isSelect={true}
+                            value={gender < 1 ? "" : gender}
+                            label={"Gender"}
+                            error={error["gender"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "gender");
+                            }}
+                            options={genderOption}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                          <TextInput
+                            className=""
+                            type="date"
+                            required
+                            name="dateofbirth"
+                            label="Date of Birth"
+                            error={error["dateofbirth"]}
+                            onChange={(e) => {
+                              handleOnChangeDate(e, "dateofbirth");
+                            }}
+                          />
+                          <TextInput
+                            type="file"
+                            required
+                            name="birthcertificate"
+                            label="birth certificate"
+                            error={error["birthcertificate"]}
+                            isSelect={birthcertificate}
+                            onChange={(e) => {
+                              handleOnChange(e, "birthcertificate");
+                            }}
+                          />
+                        </div>
+                      </BlockSectionComponent>
+
+                      <BlockSectionComponent title="Contact Address">
+                        <div className="grid grid-cols-2 gap-4 ">
+                          <TextInput
+                            required
+                            name="phone"
+                            label="Phone Number"
+                            value={phone}
+                            error={error["phone"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "phone");
+                            }}
+                          />
+                          <TextInput
+                            required
+                            name="email"
+                            label="email"
+                            error={error["email"]}
+                            value={email}
+                            onChange={(e) => {
+                              handleOnChange(e, "email");
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4  mt-4">
+                          <TextInput
+                            required
+                            type="select"
+                            name="nationality"
+                            label="Nationality"
+                            error={error["nationality"]}
+                            value={nationality < 1 ? "" : nationality}
+                            onChange={(e) => {
+                              handleOnChange(e, "nationality");
+                            }}
+                            isSelect={true}
+                            options={option}
+                          />
+
+                          <TextInput
+                            required
+                            name="address"
+                            label="Residence"
+                            value={address}
+                            error={error["address"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "address");
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mt-4 ">
+                          <TextInput
+                            required
+                            type="select"
+                            ayncs={ayncsState}
+                            name="stateArea"
+                            error={error["stateArea"]}
+                            label="Select State"
+                            value={stateArea < 1 ? "" : stateArea}
+                            onChange={(e) => {
+                              handleOnChange(e, "stateArea");
+                            }}
+                            isSelect={true}
+                            options={stateOptions}
+                          />
+
+                          <TextInput
+                            required
+                            type="select"
+                            name="localGovt"
+                            error={error["localGovt"]}
+                            label="Select Local Government"
+                            value={localGovt < 1 ? "" : localGovt}
+                            onChange={(e) => {
+                              handleOnChange(e, "localGovt");
+                            }}
+                            ayncs={ayncsLga}
+                            isSelect={true}
+                            options={localGovtOptions}
+                          />
+                        </div>
+                      </BlockSectionComponent>
+                    </div>
+                  )}
+                  {activeStep === 1 && (
+                    <div>
+                      <BlockSectionComponent title="Primary School">
+                        <div className="grid grid-cols-3 gap-8   mt-4">
+                          <TextInput
+                            className=""
+                            required
+                            name="primaryname"
+                            label="Primary School"
+                            error={error["primaryname"]}
+                            value={primaryname}
+                            onChange={(e) => {
+                              handleOnChange(e, "primaryname");
+                            }}
+                          />
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            type="file"
+                            name="primaryresult"
+                            label="Result"
+                            isSelect={primaryresult}
+                            error={error["primaryresult"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "primaryresult");
+                            }}
+                          />
+                          <TextInput
+                            className=""
+                            type="date"
+                            required
+                            name="primarydate"
+                            label="Date"
+                            error={error["primarydate"]}
+                            onChange={(e) => {
+                              handleOnChangePrimaryDate(e);
+                            }}
+                          />
+                        </div>
+                      </BlockSectionComponent>
+
+                      <BlockSectionComponent title="Secondary School">
+                        <div className="grid grid-cols-2 gap-8   mt-4">
+                          <TextInput
+                            className=""
+                            required
+                            name="schoolname"
+                            label="School Name"
+                            error={error["schoolname"]}
+                            value={schoolname}
+                            onChange={(e) => {
+                              handleOnChange(e, "schoolname");
+                            }}
+                          />
+                          <TextInput
+                            className=""
+                            type="date"
+                            required
+                            name="schooldate"
+                            label="Date"
+                            error={error["schooldate"]}
+                            onChange={(e) => {
+                              handleOnChangeDate1(e, "schooldate");
+                            }}
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 gap-4  ">
+                          <TextInput
+                            className="h-[70px] "
+                            required
+                            type="select"
+                            name="examname"
+                            error={error["examname"]}
+                            label="Select Exam Type"
+                            value={examname < 1 ? "" : examname}
+                            onChange={(e) => {
+                              handleOnChange(e, "examname");
+                            }}
+                            isSelect={true}
+                            options={examOptions}
+                            ayncs={ayncsExam}
+                          />
+                          <TextInput
+                            className="h-[70px]"
+                            required
+                            name="examnumber"
+                            label="Exam Number"
+                            error={error["examnumber"]}
+                            value={examnumber}
+                            onChange={(e) => {
+                              handleOnChange(e, "examnumber");
+                            }}
+                          />
+                          <TextInput
+                            className="h-[70px]"
+                            required
+                            type="file"
+                            name="examresult"
+                            label="Result"
+                            error={error["examresult"]}
+                            isSelect={examresult}
+                            onChange={(e) => {
+                              handleOnChange(e, "examresult");
+                            }}
+                          />
+                          <TextInput
+                            className=""
+                            type="date"
+                            required
+                            name="examdate"
+                            label="Exam Date"
+                            error={error["examdate"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "examdate");
+                            }}
+                          />
+                        </div>
+                      </BlockSectionComponent>
+
+                      <BlockSectionComponent title="Jamb Result">
+                        <div className="grid grid-cols-4 gap-4  mb-6 mt-2 ">
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            name="jambnumber"
+                            label="Jamb Number"
+                            error={error["jambnumber"]}
+                            value={jambnumber}
+                            onChange={(e) => {
+                              handleOnChange(e, "jambnumber");
+                            }}
+                          />
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            name="jambscore"
+                            label="Jamb Score"
+                            error={error["jambscore"]}
+                            value={jambscore}
+                            onChange={(e) => {
+                              handleOnChange(e, "jambscore");
+                            }}
+                          />
+                          <TextInput
+                            className="h-[70px] mt-6"
+                            required
+                            type="file"
+                            name="jambresult"
+                            label="Result"
+                            error={error["jambresult"]}
+                            isSelect={jambresult}
+                            onChange={(e) => {
+                              handleOnChange(e, "jambresult");
+                            }}
+                          />
+                          <TextInput
+                            className=""
+                            type="date"
+                            required
+                            name="jambdate"
+                            label="Jamb Date"
+                            error={error["jambdate"]}
+                            onChange={(e) => {
+                              handleOnChange(e, "jambdate");
+                            }}
+                          />
+                        </div>
+                      </BlockSectionComponent>
+                      <BlockSectionComponent title="Other Exams">
+                        {addInputFields?.map((field, index) => (
+                          <div key={index}>
+                            <div
+                              key={index}
+                              className="grid grid-cols-11 gap-4 mb-6 mt-4"
+                            >
+                              <div className="col-span-3">
+                                <TextInput
+                                  className="h-[70px] "
+                                  required
+                                  type="select"
+                                  name="otherexamname"
+                                  error={
+                                    error.addInputFields?.[index]?.otherexamname
+                                  }
+                                  label="Select Exam Type"
+                                  value={
+                                    field.otherexamname < 1
+                                      ? ""
+                                      : field.otherexamname
+                                  }
+                                  onChange={(e) => {
+                                    handleAddInputOnchangeForSelect(index, e);
+                                  }}
+                                  isSelect={true}
+                                  ayncs={ayncsExam}
+                                  options={examOptions}
+                                />
+                              </div>
+
+                              <div className="col-span-2">
+                                <TextInput
+                                  className="h-[70px] mt-6"
+                                  required
+                                  name="otherexamnumber"
+                                  label="Exam Number"
+                                  error={
+                                    error.addInputFields?.[index]
+                                      ?.otherexamnumber
+                                  }
+                                  onChange={(e) => {
+                                    handleAddInputOnchange(index, e);
+                                  }}
+                                />
+                              </div>
+
+                              <div className="col-span-2">
+                                <TextInput
+                                  className="h-[70px] mt-6"
+                                  required
+                                  type="file"
+                                  name="otherexamcertificate"
+                                  label="Exam Certificate"
+                                  error={
+                                    error.addInputFields?.[index]
+                                      ?.otherexamcertificate
+                                  }
+                                  isSelect={field.otherexamcertificate}
+                                  onChange={(e) => {
+                                    handleAddInputOnchange(index, e);
+                                  }}
+                                />
+                              </div>
+
+                              <div className="col-span-3">
+                                <TextInput
+                                  type="date"
+                                  required
+                                  name="otherexamdate"
+                                  label="Exam Year"
+                                  error={
+                                    error.addInputFields?.[index]?.otherexamdate
+                                  }
+                                  onChange={(e) => {
+                                    handleOnChangeDate2(index, e);
+                                  }}
+                                />
+                              </div>
+
+                              {renderActionButton(index)}
+                            </div>
+                          </div>
+                        ))}
+                      </BlockSectionComponent>
+                    </div>
+                  )}
+                  {activeStep === 2 && (
+                    <>
+                      <BlockSectionComponent title="First Choice">
+                        <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+                          <TextInput
+                            required
+                            type="select"
+                            name="faculty"
+                            error={error["faculty"]}
+                            label="Select Faculty"
+                            value={faculty < 1 ? "" : faculty}
+                            onChange={(e) => {
+                              handleOnChange(e, "faculty");
+                            }}
+                            isSelect={true}
+                            ayncs={ayncsFaculty}
+                            options={facultyOption}
+                          />
+                          <TextInput
+                            required
+                            type="select"
+                            name="department"
+                            error={error["department"]}
+                            label="Select Department"
+                            value={department < 1 ? "" : department}
+                            onChange={(e) => {
+                              handleOnChange(e, "department");
+                            }}
+                            ayncs={ayncsDepartment}
+                            isSelect={true}
+                            options={departmentOption}
+                          />
+                        </div>
+                      </BlockSectionComponent>
+
+                      <BlockSectionComponent title="Second Choice">
+                        <div className="grid grid-cols-2 gap-4  mb-6 mt-4 ml-2">
+                          <TextInput
+                            required
+                            type="select"
+                            name="morefaculty"
+                            error={error["morefaculty"]}
+                            label="Select More Faculty"
+                            value={morefaculty < 1 ? "" : morefaculty}
+                            onChange={(e) => {
+                              handleOnChange(e, "morefaculty");
+                            }}
+                            isSelect={true}
+                            ayncs={ayncsFaculty}
+                            options={facultyOption}
+                          />
+                          <TextInput
+                            required
+                            type="select"
+                            name="moredepartment"
+                            error={error["moredepartment"]}
+                            label="Select More Department"
+                            value={moredepartment < 1 ? "" : moredepartment}
+                            onChange={(e) => {
+                              handleOnChange(e, "moredepartment");
+                            }}
+                            isSelect={true}
+                            ayncs={ayncsMoreDepartment}
+                            options={moreDepartmentOption}
+                          />
+                        </div>
+                      </BlockSectionComponent>
+                    </>
+                  )}
+                  {activeStep === 3 && (
+                    <>
+                      <StudentEnrollmentDetailsComponent data={data} />
+                    </>
+                  )}
+                </Grid>
+                <Grid item xs={0} className="w-[100%]">
+                  <div className="grid grid-cols-2 gap-4 w-[100%] ">
+                    <div>
+                      {activeStep > 0 && (
+                        <ThemeProvider theme={theme}>
+                          <Button
+                            variant="contained"
+                            color="danger"
+                            onClick={handleBack}
+                          >
+                            Back
+                          </Button>
+                        </ThemeProvider>
+                      )}
+                    </div>
+                    <div className="flex justify-end mb-4">
+                      <Button
+                        variant="contained"
+                        color={
+                          activeStep === steps.length - 1
+                            ? "success"
+                            : "primary"
+                        }
+                        onClick={
+                          activeStep === steps.length - 1
+                            ? initiatePayment
+                            : handleNext
+                        }
+                        disabled={activeStep === steps.length + 1 || loader}
+                      >
+                        {activeStep === steps.length - 1 ? "Submit" : "Next"}
+                        {loader ? (
+                          <CircularProgress
+                            style={{ width: "20px", height: "20px" }}
+                          />
+                        ) : null}
+                      </Button>
+                    </div>
+                  </div>
+                </Grid>
               </Grid>
-            </Grid>
-          </Container>
+            </Container>
+          </div>
         </div>
       </div>
       <AppModal modalIsOpen={openModal} dontClose={true}>

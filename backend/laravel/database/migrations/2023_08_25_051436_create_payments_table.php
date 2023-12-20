@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer("student_id");
             $table->string("payment_for");
             $table->string("amount");
-            $table->string("proof_of_payment");
+            $table->string("proof_of_payment")->nullable();
             $table->timestamps();
         });
     }
