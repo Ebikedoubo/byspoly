@@ -103,6 +103,7 @@ export default function TextInput(props) {
       case "date":
         return (<LocalizationProvider dateAdapter={AdapterDateFns}>
 
+<<<<<<< HEAD
           <DatePickers
             error={error}
             label={label}
@@ -113,6 +114,18 @@ export default function TextInput(props) {
 
             />}
           />
+=======
+            <DatePickers
+              error={error}
+              label={label}
+              value={value}
+              onChange={onChange}
+              className={`h-[70px] w-[100%]  ${error ? errorClasses : ''}`}
+              renderInput={(params) => <TextField className={`  ${error ? errorClasses : ''}`}   {...params}
+
+              />}
+            />
+>>>>>>> 9b1c0da (feat:  Add dynamic form to create faculty modal)
 
         </LocalizationProvider>)
 
