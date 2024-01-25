@@ -111,11 +111,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Install dependencies
-<<<<<<< HEAD
-          command: cd backend/laravel && CI=false composer clear-cache && CI=false  composer install &&  CI=false php artisan key:generate
-=======
           command: cd backend/laravel && CI=false  composer update  &&  CI=false php artisan key:generate
->>>>>>> a6e89f3 (wip)
 
       - run: sudo apt update
       - run: sudo apt-get install rsync
