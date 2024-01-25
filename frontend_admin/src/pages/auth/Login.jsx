@@ -43,7 +43,7 @@ export default function Login() {
     }
 
     const postToServer = async () => {
-        let url = `${process.env.REACT_APP_API_URL}/user/login`;
+        let url = `${process.env.REACT_APP_API_URL}/admin/login`;
         let data = {
             email: name, // ensure that the object key is same as the api required filed
             password: password, // ensure that the object key is same as the api required filed
@@ -64,8 +64,6 @@ export default function Login() {
         if (password.length < 1) {
             setPassworderror(true)
         }
-        console.log(name.length, password.length)
-        navigate('/dashboard');
         // write your axios to sent to the server and get server feedback
         // note save feedback token in a local storage
 
@@ -73,7 +71,6 @@ export default function Login() {
         setLoader(true)
         postToServer().then((response) => {
             let data = response.data;
-            console.log(data)
             if (data.status === "success") {
                 localStorage.setItem('token', data.token)
                 setLoader(false)

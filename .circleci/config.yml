@@ -111,7 +111,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Install dependencies
-          command: cd backend/laravel && CI=false composer clear-cache && CI=false  composer install &&  CI=false php artisan key:generate
+          command: cd backend/laravel && CI=false  composer update  &&  CI=false php artisan key:generate
 
       - run: sudo apt update
       - run: sudo apt-get install rsync
@@ -133,6 +133,11 @@ jobs:
           name: ssh login  
           command: |
             cd backend/laravel && rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json public/ skillz@185.160.67.60:byspolye/api
+      - run:
+          name: ssh and effect migration  
+          command: |
+            ssh -p 7822 -t skillz@185.160.67.60 "cd byspolye/api && composer install && php artisan migrate && php artisan l5-swagger:generate"
+
             
 workflows:
   version: 2

@@ -66,6 +66,8 @@ export default function TableComponent({
   data,
   actionText,
   action,
+  viewAction,
+  editAction,
   searchFunction,
   paginationChange,
   dataKeyAccessors,
@@ -154,11 +156,11 @@ export default function TableComponent({
               <div className="flex gap-4">
                 <AiFillEdit
                   className="cursor-pointer"
-                  onClick={() => editAction && editAction()}
+                  onClick={() => editAction && editAction(row.id)}
                 />
                 <AiFillEye
                   className="cursor-pointer"
-                  onClick={() => viewAction && viewAction()}
+                  onClick={() => viewAction && viewAction(row.id)}
                 />
                 <AiFillDelete
                   className="cursor-pointer"
@@ -170,7 +172,7 @@ export default function TableComponent({
                       "Delete Client Details",
                       "Are you sure you want to delete Client Details?"
                     )
-                      ? deleteAction && deleteAction(row)
+                      ? deleteAction && deleteAction(row.id)
                       : null;
                   }}
                 />
