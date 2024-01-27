@@ -1,6 +1,6 @@
 import ComposeInternalLayouts from "../components/HOC/ComposeInternalLayout";
 import Dashboard from "../components/Dashboard/Dashboard";
-import { MdHome, MdPeople } from "react-icons/md";
+import { MdHome, MdPayments, MdPeople } from "react-icons/md";
 import { BsBuildingsFill } from "react-icons/bs";
 import { SiGooglescholar } from "react-icons/si";
 import { IoBookSharp } from "react-icons/io5";
@@ -8,6 +8,11 @@ import FacultyDepartment from "../components/FacultyDeptartment/FacultyDepartmen
 import Students from "../components/Students/Students";
 import Staffs from "../components/Staffs/Staffs";
 import Courses from "../components/Courses/Courses";
+import AcademicSession from "../pages/AcademicSession/AcademicSession";
+import { HiAcademicCap, } from "react-icons/hi";
+import { GiMoneyStack } from "react-icons/gi";
+import Fee from "../pages/Payments/Fee";
+import FeeType from "../pages/Payments/FeeType";
 export const privateRoutes = [
   {
     title: "Dashboard",
@@ -43,6 +48,27 @@ export const privateRoutes = [
     icon: <IoBookSharp className="h-6 w-6" />,
     path: "/courses",
     component: ComposeInternalLayouts(Courses),
+    exact: true,
+  },
+  {
+    title: "Academic Session",
+    icon: <HiAcademicCap className="h-6 w-6" />,
+    path: "/academic-session",
+    component: ComposeInternalLayouts(AcademicSession),
+    exact: true,
+  },
+  {
+    title: "Fee",
+    icon: <GiMoneyStack className="h-6 w-6" />,
+    path: "/fee",
+    component: ComposeInternalLayouts(Fee),
+    exact: true,
+  },
+  {
+    title: "Fee Type",
+    icon: <MdPayments className="h-6 w-6" />,
+    path: "/type-fee",
+    component: ComposeInternalLayouts(FeeType),
     exact: true,
   },
 ];
