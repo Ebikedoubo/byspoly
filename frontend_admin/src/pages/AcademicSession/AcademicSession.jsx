@@ -65,7 +65,7 @@ const AcademicSession = () => {
 
   };
 
-  const handleUpdate = (e) =>{
+  const handleUpdate = (e) => {
     e.preventDefault();
     updateSessionToServer();
   }
@@ -253,53 +253,52 @@ const AcademicSession = () => {
       />
 
       <AppModal
-        setIsOpen={() => {
-
-          setCreateModalIsOpen(true);
-        }}
+        setIsOpen={
+          setCreateModalIsOpen
+        }
         modalIsOpen={createModalIsOpen}
         title="Create Academic Session"
       >
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col items-center">
 
-          <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-4">
-            <TextInput
-              label="Title"
-              name="title"
-              type="text"
-              value={inputFields.title}
-              onChange={handleChange}
-            />
-            <TextInput
-              label="Code"
-              name="code"
-              type="text"
-              value={inputFields.code}
-              onChange={handleChange}
-            />
+            <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-4">
+              <TextInput
+                label="Title"
+                name="title"
+                type="text"
+                value={inputFields.title}
+                onChange={handleChange}
+              />
+              <TextInput
+                label="Code"
+                name="code"
+                type="text"
+                value={inputFields.code}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="flex flex-col md:flex-row gap-6 md:gap-12">
 
-            <TextInput
-              label="Start Date"
-              name="start_date"
-              type="text"
-              value={inputFields.start_date}
-              onChange={handleChange}
-            />
-            <TextInput
-              label="End Date"
-              name="end_date"
-              type="text"
-              value={inputFields.end_date}
-              onChange={handleChange}
-            />
+              <TextInput
+                label="Start Date"
+                name="start_date"
+                type="text"
+                value={inputFields.start_date}
+                onChange={handleChange}
+              />
+              <TextInput
+                label="End Date"
+                name="end_date"
+                type="text"
+                value={inputFields.end_date}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="flex items-center w-full justify-center">
-              <button className="my-6 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500" type="submit">{loading ?  "Submitting" : "Submit"}</button>
+              <button className="my-6 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500" type="submit">{loading ? "Submitting" : "Submit"}</button>
             </div>
           </div>
         </form>
@@ -316,39 +315,39 @@ const AcademicSession = () => {
         <form onSubmit={handleUpdate}>
           <div className="flex flex-col items-center">
 
-          <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-4">
-            <TextInput
-              label="Title"
-              name="title"
-              type="text"
-              value={inputFields.title}
-              onChange={handleChange}
-            />
-            <TextInput
-              label="Code"
-              name="code"
-              type="text"
-              value={inputFields.code}
-              onChange={handleChange}
-            />
+            <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-4">
+              <TextInput
+                label="Title"
+                name="title"
+                type="text"
+                value={inputFields.title}
+                onChange={handleChange}
+              />
+              <TextInput
+                label="Code"
+                name="code"
+                type="text"
+                value={inputFields.code}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="flex flex-col md:flex-row gap-6 md:gap-12">
 
-            <TextInput
-              label="Start Date"
-              name="start_date"
-              type="text"
-              value={inputFields.start_date}
-              onChange={handleChange}
-            />
-            <TextInput
-              label="End Date"
-              name="end_date"
-              type="text"
-              value={inputFields.end_date}
-              onChange={handleChange}
-            />
+              <TextInput
+                label="Start Date"
+                name="start_date"
+                type="text"
+                value={inputFields.start_date}
+                onChange={handleChange}
+              />
+              <TextInput
+                label="End Date"
+                name="end_date"
+                type="text"
+                value={inputFields.end_date}
+                onChange={handleChange}
+              />
 
             </div>
 
