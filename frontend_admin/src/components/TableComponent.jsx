@@ -168,12 +168,13 @@ export default function TableComponent({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    openDialogModal(
+                    const confirmed = openDialogModal(
                       "Delete Client Details",
                       "Are you sure you want to delete Client Details?"
-                    )
-                      ? deleteAction && deleteAction(row.id)
-                      : null;
+                    );
+
+                    confirmed && deleteAction && deleteAction(row.id)
+
                   }}
                 />
                 {hasCustom && hasCustomIcon ? (
