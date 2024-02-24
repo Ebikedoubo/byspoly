@@ -9,16 +9,24 @@ import Students from "../components/Students/Students";
 import Staffs from "../components/Staffs/Staffs";
 import Courses from "../components/Courses/Courses";
 import AcademicSession from "../pages/AcademicSession/AcademicSession";
-import { HiAcademicCap, } from "react-icons/hi";
+import { HiAcademicCap } from "react-icons/hi";
 import { GiMoneyStack } from "react-icons/gi";
 import Fee from "../pages/Payments/Fee";
 import FeeType from "../pages/Payments/FeeType";
+import ExamType from "../pages/Admission/ExamType";
 export const privateRoutes = [
   {
     title: "Dashboard",
     icon: <MdHome className="h-6 w-6" />,
     path: "/dashboard",
     component: ComposeInternalLayouts(Dashboard),
+    exact: true,
+  },
+  {
+    title: "Exam Type",
+    icon: <MdHome className="h-6 w-6" />,
+    path: "/examtype",
+    component: ComposeInternalLayouts(ExamType),
     exact: true,
   },
   {
