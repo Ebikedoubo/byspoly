@@ -201,7 +201,7 @@ const StudentEnrollmentPage = () => {
   };
   const initiatePayment = () => {
     const txn = {
-      live: false,
+      live: true,
       ref: generate12DigitTimestamp(), // Unique translation reference compulsory
       amount: parseInt(paymentOptions.amount), // transaction amount compulsory
       customer: {
@@ -217,7 +217,7 @@ const StudentEnrollmentPage = () => {
         },
       ],
       meta: {},
-      publicKey: "sb-pk-qip2Wpdio1utTdVAIvyVOh4qVvfxrt4g", // Merchant public key from your dashboard compulsory
+      publicKey: "sb-pk-NobWeGX1axbXlLMPDfX852iQmrw4JJ9L", // Merchant public key from your dashboard compulsory
       description: "Application Fee",
       currency: "NGN",
       callback: (res) => submit(res), // Your callback function

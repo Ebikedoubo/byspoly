@@ -82,6 +82,7 @@ export default function TableComponent({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
+  const [deleteId, setDeleteId] = React.useState(0);
   const [dialogMessage, setDialogMessage] = React.useState("");
   const [DialogTitle, setDialogTitle] = React.useState("");
 
@@ -89,7 +90,13 @@ export default function TableComponent({
     setDialogMessage(message);
     setDialogTitle(title);
     setOpen(true);
-    // deleteAction();
+    // deleteAction(deleteId);
+  };
+
+  const deleteNow = (status) => {
+    if (status) {
+      deleteAction(deleteId);
+    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -168,6 +175,7 @@ export default function TableComponent({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
+                    setDeleteId(row.id);
                     openDialogModal(
                       "Delete Client Details",
                       "Are you sure you want to delete Client Details?"
@@ -177,14 +185,18 @@ export default function TableComponent({
                   }}
                 />
                 {hasCustom && hasCustomIcon ? (
-                  <div onClick={() => {
-                    hasCustomAction(row.id)
-                  }}>{hasCustomIcon}</div>
+                  <div
+                    onClick={() => {
+                      hasCustomAction(row.id);
+                    }}
+                  >
+                    {hasCustomIcon}
+                  </div>
                 ) : null}
               </div>
             ) : null}
 
-            {(
+            {
               // moment(e).format("YYYY-MM-DD")
               //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
               <>
@@ -200,7 +212,7 @@ export default function TableComponent({
                   </>
                 }
               </>
-            )}
+            }
           </StyledTableCell>
         ))}
       </StyledTableRow>
@@ -214,7 +226,7 @@ export default function TableComponent({
         setOpen={setOpen}
         message={dialogMessage}
         title={DialogTitle}
-        action={deleteAction}
+        action={deleteNow}
         buttonText={"Delete"}
       />
       <div className="flex items-center justify-between mb-[19px]">
@@ -250,7 +262,7 @@ export default function TableComponent({
           <CircularProgress />
         </div>
       )}
-      <TableContainer component={Paper} >
+      <TableContainer component={Paper}>
         <InfiniteScroll
           dataLength={data.length}
           next={fetchMoreData}
@@ -258,13 +270,12 @@ export default function TableComponent({
           loader={<h4>Loading...</h4>}
           initialScrollY={1}
           endMessage={
-            <p style={{ textAlign: 'center' }}>
+            <p style={{ textAlign: "center" }}>
               <b>Yay! You have seen it all</b>
             </p>
           }
-
         >
-          <Table sx={{ minWidth: 700 }} aria-label="customized table" >
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead style={{ border: "1px solid #CCCCCC" }}>
               <TableRow role="table-header">
                 {columns?.map((column) => (
@@ -280,9 +291,7 @@ export default function TableComponent({
                 // Render Dynamic Data Objects
                 <Fragment key={uuidv4()}>{renderRow(row)}</Fragment>
               ))}
-
             </TableBody>
-
           </Table>
         </InfiniteScroll>
       </TableContainer>

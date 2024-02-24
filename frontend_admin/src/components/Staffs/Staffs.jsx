@@ -2,29 +2,24 @@ import React, { useState, useEffect } from "react";
 import TableComponent from "../TableComponent";
 import AppModal from "../AppModal";
 import TextInput from "../TextInput";
-import axios from "axios"
-import { toast } from 'react-toastify';
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function Staffs() {
-
   const [loading, setLoading] = useState(false);
   const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
   const [viewModalIsOpen, setViewModalIsOpen] = useState(false);
   const [selectedStaffs, setSelectedStaffs] = useState(null);
-  const [staffs, setStaffs] = useState([])
+  const [staffs, setStaffs] = useState([]);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [editingStaff, setEditingStaff] = useState(null);
 
-
-
-  const [inputFields, setInputFields] = useState(
-    {
-      firstname: "",
-      lastname: "",
-      email: "",
-      designation: ""
-    },
-  );
+  const [inputFields, setInputFields] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    designation: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,15 +32,13 @@ function Staffs() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    postStaffToServer()
-
+    postStaffToServer();
   };
-
 
   const fetchMoreDataProps = async () => {
     try {
       const apiUrl = `${process.env.REACT_APP_API_URL}/admin`;
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const axiosConfig = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -58,34 +51,33 @@ function Staffs() {
       const newStaffData = response.data.data.map((data, index) => {
         return {
           ...data,
-          id: index + 1
+          id: index + 1,
         };
       });
-      console.log(newStaffData)
+      console.log(newStaffData);
 
       setStaffs([...newStaffData]);
-      console.log(staffs)
-
+      console.log(staffs);
     } catch (error) {
-      console.error('Error fetching more staff data:', error);
+      console.error("Error fetching more staff data:", error);
     }
   };
 
   useEffect(() => {
-    fetchMoreDataProps()
-  }, [])
+    fetchMoreDataProps();
+  }, []);
 
   useEffect(() => {
     if (editingStaff) {
-      console.log("firstname:", editingStaff.firstname)
-      console.log("lastname:", editingStaff.lastname)
-      console.log("email:", editingStaff.email)
+      console.log("firstname:", editingStaff.firstname);
+      console.log("lastname:", editingStaff.lastname);
+      console.log("email:", editingStaff.email);
       console.log("desination:", editingStaff.designation);
       setInputFields({
         firstname: editingStaff.firstname || "",
         lastname: editingStaff.lastname || "",
         email: editingStaff.email || "",
-        designation: editingStaff.designation || ""
+        designation: editingStaff.designation || "",
       });
     }
   }, [editingStaff]);
@@ -94,9 +86,8 @@ function Staffs() {
   const dataKeyAccessors = ["id", "name", "email", "CTA"];
 
   const viewAction = (staffId) => {
-
     const staff = staffs.find((f) => f.id === staffId);
-    setSelectedStaffs(prevStaff => ({ ...prevStaff, ...staff }));
+    setSelectedStaffs((prevStaff) => ({ ...prevStaff, ...staff }));
 
     setViewModalIsOpen(true); // Open the view modal
   };
@@ -106,18 +97,13 @@ function Staffs() {
     const url = `${process.env.REACT_APP_API_URL}/admin/create`;
 
     try {
-
       setLoading(true);
 
-      const response = await axios.post(
-        url,
-        inputFields,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(url, inputFields, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log("Staff created successfully:", response.data);
 
@@ -136,14 +122,12 @@ function Staffs() {
 
       // Close the create modal
       setCreateModalIsOpen(false);
-
     } catch (error) {
       console.error("Error creating staff:", error);
       toast.error("Error creating staff!", {
-        position: toast.POSITION.TOP_LEFT
+        position: toast.POSITION.TOP_LEFT,
       });
     } finally {
-
       setLoading(false);
     }
   };
@@ -189,10 +173,9 @@ function Staffs() {
     }
   };
 
-
   const createStaff = () => {
-    setCreateModalIsOpen(true)
-  }
+    setCreateModalIsOpen(true);
+  };
 
   const editAction = (staffId) => {
     const staff = staffs.find((f) => f.id === staffId);
@@ -219,7 +202,6 @@ function Staffs() {
         loading={loading}
         viewAction={viewAction}
         editAction={editAction}
-
         fetchMoreDataProps={fetchMoreDataProps}
       />
 
@@ -229,8 +211,6 @@ function Staffs() {
         title="Create Staff"
       >
         <form onSubmit={editModalIsOpen ? updateStaffToServer : handleSubmit}>
-
-
           <div className="flex flex-col items-center">
             <div className="flex flex-col md:flex-row gap-6 md:gap-12 mb-4">
               <TextInput
@@ -246,12 +226,8 @@ function Staffs() {
                 value={inputFields.lastname}
                 onChange={handleChange}
               />
-
-
             </div>
             <div className="flex flex-col md:flex-row gap-6 md:gap-12">
-
-
               <TextInput
                 name="email"
                 label="Email"
@@ -265,13 +241,22 @@ function Staffs() {
                 onChange={handleChange}
                 label="Registrar/Staff/Admin"
               />
-
             </div>
             <div className="flex items-center w-full justify-center">
-              <button className="my-6 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500" type="submit">{loading ? (editModalIsOpen ? "Updating" : "Submitting") : (editModalIsOpen ? "Update" : "Submit")}</button>
+              <button
+                className="my-6 bg-brand-700 text-white p-4 rounded-md px-8 hover:bg-brand-500"
+                type="submit"
+              >
+                {loading
+                  ? editModalIsOpen
+                    ? "Updating"
+                    : "Submitting"
+                  : editModalIsOpen
+                  ? "Update"
+                  : "Submit"}
+              </button>
             </div>
           </div>
-
         </form>
       </AppModal>
 
@@ -281,10 +266,7 @@ function Staffs() {
           modalIsOpen={viewModalIsOpen}
           title={`View Staffs: ${selectedStaffs?.name}`}
         >
-
-
           <div className=" flex flex-col gap-6">
-
             <span className="flex">
               <h3 className="font-semibold pr-8">Staff Name: </h3>
               <p>{selectedStaffs?.name}</p>
@@ -294,7 +276,6 @@ function Staffs() {
               <p>{selectedStaffs?.email}</p>
             </span>
           </div>
-
         </AppModal>
       )}
     </div>
