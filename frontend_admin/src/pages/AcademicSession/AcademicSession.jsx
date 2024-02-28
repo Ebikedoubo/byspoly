@@ -1,8 +1,5 @@
-// AcademicSession.js
 
 import React, { useEffect, useState } from "react";
-
-
 
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -22,8 +19,8 @@ const AcademicSession = () => {
   const [inputFields, setInputFields] = useState({
     title: "",
     code: "",
-    start_date: "",
-    end_date: "",
+    start_date: new Date(),
+    end_date: new Date(),
   });
 
   const columns = ["ID", "Title", "Code", "Start Date", "End Date", "Actions"]
@@ -50,12 +47,34 @@ const AcademicSession = () => {
     fetchAcademicSessions();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputFields((prevFields) => ({
-      ...prevFields,
-      [name]: value,
-    }));
+  const handleChange = (e, fieldName) => {
+
+    //    if (!e || !e.target) {
+    //   console.error('Event or event target is undefined:', e);
+    //   return;
+    // }
+
+
+
+    if (fieldName === 'start_date' || fieldName === 'end_date') {
+      console.log('Event:', e);
+      setInputFields((prevFields) => ({
+        ...prevFields,
+        [fieldName]: e,
+      }));
+    }
+
+    else {
+      const { value } = e.target;
+
+
+
+
+      setInputFields((prevFields) => ({
+        ...prevFields,
+        [fieldName]: value,
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -268,14 +287,14 @@ const AcademicSession = () => {
                 name="title"
                 type="text"
                 value={inputFields.title}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e, "title")}
               />
               <TextInput
                 label="Code"
                 name="code"
                 type="text"
                 value={inputFields.code}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e, "code")}
               />
             </div>
 
@@ -284,16 +303,16 @@ const AcademicSession = () => {
               <TextInput
                 label="Start Date"
                 name="start_date"
-                type="text"
-                value={inputFields.start_date}
-                onChange={handleChange}
+                type="date"
+
+                onChange={(e) => handleChange(e, "start_date")}
               />
               <TextInput
                 label="End Date"
                 name="end_date"
-                type="text"
-                value={inputFields.end_date}
-                onChange={handleChange}
+                type="date"
+
+                onChange={(e) => handleChange(e, "end_date")}
               />
             </div>
 
@@ -321,14 +340,14 @@ const AcademicSession = () => {
                 name="title"
                 type="text"
                 value={inputFields.title}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e, "title")}
               />
               <TextInput
                 label="Code"
                 name="code"
                 type="text"
                 value={inputFields.code}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e, "code")}
               />
             </div>
 
@@ -337,16 +356,16 @@ const AcademicSession = () => {
               <TextInput
                 label="Start Date"
                 name="start_date"
-                type="text"
+                type="date"
                 value={inputFields.start_date}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e, "start_date")}
               />
               <TextInput
                 label="End Date"
                 name="end_date"
-                type="text"
+                type="date"
                 value={inputFields.end_date}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e, "end_date")}
               />
 
             </div>

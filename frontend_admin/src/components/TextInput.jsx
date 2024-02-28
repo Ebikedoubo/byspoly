@@ -115,6 +115,7 @@ export default function TextInput(props) {
                 <TextField
                   className={`  ${error ? errorClasses : ""}`}
                   {...params}
+                  helperText
                 />
               )}
             />
